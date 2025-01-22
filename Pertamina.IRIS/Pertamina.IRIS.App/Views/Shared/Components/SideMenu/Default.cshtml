@@ -1,0 +1,79 @@
+﻿@model Pertamina.IRIS.Models.ViewModels.SideMenuViewModel
+@using Pertamina.IRIS.App.Helpers
+
+
+<div class="app-sidebar flex-column" data-kt-drawer="true" data-kt-drawer-name="app-sidebar" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="225px" data-kt-drawer-direction="start" data-kt-drawer-toggle="#kt_app_sidebar_mobile_toggle">
+    <div class="app-sidebar-logo" id="kt_app_sidebar_logo">
+        <a href="@Url.Action("Index", "LandingPage")">
+            <img alt="Logo" src="~/img/logo-pertamina.png" class="h-70px app-sidebar-logo-default theme-light-show" />
+            <img alt="Logo" src="~/img/icon-pertamina.jpg" class="h-75px app-sidebar-logo-minimize" />
+        </a>
+
+        <div id="kt_app_sidebar_toggle" class="app-sidebar-toggle btn btn-icon btn-shadow btn-sm btn-color-muted btn-active-color-primary body-bg h-30px w-30px position-absolute top-50 start-100 translate-middle rotate" data-kt-toggle="true" data-kt-toggle-state="active" data-kt-toggle-target="body" data-kt-toggle-name="app-sidebar-minimize">
+            <i class="ki-duotone ki-double-left fs-2 rotate-180">
+                <span class="path1"></span>
+                <span class="path2"></span>
+            </i>
+        </div>
+        <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
+            <a class="d-lg-none">
+                <img alt="Logo" src="~/img/icon-pertamina.jpg" class="h-75px app-sidebar-logo-minimize" />
+            </a>
+        </div>
+    </div>
+    <div class="app-sidebar-menu overflow-hidden flex-column-fluid">
+        <div class="app-sidebar-wrapper hover-scroll-overlay-y my-5" data-kt-scroll="true" data-kt-scroll-activate="true" data-kt-scroll-height="auto" data-kt-scroll-dependencies="#kt_app_sidebar_logo, #kt_app_sidebar_footer" data-kt-scroll-wrappers="#kt_app_sidebar_menu" data-kt-scroll-offset="5px" data-kt-scroll-save-state="true">
+            <div class="menu menu-column menu-rounded menu-sub-indention px-3" data-kt-menu="true" data-kt-menu-expand="false">
+                @if (Model.Features != null)
+                {
+                    @foreach (var feature in Model.Features)
+                    {
+                        @if (feature.IsMenu == true && feature.ChildFeatures.Count == 0)
+                        {
+                            <div class="menu-item">
+                                <a class="menu-link @Html.IsActive(feature.ControllerName, feature.ActionName)" onclick="location.href='@Url.Action(feature.ActionName, feature.ControllerName)'">
+                                    <span class="menu-icon">
+                                        <i class="@feature.MenuIcon"></i>
+                                    </span>
+                                    <span class="menu-title">@feature.FeatureName</span>
+                                </a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div data-kt-menu-trigger="click" class="menu-item menu-accordion @Html.IsOpen(feature)">
+                                <span class="menu-link">
+                                    <span class="menu-icon">
+                                        <i class="@feature.MenuIcon"></i>
+                                    </span>
+                                    <span class="menu-title">@feature.FeatureName</span>
+                                    <span class="menu-arrow"></span>
+                                </span>
+                                <div class="menu-sub menu-sub-accordion @Html.IsOpen(feature)">
+                                    @foreach (var item in feature.ChildFeatures)
+                                    {
+                                        <div class="menu-item">
+                                            <a class="menu-link @Html.IsActive(item.ControllerName, item.ActionName)" onclick="location.href='@Url.Action(item.ActionName, item.ControllerName)'">
+                                                <span class="menu-bullet">
+                                                    <span class="bullet bullet-dot"></span>
+                                                </span>
+                                                <span class="menu-title">@item.FeatureName</span>
+                                            </a>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script>
+        $(document).ready(function () {
+           
+        });
+    </script>
+}

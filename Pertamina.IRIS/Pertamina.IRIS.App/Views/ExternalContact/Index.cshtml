@@ -1,0 +1,171 @@
+﻿@using Pertamina.IRIS.Models.Base
+@inject GlobalVariableBaseModel globalParam
+@model Pertamina.IRIS.Models.ViewModels.ExternalContactViewModel
+
+@{
+    ViewData["Title"] = "External Contact";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+<div class="app-main flex-column flex-row-fluid">
+    <div class="d-flex flex-column flex-column-fluid">
+        <div class="app-toolbar py-3 py-lg-6">
+            <div class="app-container container-xxl d-flex flex-stack">
+                <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">List Of External Contact</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-content flex-column-fluid">
+            <div class="app-container container-xxl">
+                <div class="card card-flush">
+                    <div class="card-body fs-6 py-15 px-10 py-lg-15 px-lg-15 text-gray-700">
+                        <div class="p-0">
+                            <div class="row">
+                                <div class="col" align="left">
+                                </div>
+                            </div>
+                            <div class="d-flex flex-stack mb-5">
+                                <div class="d-flex align-items-center position-relative my-1">
+                                    <i class="ki-duotone ki-magnifier fs-1 position-absolute ms-6"><span class="path1"></span><span class="path2"></span></i>
+                                    <input id="searchInput" type="text" data-kt-docs-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search" />
+
+                                    <span class="ms-1" data-bs-toggle="tooltip" title="Search is applied to all column ">
+                                        <i class="ki-duotone ki-information-5 text-gray-500 fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                        </i>
+                                    </span>
+                                </div>
+
+                                <div class="d-flex justify-content-end" data-kt-docs-table-toolbar="base">
+                                    <button type="button" class="btn btn-primary me-3" data-bs-toggle="modal" data-bs-target="#importModal">
+                                        <i class="ki-duotone ki-file-right fs-2">
+                                            <i class="path1"></i>
+                                            <i class="path2"></i>
+                                        </i>Import
+                                    </button>
+                                    
+                                    <div style="padding-right: 10px;">
+                                        <button type="button" class="btn btn-primary rotate" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-start" data-kt-menu-offset="30px, 30px">
+                                            <i class="ki-duotone ki-exit-up fs-2">
+                                                <span class="path1"></span>
+                                                <span class="path2"></span>
+                                            </i>Export
+                                        </button>
+                                        <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg-light-primary fw-semibold w-200px" data-kt-menu="true" style="z-index: 107; position: fixed; inset: 0px auto auto 0px; transform: translate3d(1105px, 160px, 0px);">
+
+                                            <div class="menu-item px-3">
+                                                <a id="exportExcel" href="#" class="menu-link px-3">
+                                                    Export All
+                                                </a>
+                                            </div>
+
+                                            <div class="menu-item px-3">
+                                                <a id="exportThisPage" class="menu-link px-3">
+                                                    Export Template
+                                                    </a>                                                
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button id="btnCreate" type="button" class="btn btn-primary"
+                                            onclick="location.href='@Url.Action("Create", "ExternalContact")'">
+                                        <i class="ki-duotone ki-plus fs-2"></i>
+                                        Add External Contact
+                                    </button>
+                                </div>
+                            </div>
+                            <table id="dataTable" class="table align-middle table-row-dashed fs-6 gy-5">
+                                <thead>
+                                    <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                        <th class="min-w-100px">NAMA PERUSAHAAN /LEMBAGA</th>
+                                        <th class="min-w-100px">NAMA PIC</th>
+                                        <th class="min-w-100px">JABATAN PIC</th>
+                                        <th class="min-w-100px">NO. HP PIC</th>
+                                        <th class="min-w-80px">EMAIL PIC</th>
+                                        <th class="min-w-100px">LAST MODIFIED</th>
+                                        <th class="min-w-100px">ACTIONS</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-gray-600 fw-semibold">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" tabindex="-1" id="importModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Upload File</h3>
+
+                    <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                </div>
+
+                <div class="modal-body">
+                    <form class="form" action="#" method="post">
+                        <div class="fv-row">
+                            <div class="dropzone" id="dropzone">
+                                <div class="dz-message needsclick">
+                                    <i class="ki-duotone ki-file-up fs-3x text-primary"><span class="path1"></span><span class="path2"></span></i>
+
+                                    <div class="ms-4">
+                                        <h3 class="fs-5 fw-bold text-gray-900 mb-1">Drop files here or click to upload.</h3>
+                                        <span class="fs-7 fw-semibold text-gray-400">File berekstensi .xlsx</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button id="btnClose" type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button id="uploadButton" type="button" class="btn btn-primary">Upload</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section Scripts{
+    <script>
+        var param = (function (param) {
+            param.prefix = '@globalParam.PrefixApiUrl';
+            param.urlAction = '@globalParam.PrefixRootName' + '@controllerName/';
+            param.dataGrid = '@globalParam.PrefixApiUrl' + 'ApiExternalContact/List';
+            param.importData = '@globalParam.PrefixApiUrl' + 'ApiExternalContact/Upload';
+            param.updateGrid = '@Url.Action("Update", "ExternalContact")';
+            param.deleteGrid = '@Url.Action("Delete", "ExternalContact")';
+            return param;
+        })(param || {});
+
+        $('#exportExcel').click(function () {
+            var url = '@Url.Action("DownloadData", "ExternalContact")';
+            var textValue = $('#searchInput').val();
+
+            window.location.href = url + '?searchQuery=' + textValue;
+        });
+
+        $('#exportThisPage').click(function () {
+            var url = '@Url.Action("DownloadTemplate", "ExternalContact")';
+            window.location.href = url;
+        });
+        console.log(param);
+    </script>
+    <script src="~/js/form/base-url-api.js"></script>
+    <script src="~/js/form/externalContact.js"></script>
+    
+}

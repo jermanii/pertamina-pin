@@ -1,0 +1,91 @@
+﻿@model Pertamina.IRIS.Models.ViewModels.PicFungsiViewModel
+@{
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+<form id="CreateForm" class="form" action="#" autocomplete="off">
+    <div id="CreatePartialComponent"
+         class="bg-white"
+         data-kt-drawer="true"
+         data-kt-drawer-activate="true"
+         data-kt-drawer-close="#CreatePartialComponentClose, #CreatePartialComponentCancel"
+         data-kt-drawer-overlay="true"
+         data-kt-drawer-permanent="true"
+         data-kt-drawer-width="{default:'300px', 'md': '500px'}">
+        <div class="card rounded-0 w-100">
+            <div class="card-header pe-5">
+                <div class="card-title">
+                    Add PIC Fungsi
+                </div>
+                <div class="card-toolbar">
+                    <div class="btn btn-sm btn-icon btn-active-light-primary" id="CreatePartialComponentClose">
+                        <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body hover-scroll-overlay-y">
+                <div class="fv-row mb-10">
+                    <label for="ddlFungsiId" class="required form-label">Nama Fungsi</label>
+                    @Html.DropDownListFor(x => x.FungsiId,
+                    new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                    new
+                    {
+                    @id = "ddlFungsiId",
+                    @class = "form-select form-select-solid form-select-lg fw-semibold",
+                    aria_label = "Pilih Nama Fungsi",
+                    data_control = "select2",
+                    data_placeholder = "Pilih Nama Fungsi",
+                    data_dropdown_parent = "#CreateForm",
+                    data_allow_clear = "true"
+                    })
+                </div>
+                <div class="fv-row mb-10">
+                    <label for="picNameInput" class="required form-label">Nama PIC</label>
+                    @Html.TextBoxFor(m => m.PicName, new
+                    {
+                    @id = "picNameInput",
+                    @class = "form-control form-control-solid",
+                    maxlength = 100,
+                    placeholder = "Masukkan Nama PIC"
+                    })
+                </div>
+                <div class="fv-row mb-10">
+                    <label for="phoneInput" class="required form-label">No. Telp</label>
+                    @Html.TextBoxFor(m => m.Phone, new
+                    {
+                    @id = "phoneInput",
+                    @class = "form-control form-control-solid",
+                    maxlength = 20,
+                    placeholder = "Masukkan No Telp",
+                    })
+                </div>
+                <div class="fv-row mb-10">
+                    <label for="emailInput" class="required form-label">Alamat Email</label>
+                    @Html.TextBoxFor(m => m.Email, new
+                    {
+                    @id = "emailInput",
+                    @class = "form-control form-control-solid",
+                    maxlength = 100,
+                    placeholder = "Masukkan Alamat Email",
+                    type = "email"
+                    })
+                </div>
+            </div>
+            <div class="card-footer pt-4">
+                <div class="d-flex flex-stack">
+                    <div class="d-flex align-items-center me-1">
+                        <button class="btn btn-secondary" id="CreatePartialComponentCancel">Cancel</button>
+                    </div>
+                    <button id="CreateSubmit" type="submit" class="btn btn-primary" data-url="@Url.Action("CreatePartial","PicFungsi")" data-callbackurl="@Url.Action("Index", "PicFungsi")">
+                        <span class="indicator-label">
+                            Submit
+                        </span>
+                        <span class="indicator-progress">
+                            Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

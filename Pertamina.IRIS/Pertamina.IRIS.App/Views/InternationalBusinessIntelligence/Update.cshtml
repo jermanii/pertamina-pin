@@ -1,0 +1,294 @@
+﻿@section Styles {
+    <link href="~/css/custom.css" rel="stylesheet" type="text/css" />
+}
+
+@using Pertamina.IRIS.Models.Base
+@inject GlobalVariableBaseModel globalParam
+@model Pertamina.IRIS.Models.ViewModels.InternationalBusinessIntelligenceViewModel
+
+
+@{
+    ViewData["Title"] = "IBI Update";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+<div class="spinner-container">
+    <div class="loading-spinner"></div>
+</div>
+<div class="app-content  flex-column-fluid">
+    <div class="app-container container-xxl">
+        <div class="d-flex flex-wrap flex-stack mb-6 pointer">
+            <h3 class="fw-semibold my-2" onclick="location.href='@Url.Action("Index", "InternationalBusinessIntelligence")'">
+                <i class="fa fa-long-arrow-alt-left fs-1"></i>
+            </h3>
+        </div>
+    </div>
+    <div class="app-container container-xxl">
+        <div class="card app-container">
+            <div class="container mt-5">
+                <form id="UpdateIBI" class="form">
+                    <div class="row">
+                        <!-- Left Column -->
+                        <div class="col-md-6">
+                            <div class="fv-row form-group pt-5">
+                                <label for="titleInput" class="form-label">Material/Study/Research Title</label>
+                                <span class="ms-1" data-bs-toggle="tooltip" title="Kolom ini merujuk sebagai judul perjanjian">
+                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                </span>
+                                @Html.TextBoxFor(x => x.Title, new
+                                    {
+                                        @id = "titleInput",
+                                        @class = "form-control",
+                                        placeholder = "Masukkan Research Title",
+                                    })
+                            </div>
+                            <div class="fv-row form-group pt-5">
+                                <label for="descriptionInput" class="form-label">Description</label>
+                                <span class="ms-1" data-bs-toggle="tooltip" title="Kolom ini merujuk sebagai deskripsi perjanjian">
+                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                </span>
+                                @Html.TextAreaFor(x => x.Description, new
+                                    {
+                                        @id = "descriptionInput",
+                                        @class = "form-control",
+                                        placeholder = "Masukkan Description",
+                                        @rows = 5
+
+                                    })
+                            </div>
+
+                            <div id="addRepeaterAuthors">
+                                <div class="fv-row form-group pt-5">
+                                    <label for="authorsInput-0" class="form-label">Authors</label>
+                                    <span class="ms-1" data-bs-toggle="tooltip" title="Kolom ini merujuk sebagai pemilik perjanjian">
+                                        <i class="ki-duotone ki-information-5 text-gray-500 fs-1">
+                                            <span class="path1"></span>
+                                            <span class="path2"></span>
+                                            <span class="path3"></span>
+                                        </i>
+                                    </span>
+                                    <div data-repeater-list="AuthorName">
+                                        <div data-repeater-item class="authors mb-2">
+                                            <div class=" form-group row">
+                                                <div class="col-md-10">
+                                                    @Html.TextBoxFor(x => x.Author.Name,
+                                                             new
+                                                             {
+                                                                 @id = "authorsInput-0",
+                                                                 @name = "AuthorName",
+                                                                 @class = "form-control",
+                                                                 placeholder = "Masukkan Authors",
+                                                             })
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button class="border border-secondary btn btn-icon btn-flex btn-danger btn-sm" data-repeater-delete type="button">
+                                                        <i class="la la-close"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="form-group mt-5">
+                                        <a href="javascript:;" data-repeater-create class="btn font-weight-bold btn-warning btn-sm">
+                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                            Add
+                                        </a>
+                                    </div>
+                                    <div class="col"></div>
+                                </div>
+                            </div>
+
+
+                            <div class="fv-row form-group pt-5">
+                                <label for="hshDdlCountries" class="form-label">Related Countries</label>
+                                <span class="ms-1" data-bs-toggle="tooltip" title="Kolom ini merujuk sebagai penanda di negara mana perjanjian tersebut dibuat">
+                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                </span>
+                                @Html.DropDownListFor(x => x.CountriesCoveredSelected,
+                                         new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                         new
+                                         {
+                                             @id = "hshDdlCountries",
+                                             @class = " form-control form-select form-select-solid form-select-lg bg-white",
+                                             data_control = "select2",
+                                             data_placeholder = "Negara Mitra",
+                                             data_allow_clear = "true"
+                                         })
+                            </div>
+                            <div class="fv-row form-group pt-5">
+                                <label for="ddlStream" class="form-label">Stream Business</label>
+                                <span class="ms-1" data-bs-toggle="tooltip" title="Kolom ini merujuk stream dari owner entity yang dipilih">
+                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                </span>
+                                @Html.DropDownListFor(x => x.StreamBusinessId,
+                                         new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                         new
+                                         {
+                                             @id = "ddlStream",
+                                             @class = " form-control form-select form-select-solid form-select-lg bg-white",
+                                             data_control = "select2",
+                                             data_placeholder = "Choose Stream",
+                                             data_allow_clear = "true"
+                                         })
+                            </div>
+                        </div>
+
+                        <!-- Right Column -->
+                        <div class="col-md-6 pt-5">
+                            <div class="fv-row form-group">
+                                <label for="ddlTypeOfStudy" class="form-label">Type of Study</label>
+                                <span class="ms-1" data-bs-toggle="tooltip" title="Kolom ini merujuk sebagai jenis studi">
+                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                </span>
+                                @Html.DropDownListFor(x => x.TypeStudyId,
+                                         new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                         new
+                                         {
+                                             @id = "ddlTypeOfStudy",
+                                             @class = " form-control form-select form-select-solid form-select-lg bg-white",
+                                             data_control = "select2",
+                                             data_placeholder = "Choose Type of Study",
+                                             data_allow_clear = "true"
+                                         })
+                            </div>
+                            <div class="fv-row form-group pt-5">
+                                <label for="dateOfResearchInput" class="form-label">Date of Research</label>
+                                <span class="ms-1" data-bs-toggle="tooltip" title="Kolom ini merujuk sebagai tanggal riset">
+                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                </span>
+                                @Html.TextBoxFor(x => x.ResearchDate,
+                                         new
+                                         {
+                                             @id = "dateOfResearchInput",
+                                             @type = "date",
+                                             @class = "form-control",
+                                             // min = DateTime.Now.ToString("yyyy-MM-dd"),
+                                             onclick = "this.showPicker();"
+                                         })
+                            </div>
+
+                            <div class="fv-row form-group pt-5">
+                                <label for="ddlOwnerEntity" class="form-label">Owner Entity</label>
+                                <span class="ms-1" data-bs-toggle="tooltip" title="Kolom ini merujuk sebagai entitas pemilik perjanjian">
+                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                </span>
+                                @Html.DropDownListFor(x => x.EntitasPertaminaId,
+                                         new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                         new
+                                         {
+                                             @id = "ddlOwnerEntity",
+                                             @class = " form-control form-select form-select-solid form-select-lg bg-white",
+                                             aria_label = "",
+                                             data_control = "select2",
+                                             data_placeholder = "Choose Owner Entity",
+                                             data_allow_clear = "true"
+                                         })
+
+                            </div>
+                            <div class="fv-row orm-group pt-5">
+                                <label for="ddlConfidentiality" class="form-label">Confidentiality</label>
+                                <span class="ms-1" data-bs-toggle="tooltip" title="Kolom ini merujuk sebagai jenis kerahasiaan perjanjian">
+                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                </span>
+                                @Html.DropDownListFor(x => x.ConfidentialityId,
+                                         new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                         new
+                                         {
+                                             @id = "ddlConfidentiality",
+                                             @class = " form-control form-select form-select-solid form-select-lg bg-white",
+                                             data_control = "select2",
+                                             data_placeholder = "Choose Confidentiality",
+                                             data_allow_clear = "true"
+                                         })
+                            </div>
+                            <div class="fv-row form-group pt-5">
+                                <label for="supportingDocuments">Supporting Documents</label>
+                                <span class="ms-1" data-bs-toggle="tooltip" title="Kolom ini merujuk sebagai dokumen penunjang perjanjian">
+                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                </span>
+                                <div class="dropzone" id="dropzone">Drop files to attach, or <span style="color: #0000EE ;">browse</span></div>
+                                <div id="fileList"></div>
+                                <label class="form-label font-weight-bold text-center">*Maksimal ukuran file yang dapat di upload 128MB </label>
+                                <input type="hidden" id="fileValidation" name="fileValidation" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group py-9 mt-5 text-right">
+                        @* <button type="button" class="btn btn-sm btn-outline-dark border-line-1"><i class="fa fa-file"></i>Save Draft</button> *@
+                        <button id="btnSubmitIBI" type="submit" class="btn btn-primary btn-sm bg-dark" data-urlupload="@Url.Action("UploadDocument", "InternationalBusinessIntelligence")" data-url="@Url.Action("SubmitUpdate", "InternationalBusinessIntelligence")" data-callbackurl="@Url.Action("Index", "InternationalBusinessIntelligence")">
+                            <i class="fa fa-cloud-upload-alt"></i>Update
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+    <input id="authorsName" type="hidden" value="@Model.JoinedAuthorsName">
+    <input id="researchDate" type="hidden" value="@Model.ResearchDate.Value.ToString("yyyy-MM-dd")">
+    <input id="countriesIds" type="hidden" value="@Model.JoinedRelatedCountriesId">
+    <input id="streamBusinessId" type="hidden" value="@Model.StreamBusinessId">
+    <input id="typeOfStudyId" type="hidden" value="@Model.TypeStudyId">
+    <input id="entitasPertaminaId" type="hidden" value="@Model.EntitasPertaminaId">
+    <input id="confidentialityId" type="hidden" value="@Model.ConfidentialityId">
+    <input id="ibiId" type="hidden" value="@Model.Id">
+</div>
+
+
+@section Scripts {
+    <script>
+        var param = (function (param) {
+            param.prefix = '@globalParam.PrefixApiUrl';
+            return param;
+        })(param || {});
+        var urlGetFilesAsJson = '@Url.Action("GetFilesAsJson", "InternationalBusinessIntelligence")';
+    </script>
+
+    <script src="~/js/form/base-url-api.js"></script>
+    <script src="~/js/form/internationalBusinessIntelligenceUpdate.js"></script>
+
+
+}
+

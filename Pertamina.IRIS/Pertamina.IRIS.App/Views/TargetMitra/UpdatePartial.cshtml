@@ -1,0 +1,79 @@
+﻿@model Pertamina.IRIS.Models.ViewModels.TargetMitraViewModel
+@{
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+<form id="UpdateForm" class="form" action="#" autocomplete="off">
+    <div id="UpdatePartialComponent"
+         class="bg-white"
+         data-kt-drawer="true"
+         data-kt-drawer-activate="true"
+         data-kt-drawer-close="#UpdatePartialComponentClose, #UpdatePartialComponentCancel"
+         data-kt-drawer-overlay="true"
+         data-kt-drawer-permanent="true"
+         data-kt-drawer-width="{default:'300px', 'md': '500px'}">
+        <div class="card rounded-0 w-100">
+            <div class="card-header pe-5">
+                <div class="card-title">
+                    Edit Target Mitra
+                </div>
+                <div class="card-toolbar">
+                    <div class="btn btn-sm btn-icon btn-active-light-primary" id="UpdatePartialComponentClose">
+                        <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body hover-scroll-overlay-y">
+                @Html.HiddenFor(x => x.Id)
+                <div class="fv-row mb-10">
+                    <label for="namaInput" class="required form-label">Nama Target Mitra</label>
+                    @Html.TextBoxFor(m => m.Name, new
+                    {
+                    @id = "namaInput",
+                    @class = "form-control form-control-solid",
+                    maxlength = 100,
+                    placeholder = "Masukkan Nama Target Mitra"
+                    })
+                </div>
+                <div class="fv-row mb-10">
+                    <label for="deskripsiInput" class=" form-label">Deskripsi</label>
+                    @Html.TextBoxFor(m => m.Description, new
+                    {
+                    @id = "deskripsiInput",
+                    @class = "form-control form-control-solid",
+                    maxlength = 100,
+                    placeholder = "Masukkan Deskripsi"
+                    })
+                </div>
+
+                <div class="fv-row mb-10">
+                    <label for="orderInput" class="required form-label">Order</label>
+                    @Html.TextBoxFor(m => m.OrderSeq, new
+                    {
+                    @id = "orderInput",
+                    @class = "form-control form-control-solid",
+                    maxlength = 100,
+                    placeholder = "Masukkan Order",
+                    oninput="onlynum('orderInput');"
+
+                    })
+                </div>
+            </div>
+            <div class="card-footer pt-4">
+                <div class="d-flex flex-stack">
+                    <div class="d-flex align-items-center me-1">
+                        <button class="btn btn-secondary" id="UpdatePartialComponentCancel">Cancel</button>
+                    </div>
+                    <button id="UpdateSubmit" type="submit" class="btn btn-primary" data-url="@Url.Action("Update","TargetMitra")" data-callbackurl="@Url.Action("Index", "TargetMitra")">
+                        <span class="indicator-label">
+                            Update
+                        </span>
+                        <span class="indicator-progress">
+                            Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

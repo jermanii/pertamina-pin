@@ -1,0 +1,1866 @@
+﻿@using Pertamina.IRIS.Models.Base
+@inject GlobalVariableBaseModel globalParam
+@model Pertamina.IRIS.Models.ViewModels.AgreementViewModel
+
+@{
+    ViewData["Title"] = "Agreement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+<div class="app-main flex-column flex-row-fluid">
+    <div class="d-flex flex-column flex-column-fluid">
+        <div class="app-toolbar py-3 py-lg-6">
+            <div class="app-container container-xxl d-flex flex-stack">
+                <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">ADD AGREEMENT </h1>
+                </div>
+            </div>
+        </div>
+        <div class="app-content flex-column-fluid" style="padding-bottom: 1px;">
+            <div class="app-container container-xxl">
+                <div class="card card-custom">
+                    <div class="card-header">
+                        <div class="row">
+                            <h3 class="card-title">
+                                SELECT HOW TO CREATE AN AGREEMENT
+                            </h3>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <div class="col-lg-6">
+                                <div class="fv-row mb-10">
+                                    <label for="sumberPengisianInput" class="required form-label">Select Data Fill Source</label>
+                                    @Html.DropDownListFor(x => x.SelectedFormType,
+                                             new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                             new
+                                             {
+                                                 @id = "sumberPengisianInput",
+                                                 @class = " form-control form-select form-select-solid form-select-lg",
+                                                 aria_label = "sumberPengisianInput",
+                                                 data_control = "select2",
+                                                 data_placeholder = "Select Data Fill Source",
+                                                 data_allow_clear = "true"
+                                             })
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div id="ddlJudulOpportunity" class="fv-row mb-10">
+                                    <label for="judulInput" class="required form-label">Select Title</label>
+                                    @Html.DropDownListFor(x => x.JudulId,
+                                             new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                             new
+                                             {
+                                                 @id = "judulInput",
+                                                 @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                 aria_label = "Pilih Judul",
+                                                 data_control = "select2",
+                                                 data_placeholder = "Select Title ",
+                                                 data_allow_clear = "true",
+                                                 maxlength = 1000,
+                                             })
+                                </div>
+                                <div id="ddlJudulInitiative" class="fv-row mb-10">
+                                    <label for="judulInputInitiative" class="required form-label">Select Title</label>
+                                    @Html.DropDownListFor(x => x.JudulId,
+                                             new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                             new
+                                             {
+                                                 @id = "judulInputInitiative",
+                                                 @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                 aria_label = "Pilih Judul",
+                                                 data_control = "select2",
+                                                 data_placeholder = "Select Title ",
+                                                 data_allow_clear = "true",
+                                                 maxlength = 1000,
+                                             })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2" style="padding-right: 10px;">
+                    <div id="buttonCancel" class="col-lg-12 d-flex justify-content-end pb-0 px-0" style="padding-top: 6px;">
+                        <button id="btnCancel" type="submit" class="btn font-weight-bold btn-secondary" onclick="location.href='@Url.Action("Index","Agreement")'">
+                            Back
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="CreateBlankAgreement" class="app-container container-xxl">
+            <form id="AddBlank" class="form" action="#" autocomplete="off">
+                <div class="row">
+                    <div class=" row">
+                        <div class="col-lg-6">
+                            <div class="flex-row-fluid">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                HEADER
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="judulPerjanjianInput" class="required form-label">Agreement Title</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the title of the agreement">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.TextBoxFor(m => m.JudulPerjanjian, new
+                                                {
+                                                    @id = "judulPerjanjianInput",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Enter Agreement Title"
+
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="jenisPerjanjianInput" class="required form-label">Agreement Type</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the type of agreement">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.DropDownListFor(x => x.JenisPerjanjianId,
+                                                     new SelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "jenisPerjanjianInput",
+                                                         @class = " form-control form-select form-select-solid form-select-lg",
+                                                         aria_label = "jenisPerjanjianInput",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Enter Agreement Type",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="hshEntitasPertaminaInput" class="required form-label">Holding/Sub Holding - Pertamina Entity</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the holding of the agreement">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.DropDownListFor(x => x.EntitasPertaminaEvent,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "hshEntitasPertaminaInput",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "hshEntitasPertaminaInput",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Choose Holding/Sub Holding - Pertamina Entity",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="app-content flex-column-fluid">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                PIC INFORMATION
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="form-group row">
+                                            <div class="fv-row col-lg-5">
+                                                @if (@Model.AgreementPicFungsi != null)
+                                                {
+                                                    <input type="hidden" value="@Model.AgreementPicFungsi.PicFungsiId" id="hdnPicInput"></input>
+                                                }
+                                                <label for="picInput" class="required form-label">Function - PIC</label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the name of the project PIC">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                                @Html.DropDownListFor(x => x.AgreementPicFungsi.PicFungsiId,
+                                                         new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                         new
+                                                         {
+                                                             @id = "picInput",
+                                                             @name = "PicFungsiId",
+                                                             @class = "form-select form-select-solid form-select-md fw-semibold",
+                                                             aria_label = "Choose PIC Lead - Function Name - Company",
+                                                             data_placeholder = "Choose PIC - Function Name - Company",
+                                                             data_control = "select2",
+                                                         })
+                                            </div>
+                                            <div class="fv-row col-lg-5">
+                                                <label for="picLevelInput" class="required form-label">PIC Level</label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the level of the selected PIC">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                                @Html.HiddenFor(x => x.PicLevelId, new { @id = "picLevelId" })
+                                                @Html.TextBoxFor(x => x.PicLevelName,
+                                                         new
+                                                         {
+                                                             @id = "picLevelInput",
+                                                             @name = "PicLevelId",
+                                                             @class = "form-control form-control-solid",
+                                                             maxlength = 6000,
+                                                             placeholder = "Choose PIC Level Lead",
+                                                             @readonly = "readonly",
+                                                         })
+                                            </div>
+                                        </div>
+                                        <div class="form-group mt-5">
+                                            <div id="addRepeaterPic">
+                                                @Html.HiddenFor(x => x.PicLevelMemberId, new { @id = "picLevelMemberId" })
+                                                <div class="form-group">
+                                                    <div data-repeater-list="PicName">
+                                                        <div data-repeater-item class="pic mb-2">
+                                                            <div class="form-group row">
+                                                                <div class="fv-row col-lg-5 picFungsi">
+                                                                    @* <label for="picFungsiMemberInput" class="required form-label">Partner(s)</label> *@
+                                                                    @Html.DropDownListFor(x => x.AgreementPicFungsi.PicFungsiId,
+                                                                             new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                                             new
+                                                                             {
+                                                                                 @id = "picFungsiMemberInput",
+                                                                                 @name = "PicMemberFungsiId",
+                                                                                 @class = "form-select form-select-solid form-select-md fw-semibold fungsiPicMember",
+                                                                                 aria_label = "Choose PIC Member- Function Name - Company",
+                                                                                 data_placeholder = "Choose PIC - Function Name - Company",
+                                                                             })
+                                                                </div>
+                                                                <div class="fv-row col-lg-5">
+                                                                    @Html.TextBoxFor(x => x.PicLevelNameMember,
+                                                                             new
+                                                                             {
+                                                                                 @id = "picLevelMemberInput",
+                                                                                 @name = "PicMemberLevelId",
+                                                                                 @class = "form-control form-control-solid levelPicMember",
+                                                                                 maxlength = 6000,
+                                                                                 placeholder = "Choose PIC Level Member",
+                                                                                 @readonly = "readonly",
+                                                                                 data_dropdown_parent = "#CreateFormExistingFootprints"
+                                                                             })
+                                                                </div>
+                                                                <div class="col-lg-2 d-flex align-items-end">
+                                                                    <button class="border border-secondary btn btn-icon btn-flex btn-danger" data-repeater-delete type="button">
+                                                                        <i class="la la-close"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="form-group mt-5">
+                                                        <a href="javascript:;" data-repeater-create class="btn font-weight-bold btn-warning" id="addPICButton">
+                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                            Add PIC
+                                                        </a>
+                                                    </div>
+                                                    <div class="col"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-column-fluid">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                PROJECT VALUE
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="transactionValue" class="form-label">Transaction Value</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the transaction value of the agreement ">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.TextBoxFor(m => m.PotentialRevenuePerYearToString, new
+                                                {
+                                                    @id = "transactionValueInput",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Enter Revenue",
+                                                    maxlength = 15,
+                                                    @type = "text",
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="projectCost" class="form-label">Project Cost</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the cost of the agreement">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.TextBoxFor(m => m.CapexToString, new
+                                                {
+                                                    @id = "projectCostInput",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Enter Project Cost",
+                                                    maxlength = 15,
+                                                    @type = "text",
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="nilaiProyekInput" class="form-label">Valuation (USD)</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the estimation of the agreement">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.TextBoxFor(m => m.ValuationToString, new
+                                                {
+                                                    @id = "nilaiProyekInput",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Enter Valuation",
+                                                    @type = "text",
+                                                    maxlength = 15
+                                                })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app-content flex-column-fluid">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                RELATIONSHIP WITH GOVERNMENT
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="dukunganPemerintahInput" class=" form-label">Required Support form the Government</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to information on support required from the government">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.TextAreaFor(m => m.SupportPemerintah, new
+                                                {
+                                                    @id = "dukunganPemerintahInput",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Enter Required Support from the Government",
+                                                    maxlength = 6000
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="keterlibatanLembagaInput" class=" form-label">Ministry / Agency Involvement</label><label style="padding-left: 10px;color: red;font-weight: bold;">Can select more than one</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to information on support from government agencies">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.DropDownListFor(x => x.KementrianLembagaIds,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "keterlibatanLembagaInput",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "keterlibatanLembagaInput",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Choose Ministry / Agency Involvement",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-column-fluid">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                ESCALATION POTENTIAL
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="potensialEskalasiInput" class=" form-label">Escalation Potential</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to information on potential escalation">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.TextAreaFor(m => m.PotensiEskalasi, new
+                                                {
+                                                    @id = "potensialEskalasiInput",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Enter Escalation Potential",
+                                                    maxlength = 6000
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="catatanTambahanInput" class=" form-label">Additional Note</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to information on additional notes">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.TextAreaFor(m => m.CatatanTambahan, new
+                                                {
+                                                    @id = "catatanTambahanInput",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Enter Additional Note",
+                                                    maxlength = 6000
+                                                })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="flex-row-fluid">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                PROJECT INFORMATION
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="negaraMitraInput" class="required form-label">Partner Region</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the project area">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.DropDownListFor(x => x.NegaraMitraId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "negaraMitraInput",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "negaraMitraInput",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Choose Partner Region",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <div id="addRepeaterLokasiProyek">
+                                                <div class="form-group">
+                                                    <label for="lokasiProyekInput" class="required form-label">Project Location</label>
+                                                    <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the project location (can be more than one)">
+                                                        <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                            <span class="path3"></span>
+                                                        </i>
+                                                    </span>
+                                                    <div data-repeater-list="LokasiProyek">
+                                                        <div data-repeater-item class="lokasiProyek mb-2">
+                                                            <div class="fv-row form-group row">
+                                                                <div class="col-md-10">
+                                                                    @Html.TextBoxFor(x => x.AgreementLokasiProyek.LokasiProyek,
+                                                                             new
+                                                                             {
+                                                                                 @id = "lokasiProyekInput",
+                                                                                 @name = "LokasiProyek",
+                                                                                 @class = "form-control form-control-solid",
+                                                                                 maxlength = 100,
+                                                                                 placeholder = "Project Location",
+                                                                             })
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <button class="border border-secondary btn btn-icon btn-flex btn-danger" data-repeater-delete type="button">
+                                                                        <i class="la la-close"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="form-group mt-5">
+                                                        <a href="javascript:;" data-repeater-create class="btn font-weight-bold btn-warning">
+                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                            Add Project Location
+                                                        </a>
+                                                    </div>
+                                                    <div class="col"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="fv-row mb-10">
+                                            <label for="rangeTanggalTtdInput" class="required form-label">Signature Date</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the agreement signing date">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.TextBoxFor(m => m.TanggalTtd, new
+                                                {
+                                                    @id = "rangeTanggalTtdInput",
+                                                    @class = "form-control form-control-solid",
+                                                    maxlength = 200,
+                                                    placeholder = "Choose Signature Date"
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="rangeTanggalBerakhirInput" class="required form-label">End Date</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the agreement end date">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.TextBoxFor(m => m.TanggalBerakhir, new
+                                                {
+                                                    @id = "rangeTanggalBerakhirInput",
+                                                    @class = "form-control form-control-solid",
+                                                    maxlength = 200,
+                                                    placeholder = "Choose End Date"
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="statusBerlakuInput" class=" form-label">Valid Status</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the validity status of the agreement">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.TextBoxFor(m => m.StatusBerlakuId, new
+                                                {
+                                                    @id = "statusBerlakuInput",
+                                                    @class = "form-control form-control-solid",
+                                                    maxlength = 200,
+                                                    placeholder = "Enter Valid Status"
+                                                })
+                                            @Html.HiddenFor(m => m.StatusBerlakuId, new
+                                                {
+                                                    @id = "statusBerlakuValueInput"
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="statusDiskusiInput" class="required form-label">Disscussion Status</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the discussion status of the agreement">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.DropDownListFor(x => x.DiscussionStatusId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "statusDiskusiInput",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "statusDiskusiInput",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Enter Disscussion Status",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <div id="addRepeaterPartnerOpportunity">
+                                                <div class="form-group">
+                                                    <label for="partnerInputOpportunity" class="required form-label">Partner(s)</label>
+                                                    <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the project partners (can be more than one)">
+                                                        <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                            <span class="path3"></span>
+                                                        </i>
+                                                    </span>
+                                                    <div data-repeater-list="PartnerName">
+                                                        <div data-repeater-item class="partnerOpportunity mb-2">
+                                                            <div class="fv-row form-group row">
+                                                                <div class="col-md-10">
+                                                                    @Html.TextBoxFor(x => x.AgreementPartner.PartnerName,
+                                                                             new
+                                                                             {
+                                                                                 @id = "partnerInputOpportunity",
+                                                                                 @name = "PartnerName",
+                                                                                 @class = "form-control form-control-solid",
+                                                                                 maxlength = 100,
+                                                                                 placeholder = "Enter Partners",
+                                                                             })
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <button class="border border-secondary btn btn-icon btn-flex btn-danger" data-repeater-delete type="button">
+                                                                        <i class="la la-close"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="form-group mt-5">
+                                                        <a href="javascript:;" data-repeater-create class="btn font-weight-bold btn-warning">
+                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                            Add Partner(s)
+                                                        </a>
+                                                    </div>
+                                                    <div class="col"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <div class="form-check d-flex align-items-center " style="margin-left:5px">
+                                                <input class="form-check-input checkbox-g2g" type="checkbox" value="" id="checkbox-3" />
+                                                <label class="" for="checkbox-3" style="font-size:17px ; margin-left:5px">G2G</label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This checklist indicates whether this project is derived from G2G or not">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app-content flex-row-fluid">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                SCOPE And CONSTRAINTS
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="scopeProjectInput" class="required form-label">Scope/Project Overview</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the project scope">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.TextAreaFor(m => m.Scope, new
+                                                {
+                                                    @id = "scopeProjectInput",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Enter Scope/Project Overview",
+                                                    maxlength = 6000
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="streamBusinessInput" class="required form-label">Stream Business</label><label style="padding-left: 10px;color: red;font-weight: bold;">Can select more than one</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the stream of the project (can be more than one)">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.DropDownListFor(x => x.StreamBusinessIds,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "streamBusinessInput",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "streamBusinessInput",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Choose Stream Business",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="progressInput" class="required form-label">Progress</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the progress of the project">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.TextAreaFor(m => m.Progress, new
+                                                {
+                                                    @id = "progressInput",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Enter Progress",
+                                                    maxlength = 6000
+
+                                                })
+                                        </div>
+
+                                        <div class="fv-row mb-10">
+                                            <label for="klasifikasiKendalaInput" class="required form-label">Constraint Classification</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the classification of obstacles in the project">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.DropDownListFor(x => x.KlasifikasiKendalaId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "klasifikasiKendalaInput",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "klasifikasiKendalaInput",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Choose Constraint Classification",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="deskripsiKendalaInput" class="form-label">Description Classification</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the description of obstacles in the project">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.TextAreaFor(m => m.DeskripsiKendala, new
+                                                {
+                                                    @id = "deskripsiKendalaInput",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Enter Description Classification",
+                                                    maxlength = 6000
+
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="faktorKendalaInput" class="required form-label">Constraint Factor</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the factors causing obstacles in the project">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.DropDownListFor(x => x.FaktorKendalaId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "faktorKendalaInput",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "faktorKendalaInput",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Choose Constraint Factor",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="tindakLanjutInput" class="required form-label">Follow Up</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the follow-up of the agreement process">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.TextBoxFor(x => x.TindakLanjut,
+                                                     new
+                                                     {
+                                                         @id = "tindakLanjutInput",
+                                                         @class = "form-control form-control-solid",
+                                                         placeholder = "Enter a minimum of 50 characters",
+                                                         minlength = 50,
+                                                         maxlength = 6000
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="trafficLightInput" class="form-label">Traffic Light</label>
+                                            <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the progress review status of the agreement">
+                                                <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            @Html.DropDownListFor(x => x.TrafficLightId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "trafficLightInput",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "trafficLightSelect",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Choose Traffic Light",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app-content flex-row-fluid">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                RELASI KE AGREEMENT
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="relasiAgreementInput" class="form-label">Relasi ke Agreement</label>
+                                            @Html.DropDownListFor(x => x.RelatedAgreementId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "relasiAgreementInput",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "relasiAgreementInput",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Partner_Kode Agreement_Judul Perjanjian",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="app-content flex-row-fluid">
+                <div class="row">
+                    <div class="col" align="left">
+                        <button id="SaveDraftBlank" type="submit" class="btn font-weight-bold btn-secondary" data-url="@Url.Action("SaveDraft", "Agreement")" data-callbackurl="@Url.Action("Index", "Agreement")">
+                            <span class="indicator-label">
+                                Save as Draft
+                            </span>
+                        </button>
+                    </div>
+                    <div class="col" align="right" style="padding-right: 40px;">
+                        <button id="btnCancel" type="submit" class="btn font-weight-bold btn-secondary" onclick="location.href='@Url.Action("Index", "Agreement")'">
+                            Cancel
+                        </button>
+                        <button id="BlankSubmit" type="submit" class="btn font-weight-bold btn-primary mr-2" data-url="@Url.Action("Add", "Agreement")" data-callbackurl="@Url.Action("Index", "Agreement")">
+                            <span class="indicator-label">
+                                Submit
+                            </span>
+                            <span class="indicator-progress">
+                                Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="CreateOpportunityAgreement" class="app-container container-xxl">
+            <form id="AddOpportunity" class="form" action="#" autocomplete="off">
+                <div class="row">
+                    <div class=" row">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                HEADER
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="judulPerjanjianInputOpportunity" class="required form-label">Judul Perjanjian</label>
+                                            @Html.TextBoxFor(m => m.JudulPerjanjian, new
+                                                {
+                                                    @id = "judulPerjanjianInputOpportunity",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Judul Perjanjian"
+
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="jenisPerjanjianInputOpportunity" class="required form-label">Jenis Perjanjian</label>
+                                            @Html.DropDownListFor(x => x.JenisPerjanjianId,
+                                                     new SelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "jenisPerjanjianInputOpportunity",
+                                                         @class = " form-control form-select form-select-solid form-select-lg",
+                                                         aria_label = "jenisPerjanjianInputOpportunity",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Jenis Perjanjian",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="hshEntitasPertaminaInputOpportunity" class="required form-label">Holding/Sub Holding - Entitas Pertamina</label><label style="padding-left: 10px;color: red;font-weight: bold;">Dapat pilih lebih dari 1</label>
+                                            @Html.DropDownListFor(x => x.EntitasPertaminaEvent,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "hshEntitasPertaminaInputOpportunity",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "hshEntitasPertaminaInputOpportunity",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Holding/Sub Holding - Entitas Pertamina",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="fungsiPicInputOpportunity" class="required form-label">Fungsi - PIC</label><label style="padding-left: 10px;color: red;font-weight: bold;">Dapat pilih lebih dari 1</label>
+                                            @Html.DropDownListFor(x => x.FungsiPicId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "fungsiPicInputOpportunity",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "fungsiPicInputOpportunity",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Nama PIC - Nama Fungsi - Perusahaan",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app-content flex-column-fluid row">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                INFORMASI PARTNER
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="addRepeaterPartnerOpportunity">
+                                            <div class="form-group">
+                                                <label for="partnerInputOpportunity" class="required form-label">Partner(s)</label>
+                                                <div data-repeater-list="PartnerName">
+                                                    <div data-repeater-item class="partnerOpportunity mb-2">
+                                                        <div class="fv-row form-group row">
+                                                            <div class="col-md-10">
+                                                                @Html.TextBoxFor(x => x.AgreementPartner.PartnerName,
+                                                                         new
+                                                                         {
+                                                                             @id = "partnerInputOpportunity",
+                                                                             @name = "PartnerName",
+                                                                             @class = "form-control form-control-solid",
+                                                                             maxlength = 100,
+                                                                             placeholder = "Masukkan Nama Partner",
+                                                                         })
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <button class="border border-secondary btn btn-icon btn-flex btn-danger" data-repeater-delete type="button">
+                                                                    <i class="la la-close"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="form-group mt-5">
+                                                    <a href="javascript:;" data-repeater-create class="btn font-weight-bold btn-warning">
+                                                        <i class="ki-duotone ki-plus fs-3"></i>
+                                                        Add Partner(s)
+                                                    </a>
+                                                </div>
+                                                <div class="col"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                INFORMASI PROYEK
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="negaraMitraInputOpportunity" class="required form-label">Kawasan Mitra - Negara Mitra</label>
+                                            @Html.DropDownListFor(x => x.NegaraMitraId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "negaraMitraInputOpportunity",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "negaraMitraInputOpportunity",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Kawasan Mitra - Negara Mitra",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="nilaiProyekInputOpportunity" class=" form-label">Nilai Proyek</label>
+                                            @Html.TextBoxFor(m => m.NilaiProyek, new
+                                                {
+                                                    @id = "nilaiProyekInputOpportunity",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Nilai Proyek",
+                                                    maxlength = 200,
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="rangeTanggalTtdInputOpportunity" class="required form-label">Tanggal TTD</label><label style="padding-left: 10px;color: red;font-style: italic;">Format tanggal yang digunakan adalah MM/DD/YYYY </label>
+                                            @Html.TextBoxFor(m => m.TanggalTtd, new
+                                                {
+                                                    @id = "rangeTanggalTtdInputOpportunity",
+                                                    @class = "form-control form-control-solid",
+                                                    maxlength = 200,
+                                                    placeholder = "Pilih Tanggal TTD"
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="rangeTanggalBerakhirInputOpportunity" class="required form-label">Tanggal Berakhir</label><label style="padding-left: 10px;color: red;font-style: italic;">Format tanggal yang digunakan adalah MM/DD/YYYY </label>
+                                            @Html.TextBoxFor(m => m.TanggalBerakhir, new
+                                                {
+                                                    @id = "rangeTanggalBerakhirInputOpportunity",
+                                                    @class = "form-control form-control-solid",
+                                                    maxlength = 200,
+                                                    placeholder = "Pilih Tanggal Berakhir"
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="statusBerlakuInputOpportunity" class=" form-label">Status Berlaku</label>
+                                            @Html.TextBoxFor(m => m.StatusBerlakuId, new
+                                                {
+                                                    @id = "statusBerlakuInputOpportunity",
+                                                    @class = "form-control form-control-solid",
+                                                    maxlength = 200,
+                                                })
+                                            @Html.HiddenFor(m => m.StatusBerlakuId, new
+                                                {
+                                                    @id = "statusBerlakuValueInputOpportunity"
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="statusDiskusiInputOpportunity" class="required form-label">Status Diskusi</label>
+                                            @Html.DropDownListFor(x => x.DiscussionStatusId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "statusDiskusiInputOpportunity",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "statusDiskusiInputOpportunity",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Status Diskusi",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div id="addRepeaterLokasiProyekOpportunity">
+                                            <div class="form-group">
+                                                <label for="lokasiProyekInputOpportunity" class="required form-label">Lokasi Proyek </label>
+                                                <div data-repeater-list="LokasiProyek">
+                                                    <div data-repeater-item class="lokasiProyekOpportunity mb-2">
+                                                        <div class="fv-row form-group row">
+                                                            <div class="col-md-10">
+                                                                @Html.TextBoxFor(x => x.AgreementLokasiProyek.LokasiProyek,
+                                                                         new
+                                                                         {
+                                                                             @id = "lokasiProyekInputOpportunity",
+                                                                             @name = "LokasiProyek",
+                                                                             @class = "form-control form-control-solid",
+                                                                             maxlength = 100,
+                                                                             placeholder = "Masukkan Lokasi Proyek",
+                                                                         })
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <button class="border border-secondary btn btn-icon btn-flex btn-danger" data-repeater-delete type="button">
+                                                                    <i class="la la-close"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="form-group mt-5">
+                                                    <a href="javascript:;" data-repeater-create class="btn font-weight-bold btn-warning">
+                                                        <i class="ki-duotone ki-plus fs-3"></i>
+                                                        Add Lokasi Proyek
+                                                    </a>
+                                                </div>
+                                                <div class="col"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="flex-row-fluid">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                SCOPE DAN KENDALA
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="scopeProjectInputOpportunity" class="required form-label">Scope/Project Overview</label>
+                                            @Html.TextAreaFor(m => m.Scope, new
+                                                {
+                                                    @id = "scopeProjectInputOpportunity",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Scope/Project Overview",
+                                                    maxlength = 6000
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="streamBusinessInputOpportunity" class="required form-label">Stream Business</label><label style="padding-left: 10px;color: red;font-weight: bold;">Dapat pilih lebih dari 1</label>
+                                            @Html.DropDownListFor(x => x.StreamBusinessIds,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "streamBusinessInputOpportunity",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "streamBusinessInputOpportunity",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Stream Business",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="progressInputOpportunity" class="required form-label">Progress</label>
+                                            @Html.TextAreaFor(m => m.Progress, new
+                                                {
+                                                    @id = "progressInputOpportunity",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Progress",
+                                                    maxlength = 6000
+
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="faktorKendalaInputOpportunity" class="required form-label">Faktor Kendala</label>
+                                            @Html.DropDownListFor(x => x.FaktorKendalaId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "faktorKendalaInputOpportunity",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "faktorKendalaInputOpportunity",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Faktor Kendala",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="klasifikasiKendalaInputOpportunity" class="required form-label">Klasifikasi Kendala</label>
+                                            @Html.DropDownListFor(x => x.KlasifikasiKendalaId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "klasifikasiKendalaInputOpportunity",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "klasifikasiKendalaInputOpportunity",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Klasifikasi Kendala",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="deskripsiKendalaInputOpportunity" class=" form-label">Deskripsi Kendala</label>
+                                            @Html.TextAreaFor(m => m.DeskripsiKendala, new
+                                                {
+                                                    @id = "deskripsiKendalaInputOpportunity",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Deskripsi Kendala",
+                                                    maxlength = 6000
+
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="tindakLanjutInputOpportunity" class="required form-label">Tindak Lanjut</label>
+                                            @Html.TextAreaFor(m => m.TindakLanjut, new
+                                                {
+                                                    @id = "tindakLanjutInputOpportunity",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Tindak Lanjut",
+                                                    maxlength = 6000
+
+                                                })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app-content flex-row-fluid">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                HUBUNGAN DENGAN PEMERINTAH
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="dukunganPemerintahInputOpportunity" class=" form-label">Dukungan yang Diperlukan dari Pemerintah</label>
+                                            @Html.TextAreaFor(m => m.SupportPemerintah, new
+                                                {
+                                                    @id = "dukunganPemerintahInputOpportunity",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Dukungan yang Diperlukan dari Pemerintah",
+                                                    maxlength = 6000
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="keterlibatanLembagaInputOpportunity" class=" form-label">Keterlibatan Kementerian dan/atau Lembaga</label><label style="padding-left: 10px;color: red;font-weight: bold;">Dapat pilih lebih dari 1</label>
+                                            @Html.DropDownListFor(x => x.KementrianLembagaIds,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "keterlibatanLembagaInputOpportunity",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "keterlibatanLembagaInputOpportunity",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Kementerian dan/atau Lembaga",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-row-fluid">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                POTENSIAL ESKALASI
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="potensialEskalasiInputOpportunity" class=" form-label">Potensial Eskalasi</label>
+                                            @Html.TextAreaFor(m => m.PotensiEskalasi, new
+                                                {
+                                                    @id = "potensialEskalasiInputOpportunity",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Potensial Eskalasi Perjanjian",
+                                                    maxlength = 6000
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="catatanTambahanInputOpportunity" class=" form-label">Catatan Tambahan</label>
+                                            @Html.TextAreaFor(m => m.CatatanTambahan, new
+                                                {
+                                                    @id = "catatanTambahanInputOpportunity",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Catatan Tambahan",
+                                                    maxlength = 6000
+                                                })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app-content flex-row-fluid">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                RELASI KE AGREEMENT
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="relasiAgreementInputOpportunity" class="form-label">Relasi ke Agreement</label>
+                                            @Html.DropDownListFor(x => x.RelatedAgreementId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "relasiAgreementInputOpportunity",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "relasiAgreementInputOpportunity",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Partner_Kode Agreement_Judul Perjanjian",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="app-content flex-row-fluid">
+                <div class="row">
+                    <div class="col" align="left">
+                        <button id="SaveDraftOpportunity" type="submit" class="btn font-weight-bold btn-secondary" data-url="@Url.Action("SaveDraft", "Agreement")" data-callbackurl="@Url.Action("Index", "Agreement")">
+                            <span class="indicator-label">
+                                Save as Draft
+                            </span>
+                        </button>
+                    </div>
+                    <div class="col" align="right" style="padding-right: 40px;">
+                        <button id="btnCancel" type="submit" class="btn font-weight-bold btn-secondary" onclick="location.href='@Url.Action("Index", "Agreement")'">
+                            Cancel
+                        </button>
+                        <button id="OpportunitySubmit" type="submit" class="btn font-weight-bold btn-primary mr-2" data-url="@Url.Action("Add", "Agreement")" data-callbackurl="@Url.Action("Index", "Agreement")">
+                            <span class="indicator-label">
+                                Submit
+                            </span>
+                            <span class="indicator-progress">
+                                Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="CreateInitiativeAgreement" class="app-container container-xxl">
+            <form id="AddInitiative" class="form" action="#" autocomplete="off">
+                <div class="row">
+                    <div class=" row">
+                        <div class="col-lg-6">
+                            <div class="row">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                HEADER
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="judulPerjanjianInputInitiative" class="required form-label">Judul Perjanjian</label>
+                                            @Html.TextBoxFor(m => m.JudulPerjanjian, new
+                                                {
+                                                    @id = "judulPerjanjianInputInitiative",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Judul Perjanjian"
+
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="jenisPerjanjianInputInitiative" class="required form-label">Jenis Perjanjian</label>
+                                            @Html.DropDownListFor(x => x.JenisPerjanjianId,
+                                                     new SelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "jenisPerjanjianInputInitiative",
+                                                         @class = " form-control form-select form-select-solid form-select-lg",
+                                                         aria_label = "jenisPerjanjianInputInitiative",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Jenis Perjanjian",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="hshEntitasPertaminaInputInitiative" class="required form-label">Holding/Sub Holding - Entitas Pertamina</label><label style="padding-left: 10px;color: red;font-weight: bold;">Dapat pilih lebih dari 1</label>
+                                            @Html.DropDownListFor(x => x.EntitasPertaminaEvent,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "hshEntitasPertaminaInputInitiative",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "hshEntitasPertaminaInputInitiative",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Holding/Sub Holding - Entitas Pertamina",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="fungsiPicInputInitiative" class="required form-label">Fungsi - PIC</label><label style="padding-left: 10px;color: red;font-weight: bold;">Dapat pilih lebih dari 1</label>
+                                            @Html.DropDownListFor(x => x.FungsiPicId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "fungsiPicInputInitiative",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "fungsiPicInputInitiative",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Nama PIC - Nama Fungsi - Perusahaan",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app-content flex-column-fluid row">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                INFORMASI PARTNER
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="addRepeaterPartnerInitiative">
+                                            <div class="form-group">
+                                                <label for="partnerInputInitiative" class="required form-label">Partner(s)</label>
+                                                <div data-repeater-list="PartnerName">
+                                                    <div data-repeater-item class="partnerInitiative mb-2">
+                                                        <div class="fv-row form-group row">
+                                                            <div class="col-md-10">
+                                                                @Html.TextBoxFor(x => x.AgreementPartner.PartnerName,
+                                                                         new
+                                                                         {
+                                                                             @id = "partnerInputInitiative",
+                                                                             @name = "PartnerName",
+                                                                             @class = "form-control form-control-solid",
+                                                                             maxlength = 100,
+                                                                             placeholder = "Masukkan Nama Partner",
+                                                                         })
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <button class="border border-secondary btn btn-icon btn-flex btn-danger" data-repeater-delete type="button">
+                                                                    <i class="la la-close"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="form-group mt-5">
+                                                    <a href="javascript:;" data-repeater-create class="btn font-weight-bold btn-warning">
+                                                        <i class="ki-duotone ki-plus fs-3"></i>
+                                                        Add Partner(s)
+                                                    </a>
+                                                </div>
+                                                <div class="col"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                INFORMASI PROYEK
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="negaraMitraInputInitiative" class="required form-label">Kawasan Mitra - Negara Mitra</label>
+                                            @Html.DropDownListFor(x => x.NegaraMitraId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "negaraMitraInputInitiative",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "negaraMitraInputInitiative",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Kawasan Mitra - Negara Mitra",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="nilaiProyekInputInitiative" class=" form-label">Nilai Proyek</label>
+                                            @Html.TextBoxFor(m => m.NilaiProyek, new
+                                                {
+                                                    @id = "nilaiProyekInputInitiative",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Nilai Proyek",
+                                                    maxlength = 200,
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="rangeTanggalTtdInputInitiative" class="required form-label">Tanggal TTD</label><label style="padding-left: 10px;color: red;font-style: italic;">Format tanggal yang digunakan adalah MM/DD/YYYY </label>
+                                            @Html.TextBoxFor(m => m.TanggalTtd, new
+                                                {
+                                                    @id = "rangeTanggalTtdInputInitiative",
+                                                    @class = "form-control form-control-solid",
+                                                    maxlength = 200,
+                                                    placeholder = "Pilih Tanggal TTD"
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="rangeTanggalBerakhirInputInitiative" class="required form-label">Tanggal Berakhir</label><label style="padding-left: 10px;color: red;font-style: italic;">Format tanggal yang digunakan adalah MM/DD/YYYY </label>
+                                            @Html.TextBoxFor(m => m.TanggalBerakhir, new
+                                                {
+                                                    @id = "rangeTanggalBerakhirInputInitiative",
+                                                    @class = "form-control form-control-solid",
+                                                    maxlength = 200,
+                                                    placeholder = "Pilih Tanggal Berakhir"
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="statusBerlakuInputInitiative" class=" form-label">Status Berlaku</label>
+                                            @Html.TextBoxFor(m => m.StatusBerlakuId, new
+                                                {
+                                                    @id = "statusBerlakuInputInitiative",
+                                                    @class = "form-control form-control-solid",
+                                                    maxlength = 200,
+                                                })
+                                            @Html.HiddenFor(m => m.StatusBerlakuId, new
+                                                {
+                                                    @id = "statusBerlakuValueInputInitiative"
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="statusDiskusiInputInitiative" class="required form-label">Status Diskusi</label>
+                                            @Html.DropDownListFor(x => x.DiscussionStatusId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "statusDiskusiInputInitiative",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "statusDiskusiInputInitiative",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Status Diskusi",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div id="addRepeaterLokasiProyekInitiative">
+                                            <div class="form-group">
+                                                <label for="lokasiProyekInputIniative" class="required form-label">Lokasi Proyek </label>
+                                                <div data-repeater-list="LokasiProyek">
+                                                    <div data-repeater-item class="lokasiProyekInitiative mb-2">
+                                                        <div class="fv-row form-group row">
+                                                            <div class="col-md-10">
+                                                                @Html.TextBoxFor(x => x.AgreementLokasiProyek.LokasiProyek,
+                                                                         new
+                                                                         {
+                                                                             @id = "lokasiProyekInputInitiative",
+                                                                             @name = "LokasiProyek",
+                                                                             @class = "form-control form-control-solid",
+                                                                             maxlength = 100,
+                                                                             placeholder = "Masukkan Lokasi Proyek",
+                                                                         })
+                                                            </div>
+                                                            <div class="col-md-2">
+                                                                <button class="border border-secondary btn btn-icon btn-flex btn-danger" data-repeater-delete type="button">
+                                                                    <i class="la la-close"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <div class="form-group mt-5">
+                                                    <a href="javascript:;" data-repeater-create class="btn font-weight-bold btn-warning">
+                                                        <i class="ki-duotone ki-plus fs-3"></i>
+                                                        Add Lokasi Proyek
+                                                    </a>
+                                                </div>
+                                                <div class="col"></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="flex-row-fluid">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                SCOPE DAN KENDALA
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="scopeProjectInputInitiative" class="required form-label">Scope/Project Overview</label>
+                                            @Html.TextAreaFor(m => m.Scope, new
+                                                {
+                                                    @id = "scopeProjectInputInitiative",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Scope/Project Overview",
+                                                    maxlength = 6000
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="streamBusinessInputInitiative" class="required form-label">Stream Business</label><label style="padding-left: 10px;color: red;font-weight: bold;">Dapat pilih lebih dari 1</label>
+                                            @Html.DropDownListFor(x => x.StreamBusinessIds,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "streamBusinessInputInitiative",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "streamBusinessInputInitiative",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Stream Business",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="progressInputInitiative" class="required form-label">Progress</label>
+                                            @Html.TextAreaFor(m => m.Progress, new
+                                                {
+                                                    @id = "progressInputInitiative",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Progress",
+                                                    maxlength = 6000
+
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="faktorKendalaInputInitiative" class="required form-label">Faktor Kendala</label>
+                                            @Html.DropDownListFor(x => x.FaktorKendalaId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "faktorKendalaInputInitiative",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "faktorKendalaInputInitiative",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Faktor Kendala",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="klasifikasiKendalaInputInitiative" class="required form-label">Klasifikasi Kendala</label>
+                                            @Html.DropDownListFor(x => x.KlasifikasiKendalaId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "klasifikasiKendalaInputInitiative",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "klasifikasiKendalaInputInitiative",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Klasifikasi Kendala",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="deskripsiKendalaInputInitiative" class=" form-label">Deskripsi Kendala</label>
+                                            @Html.TextAreaFor(m => m.DeskripsiKendala, new
+                                                {
+                                                    @id = "deskripsiKendalaInputInitiative",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Deskripsi Kendala",
+                                                    maxlength = 6000
+
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="tindakLanjutInputInitiative" class="required form-label">Tindak Lanjut</label>
+                                            @Html.TextAreaFor(m => m.TindakLanjut, new
+                                                {
+                                                    @id = "tindakLanjutInputInitiative",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Tindak Lanjut",
+                                                    maxlength = 6000
+                                                })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app-content flex-row-fluid">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                HUBUNGAN DENGAN PEMERINTAH
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="dukunganPemerintahInputInitiative" class=" form-label">Dukungan yang Diperlukan dari Pemerintah</label>
+                                            @Html.TextAreaFor(m => m.SupportPemerintah, new
+                                                {
+                                                    @id = "dukunganPemerintahInputInitiative",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Dukungan yang Diperlukan dari Pemerintah",
+                                                    maxlength = 6000
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="keterlibatanLembagaInputInitiative" class=" form-label">Keterlibatan Kementerian dan/atau Lembaga</label><label style="padding-left: 10px;color: red;font-weight: bold;">Dapat pilih lebih dari 1</label>
+                                            @Html.DropDownListFor(x => x.KementrianLembagaIds,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "keterlibatanLembagaInputInitiative",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "keterlibatanLembagaInputInitiative",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Kementerian dan/atau Lembaga",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex-row-fluid">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                POTENSIAL ESKALASI
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="potensialEskalasiInputInitiative" class=" form-label">Potensial Eskalasi</label>
+                                            @Html.TextAreaFor(m => m.PotensiEskalasi, new
+                                                {
+                                                    @id = "potensialEskalasiInputInitiative",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Potensial Eskalasi Perjanjian",
+                                                    maxlength = 6000
+                                                })
+                                        </div>
+                                        <div class="fv-row mb-10">
+                                            <label for="catatanTambahanInputInitiative" class=" form-label">Catatan Tambahan</label>
+                                            @Html.TextAreaFor(m => m.CatatanTambahan, new
+                                                {
+                                                    @id = "catatanTambahanInputInitiative",
+                                                    @class = "form-control form-control-solid",
+                                                    placeholder = "Masukkan Catatan Tambahan",
+                                                    maxlength = 6000
+                                                })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="app-content flex-row-fluid">
+                                <div class="card card-custom">
+                                    <div class="card-header">
+                                        <div class="row">
+                                            <h3 class="card-title">
+                                                RELASI KE AGREEMENT
+                                            </h3>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="fv-row mb-10">
+                                            <label for="relasiAgreementInputInitiative" class="form-label">Relasi ke Agreement</label>
+                                            @Html.DropDownListFor(x => x.RelatedAgreementId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "relasiAgreementInputInitiative",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "relasiAgreementInput",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Pilih Partner_Kode Agreement_Judul Perjanjian",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="app-content flex-row-fluid">
+                <div class="row">
+                    <div class="col" align="left">
+                        <button id="SaveDraftInitiative" type="submit" class="btn font-weight-bold btn-secondary" data-url="@Url.Action("SaveDraft", "Agreement")" data-callbackurl="@Url.Action("Index", "Agreement")">
+                            <span class="indicator-label">
+                                Save as Draft
+                            </span>
+                        </button>
+                    </div>
+                    <div class="col" align="right" style="padding-right: 40px;">
+                        <button id="btnCancel" type="submit" class="btn font-weight-bold btn-secondary" onclick="location.href='@Url.Action("Index", "Agreement")'">
+                            Cancel
+                        </button>
+                        <button id="InitiativeSubmit" type="submit" class="btn font-weight-bold btn-primary mr-2" data-url="@Url.Action("Add", "Agreement")" data-callbackurl="@Url.Action("Index", "Agreement")">
+                            <span class="indicator-label">
+                                Submit
+                            </span>
+                            <span class="indicator-progress">
+                                Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var param = (function (param) {
+            param.prefix = '@globalParam.PrefixApiUrl';
+            param.getInitiativeById = '@globalParam.PrefixApiUrl' + 'ApiAgreement/GetInitiativeById';
+            param.getOpportunityById = '@globalParam.PrefixApiUrl' + 'ApiAgreement/GetOpportunityById';
+            param.statusBerlakuCounting = '@globalParam.PrefixApiUrl' + 'ApiAgreement/StatusBerlakuCounting';
+            param.dataGrid = '@globalParam.PrefixApiUrl' + 'ApiAgreement/List';
+            param.deleteGrid = '@Url.Action("Delete", "Initative")';
+            param.updateGrid = '@Url.Action("Update", "Initative")';
+            param.getHubHeadByHubId = '@globalParam.PrefixApiUrl' + 'ApiAgreement/GetHubHeadByHubId';
+            return param;
+        })(param || {});
+
+
+    </script>
+    <script src="~/js/form/base-url-api.js"></script>
+    <script src="~/js/form/agreementCreate.js"></script>
+
+}

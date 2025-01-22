@@ -1,0 +1,400 @@
+﻿@section Styles {
+    <link href="~/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/popfilter.css" rel="stylesheet" type="text/css" />
+}
+
+@using Pertamina.IRIS.Models.Base
+@inject GlobalVariableBaseModel globalParam
+@model Pertamina.IRIS.Models.ViewModels.MeetingDashboardViewModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using System.Text.Json
+
+@{
+    ViewData["Title"] = "Meeting Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+
+    string IsAdd = Pertamina.IRIS.App.Helpers.HtmlHelper.IsAdd(HttpContextAccessor.HttpContext.Session);
+    string IsDelete = Pertamina.IRIS.App.Helpers.HtmlHelper.IsDelete(HttpContextAccessor.HttpContext.Session);
+    string IsEdit = Pertamina.IRIS.App.Helpers.HtmlHelper.IsEdit(HttpContextAccessor.HttpContext.Session);
+}
+
+<div class="app-main flex-column flex-row-fluid">
+    <div class="header-secondary flex-column-fluid">
+        <div class="app-toolbar py-3 py-lg-6">
+            <div class="app-container container-xxl d-flex flex-stack">
+                <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+                    <div class="menu menu-gray-600 menu-active-primary menu-hover-light-primary menu-here-light-primary menu-show-light-primary fs-4" data-kt-menu="true">
+                        <div class="menu-item here badge badge-light-danger badge-lg">
+                            <a href="@Url.Action("Index", "ExistingFootprintsDashboard")" class="menu-link">
+                                <span class="menu-title fw-bolder fs-4">Home</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="@Url.Action("Index", "InternationalBusinessIntelligence")" class="menu-link">
+                                <span class="menu-title">International Business Intelligence</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="app-main flex-column flex-row-fluid wrapper-40">
+    <div class="app-content flex-column-fluid">
+        <div class="app-container container-xxl">
+            <div class="d-flex flex-column flex-xl-row mb-6">
+                <div class="flex-lg-row-fluid">
+                    <div class="mb-3">
+                        <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fw-bold fs-5">
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-red text-active-gray-900"
+                                   href="@Url.Action("Index", "ExistingFootprintsDashboard")"
+                                   aria-selected="true"
+                                   role="tab">
+                                    Existing Footprints
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-red text-active-gray-900"
+                                   href="@Url.Action("Index", "PotentialInitiativesDashboard")"
+                                   aria-selected="false"
+                                   role="tab">
+                                    Potential Initiatives
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-red text-active-gray-900 active"
+                                   data-bs-toggle="tab"
+                                   href="@Url.Action("Index", "SignedAgreementDashboard")"
+                                   aria-selected="true"
+                                   role="tab">
+                                    Signed Agreement
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link nav-link-red text-active-gray-900"
+                                   href="@Url.Action("Index", "ProjectsToOfferDashboard")"
+                                   aria-selected="false"
+                                   role="tab">
+                                    Projects To Offer
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="card card-flush mb-5">
+                        <div class="card-body py-2 px-2 py-lg-2 px-lg-2 text-gray-700">
+                            <div class="row py-2 justify-content-end">
+                               
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        @if (Model.Metrics != null)
+                        {
+                            foreach (var metric in Model.Metrics)
+                            {
+                                <div class="col-sm-4">
+                                    <div class="card card-flush mb-5">
+                                        <div class="card-header padding-metrics-header border-0 min-h-2px">
+                                            <div class="card-title m-0">
+                                                <span class="fs-8 text-gray-600">@string.Format(metric.Title, metric.Year)</span>
+                                            </div>
+                                        </div>
+                                        <div class="card-body padding-metrics-body min-h-2px mb-3">
+                                            <div class="metrics-value px-0">@metric.Point</div>
+                                        </div>
+                                        <div class="card-footer border-1 padding-metrics-footer min-h-30px">
+                                            <div class="d-flex align-items-center justify-content-between w-100 mt-auto">
+                                                <div class="symbol-group symbol-hover mt-2 mb-2">
+                                                    <div class="symbol symbol-20px symbol-2by3 me-2" data-bs-toggle="tooltip">
+                                                        <i class="@metric.Src" style="color: @metric.ColorCode;"></i>
+                                                    </div>
+                                                    <div class="fs-4 fw-bold text-gray-600" data-kt-countup="true" data-kt-countup-value="@metric.Percent" data-kt-countup-suffix="%">0</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                    <div class="tab-pane fade show active" id="kt_ecommerce_customer_overview" role="tabpanel">
+                        <div class="card card-flush mb-5">
+                            <div class="card-body py-2 px-2 py-lg-2 px-lg-2 text-gray-700">
+                                <div class="row py-2 justify-content-end">
+                                    <div class="text-right pointer px-6" onclick="window.location.reload();">
+                                        <i class="fa-solid fa-arrows-rotate" data-bs-toggle="tooltip" title="Refresh"></i>
+                                    </div>
+                                    <div id="map-signed-agreement" class="chartmap-existing-footprints"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-5 ms-lg-5">
+                    <div class="d-flex align-items-center justify-content-between w-100 mt-auto mb-3 popover-container">
+                        <span class="fw-bold fs-4 px-0 py-2">High Priority Signed Agreements</span>
+                        <a class="fw-bold align-items-right pointer popover-button">
+                            <i class="fa fa-long-arrow-alt-up"></i>
+                            <i class="fa fa-long-arrow-alt-down"></i>
+                        </a>
+                        <div class="popover-content">
+                            <h4 class="text-center mb-6">Sorting High Priority</h4>
+                            <div class="container">
+
+                                <div class="row">
+                                    <div class="col-12">
+                                        @Html.DropDownList("hpSort", new List<SelectListItem>
+                                        {
+                                        new SelectListItem { Text = "", Value = "", Selected = true, Disabled = true }, // Hidden placeholder
+                                        new SelectListItem { Text = "Potential Revenue", Value = "P" },
+                                        new SelectListItem { Text = "CAPEX", Value = "C" },
+                                        new SelectListItem { Text = "Keterlibatan Kementerian/Lembaga", Value = "L"}
+                                        }, new
+                                                                        {
+                                                                            id = "ddlHpSort",
+                                                                            @class = "form-select form-select-solid form-select-sm fw-semibold border-gray",
+                                                                            data_control = "select2",
+                                                                            data_placeholder = "Choose a Category",
+                                                                            data_allow_clear = "true"
+                                                                        })
+                                    </div>
+
+                                    <!-- Force next columns to break to new line at md breakpoint and up -->
+                                    <div class="w-100 d-none d-md-block"></div>
+
+                                    <div class="col-12 py-6 text-center">
+                                        <label class="align-middle px-4">
+                                            <input class="align-middle" type="radio" name="sortOrder" value="asc"> ASC
+                                        </label>
+                                        <label class="align-middle px-4">
+                                            <input class="align-middle" type="radio" name="sortOrder" value="desc"> DESC
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="w-100 d-none d-md-block"></div>
+                                <div class="col-12 py-6 text-center d-error d-none">
+                                    <div class="alert alert-danger" role="alert">
+                                        <span id="errormsg"></span>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 text-center mt-4">
+                                    <button type="button" class="btn btn-danger btn-sm mx-2 reset-sorting">Reset</button>
+                                    <button type="button" class="btn btn-primary btn-sm mx-2 apply-sorting">
+                                        Apply
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div id="high-priority-list" class="scrollable-container">
+                        <div class="empty-msg">
+                            <img class="spinner" src="~/img/Spinner.gif" alt="Loader">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="app-container container-xxl">
+            <div class="card card-flush">
+                <div class="card-body fs-6 py-10 px-10 py-lg-10 px-lg-10 text-gray-700">
+                    <div class="p-0">
+                        <div class="d-flex flex-stack mb-5">
+                            <div class="d-flex align-items-center position-relative my-1">
+                                <i class="ki-duotone ki-magnifier fs-1 position-absolute ms-6"><span class="path1"></span><span class="path2"></span></i>
+                                <input id="searchInput" type="text" data-kt-docs-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search" />
+                                <span class="ms-1" data-bs-toggle="tooltip" title="Search is applied to Name, PIC, Hub Head, Pertamina Entity, Agreement Code, MoU Signing Date, Potential Revenue, Estimates CAPEX">
+                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                </span>
+                            </div>
+                            @*  <div class="d-flex justify-content-end" data-kt-docs-table-toolbar="base">
+                            <a href="#" class="fw-bold">
+                            <i class="ki-duotone ki-filter fs-1 text-muted me-1"><span class="path1"></span><span class="path2"></span></i>
+                            </a>
+                            </div> *@
+                        </div>
+                        <table id="dataTable" class="table align-middle table-row-dashed fs-6 gy-5">
+                            <thead>
+                                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                    <th class="align-middle ps-4">Name</th>
+                                    <th class="align-middle">PIC</th>
+                                    <th class="align-middle">Hub Lead</th>
+                                    <th>Pertamina Entity</th>
+                                    <th>Agreement Code</th>
+                                    <th>MoU Signing Date</th>
+                                    <th>Potential Revenue ($ mn)</th>
+                                    <th>Estimates CAPEX ($ mn)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-600 fw-semibold">
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="highPriorityModal" tabindex="-1" aria-labelledby="highPriorityModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <!-- Modal title and additional information container -->
+                    <h5 class="modal-title text-left" id="modelJudulPerjanjian"></h5>
+                    <!-- New content below the title -->
+                    <div>
+                        <p class="small text-muted" id="modelUpdateWording">
+                        </p>
+                    </div>
+                </div>
+                <!-- Close button -->
+                <button type="button" class="btn-close rounded-close mt--50" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="modalAgreementCode" class="form-label text-muted">Agreement Code</label>
+                                <input type="text" class="form-control" id="modalAgreementCode" placeholder="" readonly>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="modalBusinessStream" class="form-label text-muted">Business Strem</label>
+                                <input type="text" class="form-control" id="modalBusinessStream" placeholder="" readonly>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="modalAgreementType" class="form-label text-muted">Agreement Type</label>
+                                <input type="text" class="form-control" id="modalAgreementType" placeholder="" readonly>
+                            </div>
+                        </div>
+                        <!-- Force next columns to break to new line at md breakpoint and up -->
+                        <div class="w-100 d-none d-md-block py-4"></div>
+
+                        <div class="col-3">
+                            <div class="mb-3" id="modalPartners">
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="mb-3 col">
+                                    <label for="modalNegaraMitra" class="form-label text-muted">Partner location</label>
+                                    <input type="text" class="form-control" id="modalNegaraMitra" placeholder="" readonly>
+                                </div>
+                                <div class="mb-3 col">
+                                    <label for="modalPertaminaEntity" class="form-label text-muted">Pertamina Entity</label>
+                                    <input type="text" class="form-control" id="modalPertaminaEntity" placeholder="" readonly>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3 col">
+                                <label for="modalLokasiProyek" class="form-label text-muted">City</label>
+                                <input type="text" class="form-control" id="modalLokasiProyek" placeholder="" readonly>
+                            </div>
+                        </div>
+
+                        <!-- Force next columns to break to new line at md breakpoint and up -->
+                        <div class="w-100 d-none d-md-block py-4"></div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <h6>Project Value</h6>
+                            </div>
+                        </div>
+                        <!-- Force next columns to break to new line at md breakpoint and up -->
+                        <div class="w-100 d-none d-md-block"></div>
+                        <div class="col-4">
+                            <div class="mb-3">
+                                <label for="modalRevenue" class="form-label text-muted">Revenue</label>
+                                <input type="text" class="form-control" id="modalRevenue" placeholder="" readonly>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="mb-3">
+                                <label for="modalCapex" class="form-label text-muted">CAPEX</label>
+                                <input type="text" class="form-control" id="modalCapex" placeholder="" readonly>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="mb-3">
+                                <label for="modalValuation" class="form-label text-muted">Valuation</label>
+                                <input type="text" class="form-control" id="modalValuation" placeholder="" readonly>
+                            </div>
+                        </div>
+                        <!-- Force next columns to break to new line at md breakpoint and up -->
+                        <div class="w-100 d-none d-md-block py-4"></div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <h6>Progress</h6>
+                                <label for="modelLatestStatus" class="form-label text-muted">Latest Status</label>
+                                <input type="text" class="form-control" id="modelLatestStatus" placeholder="" readonly>
+                            </div>
+                        </div>
+                        <!-- Force next columns to break to new line at md breakpoint and up -->
+                        <div class="w-100 d-none d-md-block py-4"></div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="modalIssues" class="form-label text-muted">Issues</label>
+                                <input type="text" class="form-control" id="modalIssues" placeholder="" readonly>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label for="modalNeeded" class="form-label text-muted">Support Needed</label>
+                                <input type="text" class="form-control" id="modalNeeded" placeholder="" readonly>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        var param = (function (param) {
+            param.prefix = '@globalParam.PrefixApiUrl';
+            param.prefixPicName = '@globalParam.PrefixPicName';
+            param.dataGrid = '@globalParam.PrefixApiUrl' + 'ApiSignedAgreementDashboard/List';
+            param.urlGetCountriesMap = '@globalParam.PrefixApiUrl' + 'ApiSignedAgreementDashboard/GetCountriesMap';
+            param.urlGetHighPriorityBasedOnMap = '@globalParam.PrefixApiUrl' + 'ApiSignedAgreementDashboard/GetHighPriorityBasedOnMap';
+            param.urlGetHighPriorityBasedOnDropDown = '@globalParam.PrefixApiUrl' + 'ApiSignedAgreementDashboard/GetHighPriorityBasedOnDropDown';
+            return param;
+        })(param || {});
+    </script>
+    <script src="~/js/form/base-url-api.js"></script>
+    <script src="~/lib/amcharts/index.js"></script>
+    <script src="~/lib/amcharts/map.js"></script>
+    <script src="~/lib/amcharts/worldLow.js"></script>
+    <script src="~/lib/amcharts/Animated.js"></script>
+    <script src="~/lib/amcharts/continentsLow.js"></script>
+    <script src="~/lib/amcharts/percent.js"></script>
+    <script src="~/js/form/signedAgreementDashboard.js"></script>
+}

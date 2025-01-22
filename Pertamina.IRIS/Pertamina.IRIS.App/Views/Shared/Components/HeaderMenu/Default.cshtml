@@ -1,0 +1,445 @@
+﻿@using Microsoft.AspNetCore.Http
+@using Pertamina.IRIS.Models.ViewModels
+@inject IHttpContextAccessor HttpContextAccessor
+@model Pertamina.IRIS.Models.ViewModels.HeaderMenuViewModel
+
+@{
+    List<string> AllRoles = Pertamina.IRIS.App.Helpers.HtmlHelper.AllRoles(HttpContextAccessor.HttpContext.Session);
+    ProfileViewModel Profile = Pertamina.IRIS.App.Helpers.HtmlHelper.Profile(HttpContextAccessor.HttpContext.Session);
+}
+
+<!--begin::Header-->
+<div id="kt_app_header" class="app-header">
+    <!--begin::Header container-->
+    <div class="app-container container-fluid d-flex align-items-stretch justify-content-between" id="kt_app_header_container">
+        <!--begin::Sidebar mobile toggle-->
+        <div class="d-flex align-items-center d-lg-none ms-n3 me-1 me-md-2" title="Show sidebar menu">
+            <div class="btn btn-icon btn-active-color-primary w-35px h-35px" id="kt_app_sidebar_mobile_toggle">
+                <i class="ki-duotone ki-abstract-14 fs-2 fs-md-1">
+                    <span class="path1"></span>
+                    <span class="path2"></span>
+                </i>
+            </div>
+        </div>
+        <!--end::Sidebar mobile toggle-->
+        <!--begin::Mobile logo-->
+        <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
+            <a href="@Url.Action("Index", "LandingPage")" class="d-lg-none">
+                <img alt="Logo" src="~/img/icon-pertamina.png" class="h-30px" />
+            </a>
+        </div>
+        <!--end::Mobile logo-->
+        <!--begin::Header wrapper-->
+        <div class="d-flex align-items-stretch justify-content-between flex-lg-grow-1" id="kt_app_header_wrapper">
+            <!--begin::Menu wrapper-->
+            <div class="app-header-menu app-header-mobile-drawer align-items-stretch" data-kt-drawer="true" data-kt-drawer-name="app-header-menu" data-kt-drawer-activate="{default: true, lg: false}" data-kt-drawer-overlay="true" data-kt-drawer-width="250px" data-kt-drawer-direction="end" data-kt-drawer-toggle="#kt_app_header_menu_toggle" data-kt-swapper="true" data-kt-swapper-mode="{default: 'append', lg: 'prepend'}" data-kt-swapper-parent="{default: '#kt_app_body', lg: '#kt_app_header_wrapper'}">
+                <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Pertamina International Navigator</h1>
+            </div>
+            <!--end::Menu wrapper-->
+            <!--begin::Navbar-->
+            <div class="app-navbar flex-shrink-0">
+                <!-- Add Download -->
+                <div class="app-navbar-item ms-1 ms-md-3">
+                    <a class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary pointer popover-download"
+                       aria-selected="false"
+                       role="tab"
+                       data-bs-toggle="modal" data-bs-target="#kt_modal_export">
+                        <i class="bi bi-download fs-3" data-bs-toggle="tooltip" title="Download"></i>
+                    </a>
+                </div>
+                @* <div class="app-navbar-item ms-1 ms-md-3">
+                    <a class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary "
+                       onclick="redirectToDashboard()"
+                       aria-selected="false"
+                       role="tab">
+                        <i class="ki-duotone ki-chart-simple fs-2 fs-lg-1">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                            <span class="path3"></span>
+                            <span class="path4"></span>
+                        </i>
+                    </a>
+                </div> *@
+                <div class="app-navbar-item ms-1 ms-md-3">
+                    <a class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary "
+                       href="@Url.Action("GetDownloadUserManual", "ApiLandingPage")"
+                       aria-selected="false"
+                       role="tab"
+                       data-bs-toggle="tooltip" title="Click for Download User Manual">
+                        <i class="ki-duotone ki-book-open">
+                            <span class="path1"></span>
+                            <span class="path2"></span>
+                            <span class="path3"></span>
+                            <span class="path4"></span>
+                        </i>
+                    </a>
+                </div>
+                <!--begin::User menu-->
+                <div class="app-navbar-item ms-1 ms-md-3">
+                    <!--begin::Menu wrapper-->
+                    <div class="cursor-pointer symbol symbol-30px symbol-md-40px" data-kt-menu-trigger="{default: 'click', lg: 'hover'}" data-kt-menu-attach="parent" data-kt-menu-placement="bottom-end">
+                        <img src="~/assets/media/avatars/blank.png" alt="user" />
+                    </div>
+                    <!--begin::User account menu-->
+                    <div class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-800 menu-state-bg menu-state-color fw-semibold py-4 fs-6 w-300px" data-kt-menu="true">
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-3">
+                            <div class="menu-content d-flex align-items-center px-3">
+                                <!--begin::Avatar-->
+                                <div class="symbol symbol-50px me-5">
+                                    <img alt="Logo" src="~/assets/media/avatars/blank.png" />
+                                </div>
+                                <!--end::Avatar-->
+                                <!--begin::Username-->
+                                <div class="d-flex flex-column">
+                                    <div class="fw-bold d-flex align-items-center fs-5">
+                                        @Profile.DisplayName
+                                    </div>
+
+                                    <a href="#" class="fw-semibold text-muted text-hover-primary fs-7 align-bottom">@Profile.companyName</a>
+
+                                    @for (int i = 0; i < AllRoles.Count; i += 3)
+                                    {
+                                        <div class="fw-bold d-flex align-items-center fs-5 flex-wrap mt-2">
+                                            @for (int j = i; j < i + 3 && j < AllRoles.Count; j++)
+                                            {
+                                                <span class="badge badge-light-success fw-bold px-2 py-1" style="margin-right:2px">@AllRoles[j]</span>
+
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                                <!--end::Username-->
+                            </div>
+                        </div>
+                        <div class="menu-item px-5">
+                            <a href="@Url.Action("Logout","LandingPage")" class="menu-link px-5">Sign Out</a>
+                        </div>
+                        <!--end::Menu item-->
+                    </div>
+                    <!--end::User account menu-->
+                    <!--end::Menu wrapper-->
+                </div>
+                <!--end::User menu-->
+            </div>
+            <!--end::Navbar-->
+        </div>
+        <!--end::Header wrapper-->
+    </div>
+    <!--end::Header container-->
+</div>
+<!--end::Header-->
+
+<div class="modal fade modal-lg" tabindex="-1" id="kt_modal_export">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title"></h3>
+                <!--begin::Close-->
+                <div class="btn btn-icon btn-sm btn-active-light-primary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="ki-duotone ki-cross fs-1"><span class="path1"></span><span class="path2"></span></i>
+                </div>
+                <!--end::Close-->
+            </div>
+            <div class="modal-body">
+                <div class="container mt-6">
+                    <div class="row">
+                        <div class="col-12 d-flex">
+                            <div class="col-2 d-flex align-items-center"></div>
+                            <div class="col-4 d-flex align-items-center">
+                                <div class="form-check form-check-custom form-check-solid">
+                                    <input class="form-check-input" name="export" type="checkbox" value="PPT" id="chkPPT" onclick="ExportSelect(this)" />
+                                    <label class="form-check-label ms-2" for="chkPPT">
+                                        PPT
+                                    </label>
+                                </div>
+                            </div>
+                            @* <div class="col-4 d-flex align-items-center justify-content-end text-end" hidden>
+                                <div class="form-check form-check-custom form-check-solid text-r">
+                                    <input class="form-check-input" name="export" type="checkbox" value="EXCEL" id="chkXLS" onclick="ExportSelect(this)" />
+                                    <label class="form-check-label ms-2" for="chkXLS">
+                                        XLS
+                                    </label>
+                                </div>
+                            </div> *@
+                            <div class="col-2 d-flex align-items-center"></div>
+                        </div>
+                        <div class="col-md-12 d-flex d-none" id="sectionTemplate">
+                            <!--begin::Row-->
+                            <div class="row p-5" data-kt-buttons="true" data-kt-buttons-target=".form-check-image, .form-check-input">
+                                <!--begin::Col-->
+                                <div class="col-6">
+                                    <label class="form-check-image active">
+                                        <div class="form-check-wrapper">
+                                            <img src="~/img/template1.png" />
+                                        </div>
+
+                                        <div class="form-check form-check-custom form-check-solid">
+                                            <input class="form-check-input" type="checkbox" value="1" name="template" onclick="TemplateSelect(this)" />
+                                            <div class="form-check-label">
+                                                Template 1
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <!--end::Col-->
+                                <!--begin::Col-->
+                                <div class="col-6">
+                                    <label class="form-check-image">
+                                        <div class="form-check-wrapper">
+                                            <img src="~/img/template2.png" />
+                                        </div>
+                                        <div class="form-check form-check-custom form-check-solid me-10">
+                                            <input class="form-check-input" type="checkbox" value="2" name="template" onclick="TemplateSelect(this)" />
+                                            <div class="form-check-label">
+                                                Template 2
+                                            </div>
+                                        </div>
+                                    </label>
+                                </div>
+                                <!--end::Col-->
+                            </div>
+                            <!--end::Row-->
+                        </div>
+                        <div class="col-md-12 d-flex template1 d-none">
+                            <div class="col-md-12">
+                                <div class="mt-4 pe-5">
+                                    <label class="form-label text-muted">Analisa SPA Jual Beli LNG</label>
+                                    @Html.TextAreaFor(x => x.ContentItem,
+                                             new
+                                             {
+                                                 @id = "contentInputLNG",
+                                                 @name = "contentInputLNG",
+                                                 @class = "form-control",
+                                                 placeholder = "Fee Typing Here!",
+                                                 rows = 5
+                                             })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex template2 d-none">
+                            <div class="col-md-12">
+                                <div class="mt-4 pe-5">
+                                    <label class="form-label text-muted">Title PPT</label>
+                                    <input type="text" class="form-control border-gray" id="title" placeholder="Free Typing Here!">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex template2 d-none">
+                            <div class="col-md-12" id="addRepeaterContent">
+                                <div class="fv-row form-group pt-5">
+                                    <label for="contentInput" class="form-label text-muted">Description</label>
+                                    <div data-repeater-list="ContentSection">
+                                        <div data-repeater-item class="descriptions setion mb-2">
+                                            <div class=" form-group row">
+                                                <div class="col-md-10">
+                                                    @Html.TextAreaFor(x => x.ContentItem,
+                                                             new
+                                                             {
+                                                                 @id = "contentInput",
+                                                                 @name = "ContentSection",
+                                                                 @class = "form-control",
+                                                                 placeholder = "Fee Typing Here!",
+                                                                 rows = 5
+                                                             })
+                                                </div>
+                                                <div class="col-md-2">
+                                                    <button class="border border-secondary btn btn-icon btn-flex btn-danger btn-sm" data-repeater-delete type="button">
+                                                        <i class="la la-close"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="form-group mt-5">
+                                        <a href="javascript:;" data-repeater-create class="btn font-weight-bold btn-warning btn-sm">
+                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                            Add
+                                        </a>
+                                    </div>
+                                    <div class="col"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex d-none" id="sectionTemplateExcel">
+                            <div class="card card-flush">
+                                <div class="card-body fs-6 py-10 px-10 py-lg-10 px-lg-10 text-gray-700">
+                                    <div class="row py-2">
+                                        <span>
+                                            Filter By :
+                                            <a class="btn btn-icon-danger btn-text-danger" onclick="resetAllFilter()">
+                                                <i class="fa-regular fa-rectangle-xmark"></i>Reset All Filter
+                                            </a>
+                                        </span>
+                                    </div>
+                                    <div class="row py-2">
+                                        <div class="col-3">
+                                            @Html.DropDownListFor(x => x.StatusBerlakuId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "_ddlStatusBerlaku",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "Status Berlaku",
+                                                         multiple = "multiple",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Status Berlaku",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="col-3">
+                                            @Html.DropDownListFor(x => x.DiscussionStatusId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "_ddlStatusDiscussion",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "Status Diskusi",
+                                                         multiple = "multiple",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Status Diskusi",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="col-3">
+                                            @Html.DropDownListFor(x => x.AgreementHolderId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "_ddlAgreementHolder",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "Agreement Holder",
+                                                         multiple = "multiple",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Agreement Holder",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="col-3">
+                                            @Html.DropDownListFor(x => x.EntitasPertaminaId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "_ddlEntitasPertamina",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "Entitas Pertamina",
+                                                         multiple = "multiple",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Entitas Pertamina",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                    </div>
+                                    <div class="row py-2">
+                                        <div class="col-3">
+                                            @Html.DropDownListFor(x => x.KawasanMitraId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "_ddlKawasanMitra",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "Kawasan Mitra",
+                                                         multiple = "multiple",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Kawasan Mitra",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="col-3">
+                                            @Html.DropDownListFor(x => x.NegaraMitraId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "_ddlNegaraMitra",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "Negara Mitra",
+                                                         multiple = "multiple",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Negara Mitra",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="col-3">
+                                            @Html.DropDownListFor(x => x.JenisPerjanjianId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "_ddlJenisPerjanjian",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "Jenis Perjanjian",
+                                                         multiple = "multiple",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Jenis Perjanjian",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                        <div class="col-3">
+                                            @Html.DropDownListFor(x => x.StreamBusinessId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "_ddlStreamBusiness",
+                                                         @class = "form-select form-select-solid form-select-lg fw-semibold",
+                                                         aria_label = "Stream Business",
+                                                         multiple = "multiple",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Stream Business",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                    </div>
+                                    <div class="row py-2">
+                                        <span>
+                                            Date Range : <a class="btn btn-icon-danger btn-text-danger" onclick="clearDateRange()">
+                                                <i class="fa-regular fa-rectangle-xmark"></i>Reset Date Range
+                                            </a>
+                                        </span>
+                                    </div>
+                                    <div class="row py-2">
+                                        <div class="col-4">
+                                            @Html.TextBoxFor(m => m.RangeTanggalTtd, new
+                                                {
+                                                    @id = "_rangeTanggalTtd",
+                                                    @class = "form-control form-control-solid",
+                                                    maxlength = 200,
+                                                    placeholder = "Tanggal TTD"
+                                                })
+                                        </div>
+                                        <div class="col-4">
+                                            @Html.TextBoxFor(m => m.RangeTanggalBerakhir, new
+                                                {
+                                                    @id = "_rangeTanggalBerakhir",
+                                                    @class = "form-control form-control-solid",
+                                                    maxlength = 200,
+                                                    placeholder = "Tanggal Berakhir"
+                                                })
+                                        </div>
+                                        <div class="col-4">
+                                            @Html.TextBoxFor(m => m.RangeCreateDate, new
+                                                {
+                                                    @id = "_rangeCreateDate",
+                                                    @class = "form-control form-control-solid",
+                                                    maxlength = 200,
+                                                    placeholder = "Tanggal Input Data"
+                                                })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 d-flex mt-4">
+                            <p class="text-danger text-center" id="validationExport"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnExport" type="submit" class="btn btn-primary bg-dark" data-urlexcel="@Url.Action("DownloadData", "Agreement")">
+                    <i class="bi bi-download"></i>Export
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"]</title>
+    <link rel="shortcut icon" type="image/png" href="~/img/icon-pertamina.png" />
+
+    <!--begin::Global Stylesheets Bundle(mandatory for all pages)-->
+    <link href="~/assets/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="~/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+    <!--end::Global Stylesheets Bundle-->
+
+</head>
+<body id="kt_body" class="app-blank bgi-size-cover bgi-attachment-fixed bgi-position-center" background="img/logo-PIN.jpg">
+
+    <!--begin::Javascript-->
+    <!--begin::Global Javascript Bundle(mandatory for all pages)-->
+    <script src="~/assets/plugins/global/plugins.bundle.js"></script>
+    <script src="~/assets/js/scripts.bundle.js"></script>
+    <!--end::Global Javascript Bundle-->
+    
+    @RenderBody()
+    <!--end::Javascript-->
+</body>

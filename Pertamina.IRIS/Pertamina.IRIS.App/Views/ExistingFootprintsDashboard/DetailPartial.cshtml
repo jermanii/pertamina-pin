@@ -1,0 +1,194 @@
+﻿@using Pertamina.IRIS.Models.Base
+@inject GlobalVariableBaseModel globalParam
+@model Pertamina.IRIS.Models.ViewModels.ExistingFootprintsDashboardHighPriorityViewModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+
+}
+
+<div class="modal fade" id="HighPriorityModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom:0px;">
+                <div class="flex-column">
+                    <h5 class="modal-title">Existing Footprints - @Model.CompanyName</h5>
+                    <div class="d-flex flex-row justify-content-between">
+                        <span class="fs-8 text-gray-600">Last Updated: @Model.UpdatedWording</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-close rounded-close mt--50" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="border-bottom:0px;">
+                <div class="d-flex flex-row justify-content-between">
+                    <div class="d-flex flex-column w-50" style="margin-right:20px;">
+                        <div class="d-flex flex-column mb-7 fv-row">
+                            <label class="fs-6 fw-semibold mb-2">Business Stream</label>
+                            <input class="form-control form-control-solid" value="@Model.StreamBusinessName" disabled />
+                        </div>
+                        <div class="d-flex flex-column mb-7 fv-row">
+                            <label class="fs-6 fw-semibold mb-2">Pertamina Entity</label>
+                            <input class="form-control form-control-solid" value="@Model.CompanyName" disabled />
+                        </div>
+                        <div class="d-flex flex-column mb-7 fv-row">
+                            <label class="fs-6 fw-semibold mb-2">Location</label>
+                            <input class="form-control form-control-solid" value="@Model.NamaNegara" disabled />
+                        </div>
+                        <div class="row g-9 mb-7">
+                            <div class="col-md-6 fv-row">
+                                <label class="fs-6 fw-semibold mb-2">Partner (s)</label>
+                                @foreach (var rec in Model.Partners)
+                                {
+                                    <input class="form-control form-control-solid mb-1" value="@rec.Partners" disabled />
+                                }
+                            </div>
+                            <div class="col-md-6 fv-row">
+                                <label class="fs-6 fw-semibold mb-2">Partner Location</label>
+                                @foreach (var rec in Model.Partners)
+                                {
+                                    <input class="form-control form-control-solid mb-1" value="@rec.Location" disabled />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column w-50" style="margin-left:20px;">
+                        <div class="d-flex flex-column mb-7 fv-row">
+                            <label class="fs-6 fw-semibold mb-2">Head</label>
+                            <div class="d-flex flex-row justify-content-between align-items-center rounded bg-light-dark p-4 mb-4">
+                                <div class="d-flex flex-row">
+                                    @if (!String.IsNullOrEmpty(Model.HubHeadName))
+                                    {
+                                        <div class="symbol symbol-40px symbol-circle" data-bs-toggle="tooltip" title="@Model.HubHeadName">
+                                            <span class="symbol-label bg-info text-inverse-info fw-bold">@Model.HubHeadName.Substring(0, 1)</span>
+                                        </div>
+                                        <div class="d-flex flex-column mx-2">
+                                            <label class="fw-bold">@Model.HubHeadName</label>
+                                            <label class="fw-semibold text-muted">Head</label>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="symbol symbol-40px symbol-circle" data-bs-toggle="tooltip" title="N/A">
+                                            <span class="symbol-label bg-info text-inverse-info fw-bold">N/A</span>
+                                        </div>
+                                        <div class="d-flex flex-column mx-2">
+                                            <label class="fw-bold">N/A</label>
+                                            <label class="fw-semibold text-muted">Head</label>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="d-flex flex-row justify-content-around">
+                                    <button id="clipboardEmail" class="btn btn-icon btn-sm btn-light" data-clipboard-text="@Model.HubHeadEmail" data-bs-toggle="tooltip" title="@Model.HubHeadEmail">
+                                        <i class="bi-envelope fs-2 text-muted"></i>
+                                    </button>
+                                    <button id="clipboardContactNumber" class="btn btn-icon btn-sm btn-light" data-clipboard-text="@Model.HubHeadContactNumber" data-bs-toggle="tooltip" title="@Model.HubHeadContactNumber">
+                                        <i class="bi-telephone fs-2 text-muted"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column mb-7 fv-row">
+                            @if (Model.HubName != null)
+                            {
+                                <input class="form-control form-control-solid" value="@Model.HubName" disabled />
+                            }
+                            else
+                            {
+                                <input class="form-control form-control-solid" value="N/A" disabled />
+                            }
+                        </div>
+                        <div class="d-flex flex-column mb-7 fv-row">
+                            <label class="fs-6 fw-semibold mb-2">PIC Lead</label>
+                            <div class="d-flex flex-row justify-content-between align-items-center rounded bg-light-dark p-4 mb-4">
+                                <div class="d-flex flex-row">
+                                    @if (Model.PicFungsiName != null)
+                                    {
+                                        <div class="symbol symbol-40px symbol-circle" data-bs-toggle="tooltip" title="@Model.PicFungsiName">
+                                            <span class="symbol-label bg-info text-inverse-info fw-bold">@Model.PicFungsiName.Substring(0, 1)</span>
+                                        </div>
+                                        <div class="d-flex flex-column mx-2">
+                                            <label class="fw-bold">@Model.PicFungsiName</label>
+                                            <label class="fw-semibold text-muted">Lead</label>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="symbol symbol-40px symbol-circle" data-bs-toggle="tooltip" title="N/A">
+                                            <span class="symbol-label bg-info text-inverse-info fw-bold">N/A</span>
+                                        </div>
+                                        <div class="d-flex flex-column mx-2">
+                                            <label class="fw-bold">N/A</label>
+                                            <label class="fw-semibold text-muted">Lead</label>
+                                        </div>
+                                    }
+                                </div>
+                                <div class="d-flex flex-row justify-content-around">
+                                    <button id="clipboardPicEmail" class="btn btn-icon btn-sm btn-light" data-clipboard-text="@Model.PicFungsiEmail" data-bs-toggle="tooltip" title="@Model.PicFungsiEmail">
+                                        <i class="bi-envelope fs-2 text-muted"></i>
+                                    </button>
+                                    <button id="clipboardPicContactNumber" class="btn btn-icon btn-sm btn-light" data-clipboard-text="@Model.PicFungsiPhone" data-bs-toggle="tooltip" title="@Model.PicFungsiPhone">
+                                        <i class="bi-telephone fs-2 text-muted"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer flex-center" style="border-top:0px;display:block;">
+                <div class="d-flex flex-column scroll-y me-n7 pe-7">
+                    <div class="d-flex flex-column fv-row">
+                        <label class="fs-2 fw-bold mb-2">Operating Metrics</label>
+                    </div>
+                    <div class="row g-9 mb-7">
+                        <div class="col-md-4 fv-row">
+                            <label class="fs-6 fw-semibold mb-2">Revenue</label>
+                            <div class="input-group mb-5">
+                                @if (Model.Revenue.HasValue)
+                                {
+                                    <span class="input-group-text">$</span>
+                                    <input type="text" class="form-control" value="@Model.Revenue.Value.ToString("#,##0.00")" disabled />
+                                    <span class="input-group-text">Mn</span>
+                                }
+                                else
+                                {
+                                    <input type="text" class="form-control" value="N/A" disabled />
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-4 fv-row">
+                            <label class="fs-6 fw-semibold mb-2">Total Assets</label>
+                            <div class="input-group mb-5">
+                                @if (Model.TotalAsset.HasValue)
+                                {
+                                    <span class="input-group-text">$</span>
+                                    <input type="text" class="form-control" value="@Model.TotalAsset.Value.ToString("#,##0.00")" disabled />
+                                    <span class="input-group-text">Mn</span>
+                                }
+                                else
+                                {
+                                    <input type="text" class="form-control" value="N/A" disabled />
+                                }
+                            </div>
+                        </div>
+                        <div class="col-md-4 fv-row">
+                            <label class="fs-6 fw-semibold mb-2">EBITDA</label>
+                            <div class="input-group mb-5">
+                                @if (Model.Ebitda.HasValue)
+                                {
+                                    <span class="input-group-text">$</span>
+                                    <input type="text" class="form-control" value="@Model.Ebitda.Value.ToString("#,##0.00")" disabled />
+                                    <span class="input-group-text">Mn</span>
+                                }
+                                else
+                                {
+                                    <input type="text" class="form-control" value="N/A" disabled />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,623 @@
+﻿@using Pertamina.IRIS.Models.Base
+@inject GlobalVariableBaseModel globalParam
+@model Pertamina.IRIS.Models.ViewModels.OpportunityViewModel
+
+@{
+    ViewData["Title"] = "Edit Projects to Offer";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+<input type="hidden" id="hdnOpportunityId" value="@Model.Id" />
+<div class="app-main flex-column flex-row-fluid">
+    <div class="d-flex flex-column flex-column-fluid">
+        <div class="app-toolbar py-3 py-lg-6">
+            <div class="app-container container-xxl d-flex flex-stack">
+                <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">EDIT PROJECTS TO OFFER </h1>
+                </div>
+            </div>
+        </div>
+        <div class="app-content flex-column-fluid">
+            <div class="app-container container-xxl">
+                <form id="EditFormOpportunity" class="form" action="#" autocomplete="off">
+                    <div class="row">
+                        <div class=" row">
+                            <div class="col-lg-6">
+                                <div class="row">
+                                    <div class="card card-custom">
+                                        <div class="card-header">
+                                            <div class="row">
+                                                <h3 class="card-title">
+                                                    HEADER
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="fv-row mb-10">
+                                                <label for="editnamaProyekInput" class="required form-label">Project Name</label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the project name">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                                @Html.TextBoxFor(x => x.NamaProyek,
+                                                         new
+                                                         {
+                                                             @id = "editnamaProyekInput",
+                                                             @name = "NamaProyek",
+                                                             @class = "form-control form-control-solid",
+                                                             maxlength = 1000,
+                                                             placeholder = "Enter Project Name",
+                                                         })
+                                            </div>
+                                            <div class="fv-row mb-10">
+                                                <label for="editdeliverableInput" class="form-label">Deliverable</label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the measurable final outcome of this project">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                                @Html.TextBoxFor(x => x.Deliverables,
+                                                         new
+                                                         {
+                                                             @id = "editdeliverableInput",
+                                                             @class = "form-control form-control-solid",
+                                                             maxlength = 6000,
+                                                             placeholder = "Enter Deliverable",
+                                                         })
+                                            </div>
+                                            <div class="fv-row mb-10">
+                                                <input type="hidden" value="@Model.OpStreamBusiness?.StreamBusinessId" id="hdnStreamBusinessId">
+                                                <label for="editstreamBusinessInput" class="required form-label">Stream Business</label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the project stream">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                                @Html.DropDownListFor(x => x.OpStreamBusiness.StreamBusinessId,
+                                                         new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                         new
+                                                         {
+                                                             @id = "editstreamBusinessInput",
+                                                             name = "StreamBusinessId",
+                                                             @class = "form-select form-select-solid form-select-md fw-semibold",
+                                                             aria_label = "Choose Stream Business",
+                                                             data_control = "select2",
+                                                             data_placeholder = "Choose Stream Business",
+                                                             data_allow_clear = "true",
+                                                             data_dropdown_parent = "#EditFormOpportunity"
+                                                         })
+                                            </div>
+                                            <div id="editRepeaterPartner">
+                                                <div class="form-group">
+                                                    <label for="editpartnerInput" class="form-label">Existing Partner(s)</label>
+                                                    <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the existing partner of this project">
+                                                        <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                            <span class="path3"></span>
+                                                        </i>
+                                                    </span>
+                                                    <div data-repeater-list="PartnerName">
+                                                        <div data-repeater-item class="partnerEdit mb-2">
+                                                            <div class="fv-row form-group row">
+                                                                <div class="col-md-10">
+                                                                    @Html.TextBoxFor(x => x.OpPartner.PartnerName,
+                                                                             new
+                                                                             {
+                                                                                 @id = "editpartnerInput",
+                                                                                 @name = "PartnerName",
+                                                                                 @class = "form-control form-control-solid",
+                                                                                 maxlength = 100,
+                                                                                 placeholder = "Enter Existing Partner",
+                                                                             })
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <button class="border border-secondary btn btn-icon btn-flex btn-danger" data-repeater-delete type="button">
+                                                                        <i class="la la-close"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="form-group mt-5">
+                                                        <a href="javascript:;" data-repeater-create class="btn font-weight-bold btn-warning">
+                                                            <i class="ki-duotone ki-plus fs-3"></i>
+                                                            Add Partner(s)
+                                                        </a>
+                                                    </div>
+                                                    <div class="col"></div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="app-content flex-column-fluid row">
+                                    <div class="card card-custom">
+                                        <div class="card-header">
+                                            <div class="row">
+                                                <h3 class="card-title">
+                                                    PROJECT INFORMATION
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="fv-row mb-10">
+                                                <label for="nilaiProyekInput" class="form-label">Potential Revenue</label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the potential revenue from the project">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                                @Html.TextBoxFor(x => x.PotentialRevenuePerYearToString,
+                                                         new
+                                                         {
+                                                             @id = "editPotentialRevenueInput",
+                                                             @class = "form-control form-control-solid",
+                                                             @type = "text",
+                                                             maxlength = 200,
+                                                             placeholder = "Enter Potential Revenue",
+                                                         })
+                                            </div>
+                                            <div class="fv-row mb-10">
+                                                <label for="nilaiProyekInput" class="form-label">Capex</label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the CAPEX of this project">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                                @Html.TextBoxFor(x => x.CapexToString,
+                                                         new
+                                                         {
+                                                             @id = "editCapexInput",
+                                                             @type = "text",
+                                                             @class = "form-control form-control-solid",
+                                                             maxlength = 200,
+                                                             placeholder = "Enter Capex",
+                                                         })
+                                            </div>
+                                            <div class="fv-row mb-10">
+                                                <label for="edittimelineInput" class="form-label">Timeline</label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the timeline of this project">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                                @Html.TextBoxFor(x => x.Timeline,
+                                                         new
+                                                         {
+                                                             @id = "edittimelineInput",
+                                                             @class = "form-control form-control-solid",
+                                                             maxlength = 400,
+                                                             placeholder = "Enter Timeline",
+                                                         })
+                                            </div>
+                                            <div class="fv-row mb-10">
+                                                <label for="timelineInput" class="required form-label">Type Of Partner Needed</label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the type of partner for this project">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                                @Html.TextBoxFor(x => x.TypeOfPartnerNeeded,
+                                                         new
+                                                         {
+                                                             @id = "editTypeOfPartnerNeeded",
+                                                             @class = "form-control form-control-solid",
+                                                             maxlength = 400,
+                                                             placeholder = "Enter Time Of Partner Needed",
+                                                         })
+                                            </div>
+                                            <div class="fv-row mb-10">
+                                                <input type="hidden" value="@Model.OpNegaraMitra?.OpportunityId" id="hdnNegaraMitraId">
+                                                <label for="editlokasiProyekNegaraInput" class="required form-label">Project Area - Project Location (Country)</label><label style="padding-left: 10px;color: red;font-weight:bold">Dapat pilih lebih dari 1 </label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the area and location of this project">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                                @Html.DropDownListFor(x => x.OpNegaraMitra.NegaraMitraId,
+                                                         new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                         new
+                                                         {
+                                                             @id = "editlokasiProyekNegaraInput",
+                                                             @class = "form-select form-select-solid form-select-md fw-semibold form-control",
+                                                             aria_label = "Pilih Kawasan - Lokasi Proyek (Negara)",
+                                                             data_control = "select2",
+                                                             multiple = "multiple",
+                                                             data_placeholder = "Choose Project Area - Project Location",
+                                                             data_allow_clear = "true",
+                                                             data_dropdown_parent = "#EditFormOpportunity"
+                                                         })
+                                            </div>
+                                            <div class="fv-row mb-10">
+                                                <div id="editRepeaterLokasiProyek">
+                                                    <div class="form-group">
+                                                        <label for="editlokasiProyekProvInput" class="form-label">Project Location (Province) </label>
+                                                        <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the province location of this project">
+                                                            <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                                <span class="path1"></span>
+                                                                <span class="path2"></span>
+                                                                <span class="path3"></span>
+                                                            </i>
+                                                        </span>
+                                                        <div data-repeater-list="LokasiProyek">
+                                                            <div data-repeater-item class="lokasiProyekEdit mb-2">
+                                                                <div class="fv-row form-group row">
+                                                                    <div class="col-md-10">
+                                                                        @Html.TextBoxFor(x => x.OpLokasiProyek.LokasiProyek,
+                                                                                 new
+                                                                                 {
+                                                                                     @id = "editlokasiProyekProvInput",
+                                                                                     @name = "LokasiProyek",
+                                                                                     @class = "form-control form-control-solid",
+                                                                                     maxlength = 100,
+                                                                                     placeholder = "Project Location (Province)"
+                                                                                 })
+                                                                    </div>
+                                                                    <div class="col-md-2">
+                                                                        <button class="border border-secondary btn btn-icon btn-flex btn-danger" data-repeater-delete type="button">
+                                                                            <i class="la la-close"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="form-group mt-5">
+                                                            <a href="javascript:;" data-repeater-create class="btn font-weight-bold btn-warning">
+                                                                <i class="ki-duotone ki-plus fs-3"></i>
+                                                                Add Project Location
+                                                            </a>
+                                                        </div>
+                                                        <div class="col"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="fv-row mb-10">
+                                                <input type="hidden" value="@Model.OpEntitasPertamina?.OpportunityId" id="hdnEntitasId">
+                                                <label for="edithshEntitasInput" class="required form-label">Holding/Sub Holding - Pertamina Entity</label><label style="padding-left: 10px;color: red;font-weight:bold">Dapat pilih lebih dari 1 </label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the HSH/Pertamina entity for this project">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                                @Html.DropDownListFor(x => x.OpEntitasPertamina.EntitasPertaminaId,
+                                                         new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                         new
+                                                         {
+                                                             @id = "edithshEntitasInput",
+                                                             @class = "form-select form-select-solid form-select-md fw-semibold",
+                                                             aria_label = "Pilih Holding/Sub Holding Entitas Pertamina",
+                                                             data_control = "select2",
+                                                             data_placeholder = "Pilih Holding/Sub Holding Entitas Pertamina",
+                                                             data_allow_clear = "true",
+                                                             multiple = "multiple",
+                                                             data_dropdown_parent = "#EditFormOpportunity"
+                                                         })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="flex-row-fluid">
+                                    <div class="card card-custom">
+                                        <div class="card-header">
+                                            <div class="row">
+                                                <h3 class="card-title">
+                                                    PIC INFORMATION
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="form-group row">
+                                                <div class="fv-row col-lg-5">
+                                                    <label for="picInput" class="required form-label">Function - PIC</label>
+                                                    <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the name of the project PIC">
+                                                        <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                            <span class="path3"></span>
+                                                        </i>
+                                                    </span>
+                                                    @Html.HiddenFor(x => x.OpPicFungsi.PicFungsiId, new { @id = "hdnPicLeadId" })
+                                                    @Html.DropDownListFor(x => x.PicFungsiId,
+                                                             new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                             new
+                                                             {
+                                                                 @id = "editPicInput",
+                                                                 @name = "PicFungsiId",
+                                                                 @class = "form-select form-select-solid form-select-md fw-semibold",
+                                                                 aria_label = "Choose PIC - Function Name - Company",
+                                                                 data_placeholder = "Choose PIC - Function Name - Company",
+                                                                 data_control = "select2",
+                                                             })
+                                                </div>
+                                                <div class="fv-row col-lg-5">
+                                                    <label for="picLevelInput" class="required form-label">PIC Level</label>
+                                                    <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the level of selected PIC">
+                                                        <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                            <span class="path1"></span>
+                                                            <span class="path2"></span>
+                                                            <span class="path3"></span>
+                                                        </i>
+                                                    </span>
+                                                    @Html.HiddenFor(x => x.PICLevelLeadId, new { @id = "picLevelId" })
+                                                    @Html.TextBoxFor(x => x.PICLevelLeadId,
+                                                             new
+                                                             {
+                                                                 @id = "picLevelInput",
+                                                                 @name = "PicLevelId",
+                                                                 @class = "form-control form-control-solid",
+                                                                 maxlength = 6000,
+                                                                 placeholder = "Choose PIC Level",
+                                                                 @readonly = "readonly",
+                                                                 data_dropdown_parent = "#CreateFormExistingFootprints"
+                                                             })
+                                                </div>
+                                            </div>
+                                            <div class="form-group mt-5 row">
+                                                <div id="editRepeaterPic">
+                                                    @Html.HiddenFor(x => x.PICLevelMemberId, new { @id = "picLevelMemberId" })
+                                                    <div class="form-group">
+                                                        <div data-repeater-list="EditPicName">
+                                                            <div data-repeater-item class="editPic mb-2">
+                                                                <div class="form-group row">
+                                                                    <div class="fv-row col-lg-5 editPicFungsi">
+                                                                        @Html.DropDownListFor(x => x.OpPicFungsi.PicFungsiId,
+                                                                                 new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                                                 new
+                                                                                 {
+                                                                                     @id = "editPicFungsiMemberInput",
+                                                                                     @name = "EditPicMemberFungsiId",
+                                                                                     @class = "form-select form-select-solid form-select-md fw-semibold editFungsiPicMember",
+                                                                                     aria_label = "Choose PIC - Function Name - Company",
+                                                                                     data_placeholder = "Choose PIC - Function Name - Company",
+                                                                                 })
+                                                                    </div>
+                                                                    <div class="fv-row col-lg-5">
+                                                                        @Html.TextBoxFor(x => x.PICLevelMemberId,
+                                                                                 new
+                                                                                 {
+                                                                                     @id = "editPicLevelMemberInput",
+                                                                                     @name = "EditPicMemberLevelId",
+                                                                                     @class = "form-control form-control-solid editLevelPicMember",
+                                                                                     maxlength = 6000,
+                                                                                     placeholder = "Choose PIC Level",
+                                                                                     @readonly = "readonly",
+                                                                                 })
+                                                                    </div>
+                                                                    <div class="col-lg-2 d-flex align-items-end">
+                                                                        <button class="border border-secondary btn btn-icon btn-flex btn-danger" data-repeater-delete type="button">
+                                                                            <i class="la la-close"></i>
+                                                                        </button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="form-group mt-5">
+                                                            <a href="javascript:;" data-repeater-create class="btn font-weight-bold btn-warning" id="editPICButton">
+                                                                <i class="ki-duotone ki-plus fs-3"></i>
+                                                                Add PIC
+                                                            </a>
+                                                        </div>
+                                                        <div class="col"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="app-content flex-row-fluid">
+                                    <div class="card card-custom">
+                                        <div class="card-header">
+                                            <div class="row">
+                                                <h3 class="card-title">
+                                                    SCOPE AND PROGRESS
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="fv-row mb-10">
+                                                <label for="editProjectsProfileInput" class="required form-label">Projects Profile</label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the profile of this project">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                                @Html.TextAreaFor(x => x.ProjectProfile,
+                                                         new
+                                                         {
+                                                             @id = "editprojectProfileInput",
+                                                             @class = "form-control form-control-solid",
+                                                             maxlength = 6000,
+                                                             placeholder = "Enter Project Profile",
+                                                         })
+                                            </div>
+                                            <div class="fv-row mb-10">
+                                                <input type="hidden" value="@Model.OpKesiapanProyek?.OpportunityId" id="hdnKesiapanId">
+                                                <label for="editkesiapanProyekInput" class="required form-label">Project Readiness</label><label style="padding-left: 10px;color: red;font-weight:bold">Masukkan semua tahapan yang telah dan sedang berlangsung </label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the readiness of this project">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                                <div class="input-group-prepend">
+                                                    @Html.DropDownListFor(x => x.OpKesiapanProyek.KesiapanProyekId,
+                                                             new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                             new
+                                                             {
+                                                                 @id = "editkesiapanProyekInput",
+                                                                 @class = "form-select form-select-solid form-select-md fw-semibold",
+                                                                 aria_label = "Pilih Kesiapan Proyek",
+                                                                 data_control = "select2",
+                                                                 multiple = "multiple",
+                                                                 data_placeholder = "Choose Readiness",
+                                                                 data_allow_clear = "true",
+                                                                 data_dropdown_parent = "#EditFormOpportunity"
+                                                             })
+                                                </div>
+                                            </div>
+                                            <div class="fv-row mb-10">
+                                                <label for="editprogressInput" class="required form-label">Progress</label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the progress of this project">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                                @Html.TextAreaFor(x => x.Progress,
+                                                         new
+                                                         {
+                                                             @id = "editprogressInput",
+                                                             @name = "Progress",
+                                                             @class = "form-control form-control-solid",
+                                                             maxlength = 6000,
+                                                             placeholder = "Enter Progress",
+                                                         })
+                                            </div>
+                                            <div class=" fv-row mb-10">
+                                                <input type="hidden" value="@Model.OpTargetMitra?.OpportunityId" id="hdnTargetMitraId">
+                                                <label for="edittargetMitraInput" class="required form-label">Collaboration Target</label><label style="padding-left: 10px;color: red;font-weight:bold">Dapat pilih lebih dari 1 </label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the target partners of this project">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                                @Html.DropDownListFor(x => x.OpTargetMitra.TargetMitraId,
+                                                         new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                         new
+                                                         {
+                                                             @id = "edittargetMitraInput",
+                                                             @name = "TargetMitraId",
+                                                             @class = "form-select form-select-solid form-select-md fw-semibold",
+                                                             aria_label = "Pilih Target Kerjasama",
+                                                             data_placeholder = "Choose Collaboration Target",
+                                                             data_allow_clear = "true",
+                                                             data_control = "select2",
+                                                             multiple = "multiple",
+                                                             data_dropdown_parent = "#EditFormOpportunity"
+                                                         })
+                                            </div>
+                                            <div class="fv-row mb-10">
+                                                <label for="editcatatanTambahanInput" class="form-label">Additional Note</label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to information on additional notes">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                                @Html.TextAreaFor(x => x.CatatanTambahan,
+                                                         new
+                                                         {
+                                                             @id = "editcatatanTambahanInput",
+                                                             @class = "form-control form-control-solid",
+                                                             maxlength = 6000,
+                                                             placeholder = "Enter Additional Note",
+                                                         })
+                                            </div>
+                                            <div class="fv-row mb-10">
+                                                <label for="editTindakLanjutInput" class="form-label">Follow Up</label>
+                                                <span class="ms-1" data-bs-toggle="tooltip" title="This column refers to the follow-up of the offer process">
+                                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-6">
+                                                        <span class="path1"></span>
+                                                        <span class="path2"></span>
+                                                        <span class="path3"></span>
+                                                    </i>
+                                                </span>
+                                                @Html.TextAreaFor(x => x.TindakLanjut,
+                                                         new
+                                                         {
+                                                             @id = "editTindakLanjutInput",
+                                                             @class = "form-control form-control-solid",
+                                                             maxlength = 6000,
+                                                             placeholder = "Enter Follow Up",
+                                                         })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="app-content flex-row-fluid">
+                    <div class="row">
+
+                        <div class="col" align="right" style="padding-right: 40px;">
+                            <button id="btnCancel" type="submit" class="btn font-weight-bold btn-secondary" onclick="location.href='@Url.Action("Index", "ProjectsToOffer")'">
+                                Cancel
+                            </button>
+                            <button id="UpdateSubmitOpportunity" type="submit" class="btn font-weight-bold btn-primary mr-2" data-url="@Url.Action("UpdateForm", "ProjectsToOffer")" data-callbackurl="@Url.Action("Index", "ProjectsToOffer")">
+                                <span class="indicator-label">
+                                    Update
+                                </span>
+                                <span class="indicator-progress">
+                                    Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    <script>
+        var param = (function (param) {
+            param.prefix = '@globalParam.PrefixApiUrl';
+            param.urlAction = '@controllerName/';
+            param.getOpportunityById = '@globalParam.PrefixApiUrl' + 'ApiProjectsToOffer/GetOpportunityById';
+            return param;
+        })(param || {});
+    </script>
+    <script src="~/js/form/base-url-api.js"></script>
+    <script src="~/js/form/projectsToOfferUpdate.js"></script>
+
+}

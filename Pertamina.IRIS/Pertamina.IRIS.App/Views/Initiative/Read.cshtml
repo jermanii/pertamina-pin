@@ -1,0 +1,573 @@
+﻿@using Pertamina.IRIS.Models.Base
+@inject GlobalVariableBaseModel globalParam
+@model Pertamina.IRIS.Models.ViewModels.InitiativeViewModel
+
+@{
+    ViewData["Title"] = "Initiative";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="app-main flex-column flex-row-fluid">
+    <div class="d-flex flex-column flex-column-fluid">
+        <div class="app-toolbar py-3 py-lg-6">
+            <div class="app-container container-xxl d-flex flex-stack">
+                <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Detail Initiative</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="app-content flex-column-fluid">
+        <div class="app-container container-xxl">
+            <div class="card card-flush">
+                <div class="card-body fs-6 py-10 px-10 py-lg-10 px-lg-10 text-gray-700">
+                    <div class="row mb-7">
+                        <div class="col-lg-12">
+                            <span class="fw-bold fs-6 text-gray-800">Header</span>
+                        </div>
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Judul Initiative</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (@Model.ReadJudulInitiative != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.ReadJudulInitiative</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Interest</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (@Model.ReadInterest != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.ReadInterest.Name</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Initiative Status</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (@Model.ReadInitiativeStatus != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.ReadInitiativeStatus.StatusName</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Initiative Type</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (@Model.ReadInitiativeType != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.ReadInitiativeType.StatusName</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Initiative Stage</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (@Model.ReadInitiativeStage != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.ReadInitiativeStage.Name</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Fungsi - PIC</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            <div class="fw-bold fs-6 text-gray-800">
+                                @if (Model.ReadPicFungsi != null)
+                                {
+                                    @foreach (var rec in Model.ReadPicFungsi)
+                                    {
+                                        if (rec == Model.ReadPicFungsi.FirstOrDefault())
+                                        {
+                                            <span>: <i class="fa-solid fa-caret-right"></i> @rec.NameFungsi - @rec.PicName - @rec.Email</span>
+
+                                        }
+                                        else
+                                        {
+                                            <br><span>&nbsp;&nbsp;<i class="fa-solid fa-caret-right"></i> @rec.NameFungsi - @rec.PicName - @rec.Email</span>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="fw-bold fs-6 text-gray-800">:</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Holding/Sub Holding - Entitas Pertamina</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            <div class="fw-bold fs-6 text-gray-800">
+                                @if (Model.ReadEntitasPertamina != null)
+                                {
+                                    @foreach (var rec in Model.ReadEntitasPertamina)
+                                    {
+                                        if (rec == Model.ReadEntitasPertamina.FirstOrDefault())
+                                        {
+                                            <span>: <i class="fa-solid fa-caret-right"></i> @rec.NameHsh - @rec.CompanyName</span>
+
+                                        }
+                                        else
+                                        {
+                                            <br><span>&nbsp;&nbsp;<i class="fa-solid fa-caret-right"></i> @rec.NameHsh - @rec.CompanyName</span>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="fw-bold fs-6 text-gray-800">:</span>
+                                }
+                            </div>
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <div class="col-lg-12">
+                            <span class="fw-bold fs-6 text-gray-800">Informasi Partner</span>
+                        </div>
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Partner(s)</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            <div class="fw-bold fs-6 text-gray-800">
+                                @if (Model.ReadPartner != null)
+                                {
+                                    @foreach (var rec in Model.ReadPartner)
+                                    {
+                                        if (rec == Model.ReadPartner.FirstOrDefault())
+                                        {
+                                            <span>: <i class="fa-solid fa-caret-right"></i> @rec</span>
+
+                                        }
+                                        else
+                                        {
+                                            <br><span>&nbsp;&nbsp;<i class="fa-solid fa-caret-right"></i> @rec</span>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="fw-bold fs-6 text-gray-800">:</span>
+                                }
+                            </div>
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Kawasan Mitra</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            <div class="fw-bold fs-6 text-gray-800">
+                                @if (Model.ReadNegaraMitra != null)
+                                {
+                                    @foreach (var rec in Model.ReadNegaraMitra)
+                                    {
+                                        if (rec == Model.ReadNegaraMitra.FirstOrDefault())
+                                        {
+                                            <span>: <i class="fa-solid fa-caret-right"></i> @rec.NamaKawasan</span>
+
+                                        }
+                                        else
+                                        {
+                                            <br><span>&nbsp;&nbsp;<i class="fa-solid fa-caret-right"></i> @rec.NamaKawasan</span>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="fw-bold fs-6 text-gray-800">:</span>
+                                }
+                            </div>
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Negara Mitra</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            <div class="fw-bold fs-6 text-gray-800">
+                                @if (Model.ReadNegaraMitra != null)
+                                {
+                                    @foreach (var rec in Model.ReadNegaraMitra)
+                                    {
+                                        if (rec == Model.ReadNegaraMitra.FirstOrDefault())
+                                        {
+                                            <span>: <i class="fa-solid fa-caret-right"></i> @rec.NamaNegara</span>
+
+                                        }
+                                        else
+                                        {
+                                            <br><span>&nbsp;&nbsp;<i class="fa-solid fa-caret-right"></i> @rec.NamaNegara</span>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="fw-bold fs-6 text-gray-800">:</span>
+                                }
+                            </div>
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <div class="col-lg-12">
+                            <span class="fw-bold fs-6 text-gray-800">Informasi Proyek</span>
+                        </div>
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Lokasi Proyek</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            <div class="fw-bold fs-6 text-gray-800">
+                                @if (Model.ReadLokasiProyek != null)
+                                {
+                                    @foreach (var rec in Model.ReadLokasiProyek)
+                                    {
+                                        if (rec == Model.ReadLokasiProyek.FirstOrDefault())
+                                        {
+                                            <span>: @rec</span>
+                                        }
+                                        else
+                                        {
+                                            <br><span>&nbsp;&nbsp;@rec</span>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="fw-bold fs-6 text-gray-800">:</span>
+                                }
+                            </div>
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Nilai Proyek</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (Model.ReadNilaiProyek != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.ReadNilaiProyek</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Target Waktu Proyek</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (Model.ReadTargetWaktuProyek != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.ReadTargetWaktuProyek</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <div class="col-lg-12">
+                            <span class="fw-bold fs-6 text-gray-800">Scope dan Progress</span>
+                        </div>
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Stream Business</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            <div class="fw-bold fs-6 text-gray-800">
+                                @if (Model.ReadStreamBusiness != null)
+                                {
+                                    @foreach (var rec in Model.ReadStreamBusiness)
+                                    {
+                                        if (rec == Model.ReadStreamBusiness.FirstOrDefault())
+                                        {
+                                            <span>: <i class="fa-solid fa-caret-right"></i> @rec.Name</span>
+
+                                        }
+                                        else
+                                        {
+                                            <br><span>&nbsp;&nbsp;<i class="fa-solid fa-caret-right"></i> @rec.Name</span>
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <span class="fw-bold fs-6 text-gray-800">:</span>
+                                }
+                            </div>
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Scope/Project Overview</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (Model.Scope != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.Scope</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Progress</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (Model.Progress != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.Progress</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <div class="col-lg-12">
+                            <span class="fw-bold fs-6 text-gray-800">Isu Kendala</span>
+                        </div>
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Isu Kendala</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (Model.ReadIsuKendala != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.ReadIsuKendala</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Tindak Lanjut</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (Model.TindakLanjut != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.ReadTindakLanjut</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <div class="col-lg-12">
+                            <span class="fw-bold fs-6 text-gray-800">Hubungan dengan Pemerintah</span>
+                        </div>
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Dukungan yang Diperlukan dari Pemerintah</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (Model.ReadSupportPemerintah != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.ReadSupportPemerintah</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Value for Indonesia</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (Model.ReadValueForIndonesia != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.ReadValueForIndonesia</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <div class="col-lg-12">
+                            <span class="fw-bold fs-6 text-gray-800">Relasi ke Agreement</span>
+                        </div>
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Related Agreement</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (@Model.ReadRelatedAgreement != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.ReadRelatedAgreement.KodeAgreement</span><br />
+                                <span class="fw-bold fs-6 text-gray-800">  @Model.ReadRelatedAgreement.JudulPerjanjian</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <div class="col-lg-12">
+                            <span class="fw-bold fs-6 text-gray-800">Informasi Lainnya</span>
+                        </div>
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Referral</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (Model.ReadReferal != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.ReadReferal</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Potensial Eskalasi</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (Model.ReadPotensiEskalasi != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.ReadPotensiEskalasi</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-15">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Catatan Tambahan</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (Model.ReadCatatanTambahan != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.ReadCatatanTambahan</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-lg-12 d-flex justify-content-end pb-0 px-0">
+                            <button id="btnCancel" type="submit" class="btn font-weight-bold btn-secondary" onclick="location.href='@Url.Action("Index","Initiative")'">
+                                Back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

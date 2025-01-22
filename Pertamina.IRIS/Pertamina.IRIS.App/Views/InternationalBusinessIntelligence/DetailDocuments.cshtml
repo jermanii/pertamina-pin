@@ -1,0 +1,191 @@
+﻿@section Styles {
+    <link href="~/lib/owlcarousel/css/owl.carousel.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/owlcarousel/css/owl.theme.default.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/custom.css" rel="stylesheet" type="text/css" />
+}
+
+@using Pertamina.IRIS.Models.Base
+@inject GlobalVariableBaseModel globalParam
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@model Pertamina.IRIS.Models.ViewModels.InternationalBusinessIntelligenceViewModel
+
+@{
+    ViewData["Title"] = "Detail Uploaded IBI";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+
+<div class="spinner-container">
+    <div class="loading-spinner"></div>
+</div>
+<div class="app-main flex-column flex-row-fluid">
+    <div class=" flex-column-fluid">
+        <div class="header-secondary d-flex flex-column-fluid justify-content-center align-items-center">
+            <div class="app-toolbar py-3 py-lg-6">
+                <div class="app-container container-xxl d-flex flex-stack">
+                    <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+                        <div class="menu menu-gray-600 menu-active-primary menu-hover-light-primary menu-here-light-primary menu-show-light-primary fs-4" data-kt-menu="true">
+                            <div class="menu-item">
+                                <a href="@Url.Action("Index", "ExistingFootprintsDashboard")"
+                                   class="menu-link">
+                                    <span class="menu-title">Home</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="@Url.Action("Index", "ComingSoon", new { isEp=false, isPo=false, isPi=false, isPd=false, isSa=false, isUd = true, isMd=false, isSt=false })"
+                                   class="menu-link">
+                                    <span class="menu-title">User Dashboard</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="@Url.Action("Index", "ComingSoon", new { isEp=false, isPo=false, isPi=false, isPd=false, isSa=false, isUd = false, isMd=true, isSt=false })"
+                                   class="menu-link">
+                                    <span class="menu-title">Meeting Dashboard</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="@Url.Action("Index", "ComingSoon", new { isEp=false, isPo=false, isPi=false, isPd=false, isSa=false, isUd = false, isMd=false, isSt=true })"
+                                   class="menu-link">
+                                    <span class="menu-title">Support Tracker</span>
+                                </a>
+                            </div>
+                            <div class="menu-item here badge badge-light-danger badge-lg">
+                                <a href="@Url.Action("Index", "InternationalBusinessIntelligence")" class="menu-link">
+                                    <span class="menu-title fw-bolder fs-4">International Business Intelligence</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="app-main flex-column flex-row-fluid wrapper-40 view-detail-ibi">
+    <div class="app-content flex-column-fluid">
+        <div class="app-container container-xxl">
+            <div class="card d-flex flex-column flex-xl-row py-15 px-10 py-lg-15 px-lg-15 text-gray-700">
+                <div class="flex-lg-row-fluid">
+                    <div class="flex-column">
+                        <a href="@Url.Action("Index", controllerName)">
+                            <i class="fa-solid fa-arrow-left fs-2x"></i>
+                        </a>
+                        <h2 class="display-6 mt-6">@Model.Title</h2>
+                        <div class="d-flex flex-row heading-detail-ibi">
+                            <div class="d-flex align-items-center">
+                                <h4 class="text-gray-400 fs-4">@Model.CreatedDate.Value.ToString("dd MMMM yyyy")</h4>
+                            </div>
+                            <span class="text-gray-400 fw-500 fs-lg-1 align-items-center">&#124;</span>
+                            <div class="d-flex flex-row mr-2 d-flex align-items-center">
+
+                                @if (Model.RelatedCountry.Count > 0)
+                                {
+                                    <h4 class="text-gray-400 fs-4">Related Countries:&nbsp; @Model.JoinedRelatedCountries</h4>
+                                }
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column flex-lg-row">
+                            <div class="d-flex flex-column w-100 w-xl-750px">
+                                <div class="col-md-12 flex-column mt-6">
+                                    <h2 class="display-6 pt-2">Description</h2>
+                                    <h4 class="fs-2 fw-normal">@Model.Description</h4>
+                                </div>
+                                <div class="separator border-secondary border-5 mt-20 mb-5"></div>
+                                <div class="col-md-12 flex-column">
+                                    <h2>Authors @Model.Authors.Count</h2>
+                                    <div class="d-flex hover-scroll-x w-100 flex-row">
+                                        @foreach (var item in Model.Authors)
+                                        {
+                                            <div class="d-flex flex-row mx-2">
+                                                <div class="symbol symbol-60px symbol-circle px-2" data-bs-toggle="tooltip" title="@item.Name">
+                                                    <span class="symbol-label bg-info text-inverse-info fw-bold display-4">@item.Name.Substring(0, 1)</span>
+                                                </div>
+                                                <div class="d-flex flex-column w-150px">
+                                                    <span class="text-gray-900 fw-bold fs-2">@item.Name</span>
+                                                    <span class="text-gray-400 fs-4">BOD</span>
+                                                    <span class="text-gray-400 fs-4">PT Pertamina EP</span>
+                                                </div>
+                                            </div>
+
+                                        }
+                                    </div>
+                                </div>
+                                <div class="separator border-secondary border-5 my-5"></div>
+                                <div class="col-md-12 flex-column">
+                                    <h2 class="display-6">Owner Entity</h2>
+                                    <h4 class="text-gray-400 fs-4">@Model.EntitasPertaminaName</h4>
+                                </div>
+                            </div>
+                            <div class="flex-column w-100 w-xl-450px mt-6">
+                                <div class="col-md-12 flex-column bg-detail-ibi-docs pt-14">
+                                    <h2 class="fs-lg-1 fw-normal mb-6 px-6">See The File</h2>
+                                    <div class="d-flex flex-row align-items-center bg-detail-ibi-confidentiality mb-6 py-2">
+                                        <div class="d-flex flex-row align-items-center px-6">
+                                            <span>
+                                                <i id="fa-exclamation-ibi" class="fa-solid fa-circle-exclamation fs-2x" data-color="@Model.ConfidentialityColor"></i>
+                                            </span>
+
+                                            <h4 class="fs-lg-2 fw-normal ms-4 my-0">@Model.ConfidentialityName</h4>
+                                        </div>
+                                    </div>
+                                    <h4 class="fs-lg-2 fw-normal px-6">@Model.Documents.Count Attachments</h4>
+                                    <h4 class="fs-lg-2 fw-normal px-6">@Model.DocumentsFileSize MB Download</h4>
+                                    <br>
+                                    <br>
+                                    <div class="col-12 d-flex flex-column justify-content-center align-items-center p-6">
+                                        <a id="btn-bookmark" class="col-12 btn btn-dark cursor-pointer my-2 fs-1x align-items-center d-flex justify-content-center"><i class="@(Model.IsBookmark ? "fa-solid" : "fa-regular") fa-bookmark fs-2"></i></i>Add To List</a>
+                                        <a class="col-12 btn btn-secondary cursor-pointer my-2 fs-1x align-items-center d-flex justify-content-center"
+                                           data-target="#PreviewListDocs"
+                                           data-url="@Url.Action("PreviewDocuments", controllerName, new { guid = @Model.Id })"
+                                           onclick="showListDoc(this)">
+                                           <i class="fa fa-eye fs-2e"></i>Preview
+                                       </a>
+                                        <a class="col-12 btn btn-secondary cursor-pointer my-2 fs-1x align-items-center d-flex justify-content-center ibi-download" 
+                                           data-idibi="@Model.Id" 
+                                           data-title="@Model.Title">
+                                           <i class="fa fa-download fs-2">
+                                           </i>Download
+                                        </a>
+                                        <a id="btn-delete-ibi" class="col-12 btn btn-outline-danger cursor-pointer my-2 fs-1x align-items-center d-flex justify-content-center"
+                                           data-idibi="@Model.Id">
+                                            <i class="fa-regular fa-trash-can fs-2">
+                                            </i>Delete
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="PreviewListDocumentPartialModal"></div>
+    <div id="FileModal"></div>
+</div>
+
+@section Scripts {
+    <script>
+        var param = (function (param) {
+            param.prefix = '@globalParam.PrefixApiUrl';
+            param.prefixPic = '@globalParam.PrefixPicName';
+            param.mainPage = '@Url.Action("Index", "InternationalBusinessIntelligence")';
+            return param;
+        })(param || {});
+        var urlBookmark = '@Url.Action("BookmarkIBI", "InternationalBusinessIntelligence")';
+        var urlDetailIbi = '@Url.Action("DetailDocuments", "InternationalBusinessIntelligence")';
+        var urlDeleteIbi = '@Url.Action("DeleteIBI", "InternationalBusinessIntelligence")';
+
+    </script>
+
+    <script src="~/lib/amcharts/index.js"></script>
+    <script src="~/lib/amcharts/map.js"></script>
+    <script src="~/lib/amcharts/worldLow.js"></script>
+    <script src="~/lib/amcharts/Animated.js"></script>
+    <script src="~/lib/owlcarousel/js/owl.carousel.min.js"></script>
+    <script src="~/js/form/base-url-api.js"></script>
+    <script src="~/js/form/internationalBusinessIntelligence.js"></script>
+}

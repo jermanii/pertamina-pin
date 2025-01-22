@@ -1,0 +1,50 @@
+﻿@using Pertamina.IRIS.Models.Base
+@inject GlobalVariableBaseModel globalParam
+@model Pertamina.IRIS.Models.ViewModels.SignedAgreementDashboardViewModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<div class="row">
+    @if (Model.Metrics != null)
+    {
+        foreach (var metric in Model.Metrics)
+        {
+            <div class="col-sm-4">
+                <div class="card card-flush mb-5">
+                    <div class="card-header padding-metrics-header border-0 min-h-2px">
+                        <div class="card-title m-0">
+                            <span class="fs-8 text-gray-600">@string.Format(metric.Title, metric.Year)</span>
+                        </div>
+                    </div>
+                    <div class="card-body padding-metrics-body min-h-2px mb-3">
+                        @if (metric.Point.HasValue)
+                        {
+                            <div class="metrics-value px-0">@metric.Point</div>
+                        }
+                        else
+                        {
+                            <div class="metrics-value px-0">N/A</div>
+                        }
+                    </div>
+                    <div class="card-footer border-1 padding-metrics-footer min-h-30px">
+                        <div class="d-flex align-items-center justify-content-between w-100 mt-auto">
+                            <div class="symbol-group symbol-hover mt-2 mb-2">
+                                @if (metric.Percent.HasValue)
+                                {
+                                    <div class="symbol symbol-20px symbol-2by3 me-2" data-bs-toggle="tooltip">
+                                        <i class="@metric.Src" style="color: @metric.ColorCode;"></i>
+                                    </div>
+                                    <div class="fs-4 fw-bold text-gray-600">@metric.Percent%</div>
+                                }
+                                else
+                                {
+                                    <div class="fs-4 fw-bold text-gray-600">N/A</div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>

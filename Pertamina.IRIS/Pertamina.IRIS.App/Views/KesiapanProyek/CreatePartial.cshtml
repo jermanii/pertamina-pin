@@ -1,0 +1,80 @@
+﻿@model Pertamina.IRIS.Models.ViewModels.KesiapanProyekViewModel
+
+@{
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+<!--begin::View component-->
+
+<form id="CreateForm" class="form" action="#" autocomplete="off">
+    <div id="CreatePartialComponent"
+         class="bg-white"
+         data-kt-drawer="true"
+         data-kt-drawer-activate="true"
+         data-kt-drawer-close="#CreatePartialComponentClose, #CreatePartialComponentCancel"
+         data-kt-drawer-overlay="true"
+         data-kt-drawer-permanent="true"
+         data-kt-drawer-width="{default:'300px', 'md': '500px'}">
+        <div class="card rounded-0 w-100">
+            <div class="card-header pe-5">
+                <div class="card-title">
+                    Add Kesiapan Proyek
+                </div>
+                <div class="card-toolbar">
+                    <div class="btn btn-sm btn-icon btn-active-light-primary" id="CreatePartialComponentClose">
+                        <i class="ki-duotone ki-cross fs-2"><span class="path1"></span><span class="path2"></span></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body hover-scroll-overlay-y">
+                <div class="fv-row mb-10">
+                    <label for="nama" class="required form-label">Nama Kesiapan Proyek</label>
+                    @Html.TextBoxFor(m => m.Name, new
+                    {
+                    @id = "nama",
+                    maxlength = 100,
+                    @class = "form-control form-control-solid",
+                    placeholder = "Masukkan Nama Kesiapan Proyek",
+
+                    })
+                </div>
+                <div class="fv-row mb-10">
+                    <label for="deskripsi" class="form-label">Deskripsi</label>
+                    @Html.TextAreaFor(m => m.Description, new
+                    {
+                    @id = "deskripsi",
+                    maxlength = 100,
+                    @class = "form-control form-control-solid",
+                    placeholder = "Masukkan Deskripsi",
+
+                    })
+                </div>
+                <div class="fv-row mb-10">
+                    <label for="orderSeq" class="required form-label">Order</label>
+                    @Html.TextBoxFor(m => m.OrderSeq, new
+                    {
+                    @id = "orderSeq",
+                    maxlength = 20,
+                    @class = "form-control form-control-solid",
+                    placeholder = "Masukkan Order",
+                    @oninput="onlynum('orderSeq');",
+                    })
+                </div>
+            </div>
+            <div class="card-footer pt-4">
+                <div class="d-flex flex-stack">
+                    <div class="d-flex align-items-center me-1">
+                        <button class="btn btn-secondary" id="CreatePartialComponentCancel">Cancel</button>
+                    </div>
+                    <button id="CreateSubmit" type="submit" class="btn btn-primary" data-url="@Url.Action("CreatePartial","KesiapanProyek")" data-callbackurl="@Url.Action("Index","KesiapanProyek")">
+                        <span class="indicator-label">
+                            Submit
+                        </span>
+                        <span class="indicator-progress">
+                            Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

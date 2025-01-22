@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="LinqKit.Core" Version="1.2.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Pertamina.IRIS.Models\Pertamina.IRIS.Models.csproj" />
+    <ProjectReference Include="..\Pertamina.IRIS.Utility\Pertamina.IRIS.Utility.csproj" />
+  </ItemGroup>
+
+</Project>

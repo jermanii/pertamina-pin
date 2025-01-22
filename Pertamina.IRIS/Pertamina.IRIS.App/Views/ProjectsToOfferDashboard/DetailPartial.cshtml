@@ -1,0 +1,280 @@
+﻿@using Pertamina.IRIS.Models.Base
+@inject GlobalVariableBaseModel globalParam
+@model Pertamina.IRIS.Models.ViewModels.ProjectsToOfferDashboardViewModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+
+}
+
+<div class="modal fade" id="highPriorityModal" tabindex="-1" aria-labelledby="highPriorityModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <h5 class="modal-title text-left" id="namaProyek">@Model.Opportunity.NamaProyek</h5>
+                        <p class="small text-muted" id="updateWording">@Model.Opportunity.UpdatedWording</p>
+                </div>
+                <button type="button" class="btn-close rounded" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <!-- First row with 4 columns -->
+                        <div class="col-3">
+                             @if (Model.Opportunity == null)
+                            {
+                                <div class="mb-3">
+                                    <label for="projectProfile" class="form-label text-muted">Project Profile</label>
+                                    <input type="text" class="form-control" id="projectProfile" value="-" readonly>
+                                </div>
+                            }else
+                            {
+                                <div class="mb-3">
+                                    <label for="projectProfile" class="form-label text-muted">Project Profile</label>
+                                    <input type="text" class="form-control" id="projectProfile" value="@Model.Opportunity.ProjectProfile" readonly>
+                                </div>
+                            }
+
+                        </div>
+                        <div class="col-3">
+                            @if (Model.Opportunity.OpStreamBusiness== null)
+                            {
+                                <div class="mb-3">
+                                    <label for="projectProfile" class="form-label text-muted">Project Profile</label>
+                                    <input type="text" class="form-control" id="businessStream" value="-" readonly>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="mb-3">
+                                    <label for="businessStream" class="form-label text-muted">Business Stream</label>
+                                    <input type="text" class="form-control" id="businessStream" value="@Model.Opportunity.OpStreamBusiness.QueryStreamBusinessName" readonly>
+                                </div>
+                            }
+
+                        </div>
+                        <div class="col-3">
+                            @if (Model.Opportunity.Deliverables == "")
+                            {
+                                <div class="mb-3">
+                                    <label for="deliverable" class="form-label text-muted">Deliverable</label>
+                                    <input type="text" class="form-control" id="deliverable" value="-" readonly>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="mb-3">
+                                    <label for="deliverable" class="form-label text-muted">Deliverable</label>
+                                    <input type="text" class="form-control" id="deliverable" value="@Model.Opportunity.Deliverables" readonly>
+                                </div>
+                            }
+
+                        </div>
+                        <div class="col-3">
+                            @if (Model.Opportunity.Timeline == "")
+                            {
+                                <div class="mb-3">
+                                    <label for="timeline" class="form-label text-muted">Timeline</label>
+                                    <input type="text" class="form-control" id="hsh" value="-" readonly>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="mb-3">
+                                    <label for="timeline" class="form-label text-muted">Timeline</label>
+                                    <input type="text" class="form-control" id="timeline" value="@Model.Opportunity.Timeline" readonly>
+                                </div>
+                            }
+
+                        </div>
+
+                        <!-- Force next columns to break to new line at md breakpoint and up -->
+                        <div class="w-100 d-none d-md-block py-4"></div>
+
+                        <!-- Second row with 4 columns -->
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="partners" class="form-label text-muted">Partner (s)</label>
+                                @if (Model.Opportunity.OpPartners.Count ==0)
+                                {
+                                        <input type="text" class="form-control" id="hsh" value="-" readonly>
+                                }
+                                else
+                                {
+                                    @foreach (var item in Model.Opportunity.OpPartners)
+                                    {
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control" id="partners" value="@item.PartnerName" readonly>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label for="hsh" class="form-label text-muted">Holding/Sub Holding - Pertamina Entity</label>
+                                @if (Model.Opportunity.OpEntitasPertaminas.Count <0)
+                                {
+                                        <input type="text" class="form-control" id="hsh" value="-" readonly>
+                                }
+                                else
+
+                                {
+                                    @foreach (var item in Model.Opportunity.OpEntitasPertaminas)
+                                    {
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control" id="hsh" value="@item.CompanyName" readonly>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="col-3">
+                             <div class="mb-3">
+                                <label for="hsh" class="form-label text-muted">Fungsi - PIC</label>
+                                @if (Model.Opportunity.OpPicFungsis.Count <0)
+                                {
+                                        <input type="text" class="form-control" id="hsh" value="-" readonly>
+                                }
+                                else
+
+                                {
+                                    @foreach (var item in Model.Opportunity.OpPicFungsis)
+                                    {
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control" id="fungsiPic" value="@item.PicName" readonly>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="col-3">
+                             <div class="mb-3">
+                                <label for="hsh" class="form-label text-muted">Project Location (Province)</label>
+                                @if (Model.Opportunity.OpEntitasPertaminas.Count <0)
+                                {
+                                        <input type="text" class="form-control" id="hsh" value="-" readonly>
+                                }
+                                else
+                                {
+                                    @foreach (var item in Model.Opportunity.OpLokasiProyeks)
+                                    {
+                                        <div class="mb-3">
+                                            <input type="text" class="form-control" id="projectLocation" value="@item.NamaProvinsi" readonly>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+
+                        <!-- Force next columns to break to new line at md breakpoint and up -->
+                        <div class="w-100 d-none d-md-block py-4"></div>
+
+                        <!-- Third row with 4 columns -->
+                        <div class="col-3">
+                            <h6>Project Value</h6>
+                        </div>
+                        <div class="w-100 d-none d-md-block"></div>
+
+                        <div class="col-3">
+                            @if (Model.Opportunity.PotentialRevenuePerYear== null)
+                            {
+                                <div class="mb-3">
+                                    <label for="revenue" class="form-label text-muted">Revenue ($ mn)</label>
+                                    <input type="text" class="form-control" id="revenue" value="-" readonly>
+                                </div>
+                            }else
+                            {
+                                <div class="mb-4">
+                                    <label for="revenue" class="form-label text-muted">Revenue ($ mn)</label>
+                                    <input type="text" class="form-control" id="revenue" value="@Model.Opportunity.PotentialRevenuePerYear" readonly>
+                                </div>
+                            }
+
+                        </div>
+                        <div class="col-3">
+                            @if (Model.Opportunity.Capex== null)
+                            {
+                                <div class="mb-3">
+                                    <label for="capex" class="form-label text-muted">Capex ($ mn)</label>
+                                    <input type="text" class="form-control" id="capex" value="-" readonly>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="mb-4">
+                                    <label for="capex" class="form-label text-muted">Capex ($ mn)</label>
+                                    <input type="text" class="form-control" id="capex" value="@Model.Opportunity.Capex" readonly>
+                                </div>
+                            }
+
+                        </div>
+                        <div class="col-3">
+                            @if (Model.Opportunity.NilaiProyek== null)
+                            {
+                                <div class="mb-3">
+                                    <label for="valuation" class="form-label text-muted">Valuation</label>
+                                    <input type="text" class="form-control" id="valuation" value="-" readonly>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="mb-4">
+                                    <label for="valuation" class="form-label text-muted">Valuation</label>
+                                    <input type="text" class="form-control" id="valuation" value="@Model.Opportunity.NilaiProyek" readonly>
+                                </div>
+                            }
+
+                        </div>
+
+                        <div class="w-100 d-none d-md-block py-4"></div>
+                        <!-- Force next columns to break to new line at md breakpoint and up -->
+                        <div class="col-3">
+                            <h6>Progress</h6>
+                        </div>
+                        <div class="w-100 d-none d-md-block"></div>
+
+                        <!-- Fourth row with 4 columns -->
+                        <div class="col-3">
+                            @if (Model.Opportunity.OpKesiapanProyek == null)
+                            {
+                                <div class="mb-3">
+                                    <label for="cooperationTarget" class="form-label text-muted">Cooperation Target</label>
+                                    <input type="text" class="form-control" id="cooperationTarget" value="-" readonly>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="mb-3">
+                                    <label for="cooperationTarget" class="form-label text-muted">Cooperation Target</label>
+                                    <input type="text" class="form-control" id="cooperationTarget" value="@Model.Opportunity.OpKesiapanProyek.Name" readonly>
+                                </div>
+                            }
+
+                        </div>
+                        <div class="col-3">
+                            @if (Model.Opportunity.OpTargetMitra == null)
+                            {
+                                <div class="mb-3">
+                                    <label for="projectReadiness" class="form-label text-muted">Project Readiness</label>
+                                    <input type="text" class="form-control" id="projectReadiness" value="-" readonly>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="mb-3">
+                                    <label for="projectReadiness" class="form-label text-muted">Project Readiness</label>
+                                    <input type="text" class="form-control" id="projectReadiness" value="@Model.Opportunity.OpTargetMitra.Name" readonly>
+                                </div>
+                            }
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

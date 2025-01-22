@@ -1,0 +1,311 @@
+﻿.pointer {
+    cursor: pointer;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.border-line-1 {
+    border: 1px solid black !important;
+}
+
+.mt--30 {
+    margin-top: -30px;
+}
+
+.mt--50 {
+    margin-top: -50px !important;
+}
+
+/*
+   Style Border Color Select2
+*/
+.form-select.form-select-solid {
+    border-color: var(--bs-gray-300);
+}
+
+/*Map*/
+#map-ibi {
+    width: 100%;
+    height: 500px;
+}
+/* Popover styling */
+
+.popover {
+    position: absolute;
+    display: none;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+}
+
+    .popover:after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: #fff transparent transparent transparent;
+    }
+
+.popover-header {
+    font-weight: bold;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-bottom: 1px solid #dee2e6;
+}
+
+    .popover-header img {
+        margin-right: 8px;
+    }
+
+.popover-body {
+    padding: 10px;
+}
+
+.info-box {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+    .info-box .col-6 {
+        background: #f8f9fa;
+        padding: 10px;
+        border-radius: 0.25rem;
+        text-align: center;
+        border: 1px solid #dee2e6;
+        margin-bottom: 0.5rem;
+    }
+
+    .info-box .col-12 {
+        background: #f8f9fa;
+        padding: 10px;
+        border-radius: 0.25rem;
+        text-align: center;
+        border: 1px solid #dee2e6;
+        margin-bottom: 0.5rem;
+    }
+
+    .info-box div span {
+        display: block;
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+
+.popover-footer {
+    padding: 10px;
+    border-top: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+    .popover-footer a {
+        text-decoration: none;
+        color: black;
+    }
+
+        .popover-footer a:hover {
+            text-decoration: underline;
+        }
+
+/* Basic styling for dropzone */
+.dropzone {
+    border: 2px dashed #e1e3ea;
+    padding: 100px;
+    text-align: center;
+    margin-bottom: 20px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #fff;
+}
+
+    .dropzone.dragover {
+        background-color: #ffff;
+    }
+
+#fileList {
+    margin-bottom: 20px;
+}
+
+.file-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5px;
+    font-size: 14px;
+}
+
+    .file-item button {
+        background-color: #ff4d4d;
+        color: white;
+        border: none;
+        padding: 5px 10px;
+        cursor: pointer;
+        border-radius: 3px;
+    }
+
+        .file-item button:hover {
+            background-color: #ff3333;
+        }
+
+
+.pl-20 {
+    padding-left: 20px;
+}
+
+.card {
+    --bs-card-border-color: none;
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+}
+
+.card-custom {
+    background-color: #FFF;
+    border-radius: 10px;
+    padding: 15px;
+    /*box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);*/
+}
+
+.border-gray {
+    border-color: var(--bs-gray-100) !important;
+}
+
+.btn-discussion-status {
+    border-radius: 30px;
+    font-size: 10px;
+}
+
+.logo-sa {
+    font-size: 14px;
+    font-weight: bold;
+    color: #d9534f;
+}
+
+.notification {
+    position: relative;
+    font-size: 18px;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 0px;
+    right: -3px;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 0px 4px;
+    font-size: 8px;
+}
+
+.circle-icon {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid black;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: bold;
+    color: black;
+}
+
+.c-item {
+    align-items: center !important;
+}
+
+.nav-stretch .nav-item {
+    flex-direction: column;
+}
+
+.align-items-start {
+    float: inline-start !important;
+}
+
+.align-items-end {
+    float: inline-end !important;
+}
+
+.scrollable-container {
+    height: 665px;
+    overflow-y: scroll;
+}
+
+.card .card-footer {
+    border-top: 1px solid #eee;
+}
+
+.bg-detail-ibi-docs {
+    background-color: #EBF1F5;
+}
+
+.bg-detail-ibi-confidentiality {
+    background-color: #D0E7DF;
+}
+
+.view-detail-ibi .heading-detail-ibi h4 {
+    margin: 0;
+}
+
+#btn-delete-ibi {
+    border: solid 1px #F64E60;
+}
+/* Custom style for rounded close button */
+.rounded-close {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%; /* Makes the button fully round */
+    background-color: #f8f9fa; /* Optional: Change background color */
+    border: 1px solid #ced4da; /* Optional: Add a border */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0; /* Removes default padding */
+}
+
+    .rounded-close::before {
+        content: '\00d7'; /* Keeps the '×' icon for close */
+        font-size: 1.25rem;
+        font-weight: bold;
+        color: #000; /* Optional: Change the color of the icon */
+    }
+
+    .rounded-close:hover {
+        background-color: #e2e6ea; /* Optional: Change background color on hover */
+    }
+
+#high-priority-list .empty-msg {
+    display: flex;
+    justify-content: center; /* Ensure the inner content is also centered */
+    align-items: center;
+    height: 100%; /* Take full height of the container */
+}
+.spinner{
+    width:80px;
+    height:80px;
+}
+
+#disclaimer-modal .modal-title {
+    margin: 0 auto;
+}
+
+.timeline-label::before {
+    left: 0px !important;
+}
+
+@media(min-width:1200px) {
+    .fs-1 {
+        font-size: 1.00rem !important;
+    }
+}

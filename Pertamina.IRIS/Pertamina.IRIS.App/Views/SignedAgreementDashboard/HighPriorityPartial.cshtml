@@ -1,0 +1,159 @@
+﻿@using Pertamina.IRIS.Models.Base
+@inject GlobalVariableBaseModel globalParam
+@model Pertamina.IRIS.Models.ViewModels.SignedAgreementDashboardViewModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@if (!(Model.HighPriority is null))
+{
+    @foreach (var high in Model.HighPriority)
+    {
+        <div class="card card-flush mb-6">
+            <a class="card border-hover-primary cursor-pointer"
+               data-toggle="details-partial-modal"
+               data-target="#HighPriorityModal"
+               data-url="@Url.Action("Detail", "SignedAgreementDashboard", new { guid = high.Id })">
+                <div class="card-header padding-high-priority-card-header border-0 min-h-2px">
+                    <div class="d-flex flex-row card-title m-0" style="align-items:normal">
+                        @if (high.HasLembaga)
+                        {
+                            <div class="d-flex flex-row-fluid m-0 tooltipModif-container" style="min-width:70%">
+                                <span class="fw-bold fs-5 px-0">
+                                    @if (high.JudulPerjanjian.Length > 50 & Model.KementrianLembaga.Where(x => x.AgreementId == high.Id).Count() < 3)
+                                    {
+                                        <span>@high.JudulPerjanjian.Substring(0, 50)<span style="color:dimgrey"> ...</span></span>
+                                        <span class="tooltipModif">@high.JudulPerjanjian</span>
+                                    }
+                                    else
+                                    {
+                                        @high.JudulPerjanjian
+                                    }
+                                </span>
+                            </div>
+                            <div class="d-flex flex-row-fluid" style="min-width:30%">
+                                <ul style="padding-left: 0px;">
+                                    @foreach (var rec in Model.KementrianLembaga.Where(x => x.AgreementId == high.Id))
+                                    {
+                                        <li style="list-style-type: none;">
+                                            <span data-bs-toggle="tooltip" title="@rec.Description">
+                                                <i class="ki-duotone ki-information-5 text-gray-500">
+                                                    <span class="path1"></span>
+                                                    <span class="path2"></span>
+                                                    <span class="path3"></span>
+                                                </i>
+                                            </span>
+                                            <span class="logo-sa text-right">@rec.LembagaName</span>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex flex-row-fluid m-0 tooltipModif-container" style="min-width:100%">
+                                <span class="fw-bold fs-5 px-0">
+                                    @if (high.JudulPerjanjian.Length > 50)
+                                    {
+                                        <span>@high.JudulPerjanjian.Substring(0, 50)<span style="color:dimgrey"> ...</span></span>
+                                        <span class="tooltipModif">@high.JudulPerjanjian</span>
+                                    }
+                                    else
+                                    {
+                                        @high.JudulPerjanjian
+                                    }
+                                </span>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="card-body padding-high-priority-card-body min-h-2px mb-3">
+                    <div class="d-flex flex-wrap">
+                        <div class="padding-right-10">
+                            @if (!string.IsNullOrEmpty(high.TargetDateAkhir))
+                            {
+                                <div class="fs-6 text-gray-600 fw-bold">@(high.TargetDateAkhir)</div>
+                                <div class="fs-8 text-gray-400">Target Definitive Agreements</div>
+                            }
+                            else
+                            {
+                                <div class="fs-6 text-gray-600 fw-bold">N/A</div>
+                                <div class="fs-8 text-gray-400">Target Definitive Agreements</div>
+                            }
+                        </div>
+                        <div class="padding-right-10">
+                            @if (!string.IsNullOrEmpty(high.PotentialRevenuePerYearFormat))
+                            {
+                                <div class="fs-6 text-gray-600 fw-bold">$@(high.PotentialRevenuePerYearFormat)mn</div>
+                                <div class="fs-8 text-gray-400">Potential Revenue</div>
+                            }
+                            else
+                            {
+                                <div class="fs-6 text-gray-600 fw-bold">N/A</div>
+                                <div class="fs-8 text-gray-400">Potential Revenue</div>
+                            }
+                        </div>
+                        <div class="padding-right-10">
+                            @if (!string.IsNullOrEmpty(high.CapexFormat))
+                            {
+                                <div class="fs-6 text-gray-600 fw-bold">$@(high.CapexFormat)mn</div>
+                                <div class="fs-8 text-gray-400">Estimated CAPEX</div>
+                            }
+                            else
+                            {
+                                <div class="fs-6 text-gray-600 fw-bold">N/A</div>
+                                <div class="fs-8 text-gray-400">Estimated CAPEX</div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer border-1 padding-high-priority-card-footer min-h-30px">
+                    <div class="d-flex align-items-center justify-content-between w-100 mt-auto">
+                        <div class="symbol-group symbol-hover mt-2 mb-2">
+                            <div class="symbol symbol-20px symbol-2by3 me-4" data-bs-toggle="tooltip" title="@high.NamaNegara">
+                                @if (high.ExistsFlag)
+                                {
+                                    <img class="symbol-label" src="@globalParam.PrefixPicName@high.CountryFlag" alt="Pic">
+                                }
+                                else
+                                {
+                                    <img class="symbol-label" src="@globalParam.PrefixPicName/assets/media/flags/globe.svg" alt="Pic">
+                                }
+                            </div>
+                            <div class="me-4">
+                            </div>
+                            @if (!string.IsNullOrEmpty(@high.PicFungsiName))
+                            {
+                                <div class="symbol symbol-20px symbol-circle" data-bs-toggle="tooltip" title="@high.PicFungsiName">
+                                    <span class="symbol-label bg-info text-inverse-info fw-bold">@high.PicFungsiName.Substring(0, 1)</span>
+                                </div>
+                            }
+                        </div>
+                        <span class="fs-8 text-gray-400 px-0">@high.UpdatedWording</span>
+                        <span class="badge badge-@high.ValidStatusColorName badge-lg" style="background-color:@high.ValidStatusColorHexa"> @high.StatusBerlakuName </span>
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+    @Html.HiddenFor(x => x.PageCountSort, "Value")
+    @Html.HiddenFor(x => x.RecordHighPriorityCountSort, "Value")
+    @Html.HiddenFor(x => x.AllRecordHighPriorityCountSort, "Value")
+    @Html.HiddenFor(x => x.CountryAcronym, "Value")
+    @if (Model.PageCountSort > 0 && (Model.RecordHighPriorityCountSort != Model.AllRecordHighPriorityCountSort))
+    {
+        <div class="d-flex justify-content-center lazy-loading" hidden>
+            <div class="loader">
+                <div class="loader-inner">
+                    <div class="loader-block"></div>
+                    <div class="loader-block"></div>
+                    <div class="loader-block"></div>
+                    <div class="loader-block"></div>
+                    <div class="loader-block"></div>
+                    <div class="loader-block"></div>
+                    <div class="loader-block"></div>
+                    <div class="loader-block"></div>
+                </div>
+            </div>
+        </div>
+    }
+}

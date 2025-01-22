@@ -1,0 +1,174 @@
+﻿@using Pertamina.IRIS.Models.Base
+@inject GlobalVariableBaseModel globalParam
+@model Pertamina.IRIS.Models.ViewModels.ExternalContactViewModel
+
+@{
+    ViewData["Title"] = "Agreement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="app-main flex-column flex-row-fluid">
+    <div class="d-flex flex-column flex-column-fluid">
+        <div class="app-toolbar py-3 py-lg-6">
+            <div class="app-container container-xxl d-flex flex-stack">
+                <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+                    <h1 class="page-heading d-flex text-dark fw-bold fs-3 flex-column justify-content-center my-0">Detail External Contact</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="app-content flex-column-fluid">
+        <div class="app-container container-xxl">
+            <div class="card card-flush">
+                <div class="card-body fs-6 py-10 px-10 py-lg-10 px-lg-10 text-gray-700">
+                    <div class="row mb-7">
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Nama Perusahaan / Lembaga</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (@Model.NamaCompany != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.NamaCompany</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Alamat Perusahaan / Lembaga</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (@Model.AlamatCompany != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.AlamatCompany</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Email Perusahaan / Lembaga</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (Model.EmailCompany != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.EmailCompany</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Remarks </label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (Model.Remark != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.Remark</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Nama PIC</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (Model.NamaPerson != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.NamaPerson</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Jabatan Pic</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (Model.JabatanPerson != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.JabatanPerson</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">Email Pic</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (Model.EmailPerson != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.EmailPerson</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-7">
+                        <!--begin::Label-->
+                        <label class="col-lg-4 fw-semibold text-muted">No Hp Pic</label>
+                        <!--end::Label-->
+                        <!--begin::Col-->
+                        <div class="col-lg-8">
+                            @if (Model.NoTelpPerson != null)
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">: @Model.NoTelpPerson</span>
+                            }
+                            else
+                            {
+                                <span class="fw-bold fs-6 text-gray-800">:</span>
+                            }
+                        </div>
+                        <!--end::Col-->
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-lg-12 d-flex justify-content-end pb-0 px-0">
+                            <button id="btnCancel" type="submit" class="btn font-weight-bold btn-secondary" onclick="location.href='@Url.Action("Index","ExternalContact")'">
+                                Back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

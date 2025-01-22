@@ -1,0 +1,448 @@
+﻿@section Styles {
+    <link href="~/css/custom.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/popfilter.css" rel="stylesheet" type="text/css" />
+}
+
+@using Pertamina.IRIS.Models.Base
+@inject GlobalVariableBaseModel globalParam
+@model Pertamina.IRIS.Models.ViewModels.PotentialInitiativesDashboardViewModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Potential Initiatives Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+    string IsAdd = Pertamina.IRIS.App.Helpers.HtmlHelper.IsAdd(HttpContextAccessor.HttpContext.Session);
+    string IsDelete = Pertamina.IRIS.App.Helpers.HtmlHelper.IsDelete(HttpContextAccessor.HttpContext.Session);
+    string IsEdit = Pertamina.IRIS.App.Helpers.HtmlHelper.IsEdit(HttpContextAccessor.HttpContext.Session);
+    var homeMetrics = Model.Metrics.Take(3);
+}
+
+<div class="app-main flex-column flex-row-fluid">
+    <div class="header-secondary flex-column-fluid">
+        <div class="app-toolbar py-3 py-lg-6">
+            <div class="app-container container-xxl d-flex flex-stack">
+                <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+                    <div class="menu menu-gray-600 menu-active-primary menu-hover-light-primary menu-here-light-primary menu-show-light-primary fs-4" data-kt-menu="true">
+                        <div class="menu-item here badge badge-light-danger badge-lg">
+                            <a href="@Url.Action("Index", "ExistingFootprintsDashboard")" class="menu-link">
+                                <span class="menu-title fw-bolder fs-4">Home</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="@Url.Action("Index", "InternationalBusinessIntelligence")" class="menu-link">
+                                <span class="menu-title">International Business Intelligence</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="app-main flex-column flex-row-fluid wrapper-40">
+    <div class="app-content flex-column-fluid">
+        <div class="app-container container-xxl">
+            <div class="d-flex flex-column flex-xl-row">
+                <div class="flex-lg-row-fluid">
+                    <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fw-bold fs-5 mb-5">
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-red text-active-gray-900"
+                               href="@Url.Action("Index", "ExistingFootprintsDashboard")"
+                               aria-selected="false"
+                               role="tab">
+                                Existing Footprints
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-red text-active-gray-900 active"
+                               data-bs-toggle="tab"
+                               href="@Url.Action("Index", "PotentialInitiativesDashboard")"
+                               aria-selected="true"
+                               role="tab">
+                                Potential Initiatives
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-red text-active-gray-900"
+                               href="@Url.Action("Index", "SignedAgreementDashboard")"
+                               aria-selected="false"
+                               role="tab">
+                                Signed Agreement
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-red text-active-gray-900"
+                               href="@Url.Action("Index", "ProjectsToOfferDashboard")"
+                               aria-selected="false"
+                               role="tab">
+                                Projects To Offer
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-pane fade show active" id="potential_initiatives" role="tabpanel">
+                        <div class="card card-flush mb-5">
+                            <div class="card-body py-2 px-2 py-lg-2 px-lg-2 text-gray-700">
+                                <div class="row py-2 justify-content-end">
+                                    <div class="col-3">
+                                        @Html.DropDownListFor(x => x.NegaraMitraId,
+                                                 new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                 new
+                                                 {
+                                                     @id = "ddlNegaraMitra",
+                                                     @class = "form-select form-select-solid form-select-sm fw-semibold border-gray",
+                                                     aria_label = "Country",
+                                                     data_control = "select2",
+                                                     data_placeholder = "Country",
+                                                     data_allow_clear = "true"
+                                                 })
+                                    </div>
+                                    <div class="col-3">
+                                        @Html.DropDownListFor(x => x.StreamBusinessId,
+                                                 new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                 new
+                                                 {
+                                                     @id = "ddlStreamBusiness",
+                                                     @class = "form-select form-select-solid form-select-sm fw-semibold border-gray",
+                                                     aria_label = "Stream",
+                                                     data_control = "select2",
+                                                     data_placeholder = "Stream",
+                                                     data_allow_clear = "true"
+                                                 })
+                                    </div>
+                                    <div class="col-3">
+                                        @Html.DropDownListFor(x => x.EntitasPertaminaId,
+                                                 new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                 new
+                                                 {
+                                                     @id = "ddlEntitasPertamina",
+                                                     @class = "form-select form-select-solid form-select-sm fw-semibold border-gray",
+                                                     aria_label = "Entities",
+                                                     data_control = "select2",
+                                                     data_placeholder = "Entities",
+                                                     data_allow_clear = "true"
+                                                 })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            @if (homeMetrics != null)
+                            {
+                                foreach (var metric in homeMetrics)
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="card card-flush mb-5">
+                                            <div class="card-header padding-metrics-header border-0 min-h-2px">
+                                                <div class="card-title m-0">
+                                                    <span class="fs-8 text-gray-600">@string.Format(metric.Title, metric.Year)</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-body padding-metrics-body min-h-2px mb-3">
+                                                <div class="metrics-value px-0">@metric.Point</div>
+                                            </div>
+                                            <div class="card-footer border-1 padding-metrics-footer min-h-30px">
+                                                <div class="d-flex align-items-center justify-content-between w-100 mt-auto">
+                                                    <div class="symbol-group symbol-hover mt-2 mb-2">
+                                                        <div class="symbol symbol-20px symbol-2by3 me-2" data-bs-toggle="tooltip">
+                                                            <i class="@metric.Src" style="color: @metric.ColorCode;"></i>
+                                                        </div>
+                                                        <div class="fs-4 fw-bold text-gray-600" data-kt-countup="true" data-kt-countup-value="@metric.Percent" data-kt-countup-suffix="%">0</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                            <div class="col-sm-12 col-md-12">
+                                <div class="card card-flush mb-5 text-center p-2">
+                                    <button class="btn btn-bt-white text-gray-800" data-bs-toggle="modal" data-bs-target="#all-metrics-modal" href="">Show All Metrics</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card card-flush mb-5">
+                            <div class="card-body py-2 px-2 py-lg-2 px-lg-2 text-gray-700">
+                                <div class="row py-2 justify-content-end">
+                                    <div id="chartdiv" class="chartmap-potential-initiatives"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-5 ms-lg-5 potential-initiatives-high-prio-container">
+                    <div class="d-flex align-items-center justify-content-between w-100 mt-auto mb-3 popover-container">
+                        <span class="fw-bold fs-5 py-5 px-0">High Priority Potential Initiatives</span>
+                        <a class="fw-bold align-items-right pointer popover-button">
+                            <i class="fa fa-long-arrow-alt-up"></i>
+                            <i class="fa fa-long-arrow-alt-down"></i>
+                        </a>
+                        <div class="popover-content">
+                            <h4 class="text-center mb-6">Sorting High Priority</h4>
+                            @using (Html.BeginForm("Index", "PotentialInitiativesDashboard", FormMethod.Get, new { id = "sortingForm" }))
+                            {
+                                <div class="card-body">
+                                    <div class="form-group row">
+                                        @Html.DropDownList("columnSort", new List<SelectListItem>
+                                    {                                    
+                                    new SelectListItem { Text = "Potential Revenue", Value = "RevenuePerYear" ,  Selected = ViewBag.ColumnSort =="RevenuePerYear"},
+                                    new SelectListItem { Text = "Estimated CAPEX", Value = "Capex",  Selected = ViewBag.ColumnSort =="Capex"}
+                                    })
+                                    </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-12 mt-4">
+                                            <div class="radio-inline">
+                                                <label class="radio radio-solid">
+                                                    <input type="radio" name="SortOrder" checked="checked" value="asc" , @(ViewBag.SortOrder == "asc" ? "checked" : "") />
+                                                    <span></span>
+                                                    ASC
+                                                </label>
+                                                <label class="radio radio-solid">
+                                                    <input type="radio" name="SortOrder" value="desc" , @(ViewBag.SortOrder == "desc" ? "checked" : "") />
+                                                    <span></span>
+                                                    DESC
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 text-center mt-4">
+                                        <button type="submit" class="btn btn-danger btn-sm mx-2" value="reset" name="reset">Reset</button>
+                                        <button type="submit" class="btn btn-primary btn-sm mx-2">
+                                            Apply
+                                        </button>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                    <div id="high-priority-list" class="scrollable-container">
+                        @if (Model.HighPriorityInitiatives != null)
+                        {
+                            @foreach (var item in Model.HighPriorityInitiatives)
+                            {
+                                <div class="card card-flush mb-6">
+
+                                    <a href="#"
+                                    data-toggle="detail-modal"
+                                    data-target="#HighPriorityModal"
+                                    data-url="@Url.Action("Detail", "PotentialInitiativesDashboard", new { guid = item.Id })">
+                                        <div class="card-header padding-high-priority-card-header border-0 min-h-2px justify-content-between">
+                                            <div class="d-flex justify-content-start text-start card-title m-0 w-50">
+                                                <span class="fw-bold fs-6 px-0">@item.JudulInisiasi</span>
+                                            </div>
+                                            <div class="d-flex justify-content-end text-end card-title m-0 w-50">
+                                                @if (item.KementrianLembagaName != null)
+                                                {
+                                                    <span class="mx-2" data-bs-toggle="tooltip" data-bs-original-title="@(item.KementrianLembagaDescription)">
+                                                        <i class="fa-sharp fa-solid fa-circle-exclamation"></i>
+                                                    </span>
+                                                    <span class="fw-bold fs-6 px-0">@(item.KementrianLembagaName)</span>
+                                                }
+                                            </div>
+                                        </div>
+                                        <div class="card-body padding-high-priority-card-body min-h-2px mb-3">
+                                            <div class="d-flex flex-wrap">
+                                                <div class="padding-right-10">
+                                                    <div class="fs-6 text-gray-600 fw-bold">@item.MilestoneTargetDate.Value.ToString("dd/MM/yy")</div>
+                                                    <div class="fs-7 text-gray-400 w-60px">Target MoU</div>
+                                                </div>
+                                                <div class="padding-right-10">
+                                                    <div class="fs-6 text-gray-600 fw-bold">@item.MilestoneTargetDefinitive.Value.ToString("dd/MM/yy")</div>
+                                                    <div class="fs-7 text-gray-400 w-60px">Target Definitive Agreements</div>
+                                                </div>
+                                                <div class="padding-right-10">
+                                                    @if (item.RevenuePerYear.HasValue)
+                                                    {
+                                                        <div class="fs-6 text-gray-600 fw-bold">$@(item.RevenuePerYear.Value.ToString("G29"))mn</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="fs-7 text-gray-600 fw-bold">-</div>
+                                                    }
+                                                    <div class="fs-7 text-gray-400 w-60px">Potential Revenue</div>
+                                                </div>
+                                                <div class="padding-right-10">
+                                                    @if (item.Capex.HasValue)
+                                                    {
+                                                        <div class="fs-7 text-gray-600 fw-bold">$@(@item.Capex.Value.ToString("G29"))mn</div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="fs-7 text-gray-600 fw-bold">-</div>
+                                                    }
+                                                    <div class="fs-7 text-gray-400 w-60px">Estimated CAPEX</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-footer border-1 padding-high-priority-card-footer min-h-30px">
+                                            <div class="d-flex align-items-center justify-content-between w-100 mt-auto">
+                                                <div class="symbol-group symbol-hover mt-2 mb-2">
+                                                    <div class="symbol symbol-20px symbol-2by3 me-4" data-bs-toggle="tooltip" aria-label="Mad Macy" data-bs-original-title="Mad Macy" data-kt-initialized="1">
+                                                        @if (item.ExistsFlag)
+                                                        {
+                                                            <img class="symbol-label" src="@globalParam.PrefixPicName@item.Flag" alt="Pic">
+                                                        }
+                                                        else
+                                                        {
+                                                            <img class="symbol-label" src="@globalParam.PrefixPicName/assets/media/flags/globe.svg" alt="Pic">
+                                                        }
+                                                    </div>
+                                                    @if (item.HubHeadName != null)
+                                                    {
+                                                        <div class="symbol symbol-20px symbol-circle" data-bs-toggle="tooltip" title="@item.HubHeadName">
+                                                            <span class="symbol-label bg-info text-inverse-info fw-bold">@item.HubHeadName.Substring(0, 1)</span>
+                                                        </div>
+                                                    }
+                                                    @if (item.PicFungsiName != null)
+                                                    {
+                                                        <div class="symbol symbol-20px symbol-circle px-2" data-bs-toggle="tooltip" title="@item.PicFungsiName">
+                                                            <span class="symbol-label bg-info text-inverse-info fw-bold">@item.PicFungsiName.Substring(0, 1)</span>
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <div>
+                                                    <span class="fs-7 text-gray-400 px-">@item.UpdatedWording</span>
+                                                    <span class="badge badge-light-@item.InitiativeStatusColorName badge-sm">@item.InitiativeStatus</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="app-container container-xxl">
+            <div class="card card-flush">
+                <div class="card-body fs-6 py-10 px-10 py-lg-10 px-lg-10 text-gray-700">
+                    <div class="p-0">
+                        <div class="d-flex flex-stack mb-5">
+                            <div class="d-flex align-items-center position-relative my-1">
+                                <i class="ki-duotone ki-magnifier fs-1 position-absolute ms-6"><span class="path1"></span><span class="path2"></span></i>
+                                <input id="searchInput" type="text" data-kt-docs-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search" />
+                                <span class="ms-1" data-bs-toggle="tooltip" title="earch is applied to Judul Initiative, PIC, Hub Head, Target MOU Signing, Potential Definitive Agreement, Potential Revenue, Estimated Capex">
+                                    <i class="ki-duotone ki-information-5 text-gray-500 fs-1">
+                                        <span class="path1"></span>
+                                        <span class="path2"></span>
+                                        <span class="path3"></span>
+                                    </i>
+                                </span>
+
+                            </div>
+                            <div class="d-flex justify-content-end" data-kt-docs-table-toolbar="base">
+                                <div class="d-flex justify-content-between" style="display: none !important">
+                                    <a href="#" class="fw-bold">
+                                        <i class="ki-duotone ki-filter fs-1 text-muted me-1"><span class="path1"></span><span class="path2"></span></i>
+                                    </a>
+                                    <a id="sort-table" class="fw-bold">
+                                        <i class="fa fa-long-arrow-alt-up"></i>
+                                        <i class="fa fa-long-arrow-alt-down"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <table id="dataTable" class="table align-middle table-row-dashed fs-6 gy-5">
+                            <thead>
+                                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                    <th>JUDUL INITIATIVE</th>
+                                    <th>PIC</th>
+                                    <th>HUB HEAD</th>
+                                    <th>Target MoU Signing</th>
+                                    <th>Target Definitive Agreement</th>
+                                    <th>Potential Revenue ($ mn.)</th>
+                                    <th>Estimated CAPEX ($ mn.)</th>
+                                    <th>Status Updates</th>
+                                    <th>Support Required</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-600 fw-semibold">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="all-metrics-modal" tabindex="-1">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content bg-light">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Project KPI</h5>
+                        <button type="button" class="btn btn-white" data-bs-dismiss="modal" aria-label="Close">
+                            <i class="far fa-times-circle fa-2xl" style="font-size: 20px"></i>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            @if (Model.Metrics != null)
+                            {
+                                foreach (var metric in Model.Metrics)
+                                {
+                                    <div class="col-sm-4">
+                                        <div class="card card-flush mb-5">
+                                            <div class="card-header padding-metrics-header border-0 min-h-2px">
+                                                <div class="card-title m-0">
+                                                    <span class="fs-8 text-gray-600">@string.Format(metric.Title, metric.Year)</span>
+                                                </div>
+                                            </div>
+                                            <div class="card-body padding-metrics-body min-h-2px mb-3">
+                                                <div class="metrics-value px-0">@metric.Point</div>
+                                            </div>
+                                            <div class="card-footer border-1 padding-metrics-footer min-h-30px">
+                                                <div class="d-flex align-items-center justify-content-between w-100 mt-auto">
+                                                    <div class="symbol-group symbol-hover mt-2 mb-2">
+                                                        <div class="symbol symbol-20px symbol-2by3 me-2" data-bs-toggle="tooltip">
+                                                            <i class="@metric.Src" style="color: @metric.ColorCode;"></i>
+                                                        </div>
+                                                        <div class="fs-4 fw-bold text-gray-600" data-kt-countup="true" data-kt-countup-value="@metric.Percent" data-kt-countup-suffix="%">0</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="CreatePartialModal"></div>
+<div id="DetailPartialModal"></div>
+<div id="UpdatePartialModal"></div>
+
+@section Scripts {
+    <script>
+        var param = (function (param) {
+            param.prefix = '@globalParam.PrefixApiUrl';
+            param.urlAction = '@globalParam.PrefixRootName' + '@controllerName/';
+            param.dataGrid = '@globalParam.PrefixApiUrl' + 'ApiPotentialinitiativesDashboard/List';
+            param.dataCountSearch = '@globalParam.PrefixApiUrl' + 'ApiPotentialinitiativesDashboard/GetCountSearch';
+            param.urlGetCountriesMap = '@globalParam.PrefixApiUrl' + 'ApiPotentialinitiativesDashboard/GetCountriesMap';
+            param.isDelete = '@IsDelete';
+            param.isEdit = '@IsEdit';
+            return param;
+        })(param || {});
+    </script>
+    <script src="~/js/form/base-url-api.js"></script>
+    <script src="~/lib/amcharts/index.js"></script>
+    <script src="~/lib/amcharts/map.js"></script>
+    <script src="~/lib/amcharts/worldLow.js"></script>
+    <script src="~/lib/amcharts/Animated.js"></script>
+    <script src="~/js/form/potentialInitiativesMap.js"></script>
+    <script src="~/js/form/potentialInitiativesDashboard.js"></script>
+    <script>
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        });
+    </script>
+}

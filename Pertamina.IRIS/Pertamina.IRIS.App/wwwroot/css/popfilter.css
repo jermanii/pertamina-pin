@@ -1,0 +1,94 @@
+﻿/* Popover container */
+.popover-container {
+    position: relative;
+    display: inline-block;
+}
+
+/* Popover content - positioned at the bottom */
+.popover-content {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 110%; /* Moves the popover below the button */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 5px;
+    width: 100%;
+    text-align: left;
+    transition: visibility 0.2s, opacity 0.2s;
+    z-index: 1;
+}
+
+/* Popover project to offer content - positioned at the bottom */
+.popover-contentProjectToOfferDashboard {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    top: 110%; /* Moves the popover below the button */
+    left: 70%;
+    transform: translateX(-50%);
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    border-radius: 5px;
+    width: 55%;
+    text-align: left;
+    transition: visibility 0.2s, opacity 0.2s;
+    z-index: 1;
+}
+
+/* Popover visible state */
+.popover-container.active .popover-content {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Popover project to offer visible state */
+.popover-container.active .popover-contentProjectToOfferDashboard {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Popover arrow - now pointing upwards */
+.popover-content::after {
+    content: '';
+    position: absolute;
+    bottom: 100%; /* Moves the arrow to the top */
+    left: 95%;
+    transform: translateX(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent white transparent; /* Arrow points upwards */
+}
+
+/* Popover project to offer arrow - now pointing upwards */
+.popover-contentProjectToOfferDashboard::after {
+    content: '';
+    position: absolute;
+    bottom: 100%; /* Moves the arrow to the top */
+    left: 95%;
+    transform: translateX(-50%);
+    border-width: 10px;
+    border-style: solid;
+    border-color: transparent transparent white transparent; /* Arrow points upwards */
+}
+
+/* Styling for the form fields */
+form input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.potential-initiatives-high-prio-container .popover-container .popover-content {
+    width: 55%;
+    transform: none;
+    left: 45%;
+}

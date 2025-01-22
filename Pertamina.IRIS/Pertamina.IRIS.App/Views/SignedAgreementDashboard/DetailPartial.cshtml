@@ -1,0 +1,173 @@
+﻿@using Pertamina.IRIS.Models.Base
+@inject GlobalVariableBaseModel globalParam
+@model Pertamina.IRIS.Models.ViewModels.SignedAgreementDashboardHighPriorityViewModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+
+}
+
+<div class="modal fade" id="HighPriorityModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header" style="border-bottom:0px;">
+                <div class="flex-column">
+                    <h5 class="modal-title text-left">@Model.JudulPerjanjian</h5>
+                    <div class="d-flex flex-row justify-content-between">
+                        <span class="fs-8 text-gray-600">Last Updated: @Model.UpdatedWording</span>
+                    </div>
+                </div>
+                <button type="button" class="btn-close rounded-close mt--50" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label class="fs-6 fw-semibold mb-2">Agreement Code</label>
+                                <input type="text" class="form-control form-control-solid" value="@Model.KodeAgreement" readonly>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="mb-3">
+                                <label class="fs-6 fw-semibold mb-2">Partner Region</label>
+                                <input type="text" class="form-control form-control-solid" value="@Model.CountryRegion" readonly>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="mb-3">
+                                <label class="fs-6 fw-semibold mb-2">Agreement Type</label>
+                                <input type="text" class="form-control form-control-solid" value="@Model.JenisPerjanjian" readonly>
+                            </div>
+                        </div>
+                        <div class="w-100 d-none d-md-block py-4"></div>
+                        <div class="col-6">
+                            <div class="mb-3 col">
+                                <label class="fs-6 fw-semibold mb-2">Pertamina Entity</label>
+                                @if (@Model.Entitas != null)
+                                {
+                                    @foreach (var rec in Model.Entitas)
+                                    {
+                                        <input type="text" class="form-control form-control-solid mb-1" value="@rec.CompanyName" readonly>
+                                    }
+                                }
+                                else
+                                {
+                                    <input type="text" class="form-control form-control-solid mb-1" value="N/A" readonly />
+                                }
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3 col">
+                                <label class="fs-6 fw-semibold mb-2">Business Strem</label>
+                                @if (@Model.Streams != null)
+                                {
+                                    @foreach (var rec in Model.Streams)
+                                    {
+                                        <input type="text" class="form-control form-control-solid mb-1" value="@rec.Name" readonly>
+                                    }
+                                }
+                                else
+                                {
+                                    <input type="text" class="form-control form-control-solid mb-1" value="N/A" readonly />
+                                }
+                            </div>
+                        </div>
+                        <div class="w-100 d-none d-md-block py-4"></div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <div class="mb-3 col">
+                                    <label class="fs-6 fw-semibold mb-2">Partner (s)</label>
+                                    @if (@Model.Partners != null)
+                                    {
+                                        @foreach (var rec in Model.Partners)
+                                        {
+                                            <input type="text" class="form-control form-control-solid mb-1" value="@rec.PartnerName" readonly />
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control form-control-solid mb-1" value="N/A" readonly />
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="mb-3 col">
+                                    <label class="fs-6 fw-semibold mb-2">Project location</label>
+                                    @if (@Model.ProjectLocations != null)
+                                    {
+                                        @foreach (var rec in Model.ProjectLocations)
+                                        {
+                                            <input type="text" class="form-control form-control-solid mb-1" value="@rec.LokasiProyek" readonly />
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        <input type="text" class="form-control form-control-solid mb-1" value="N/A" readonly />
+                                    }
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="w-100 d-none d-md-block py-4"></div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <h6>Project Value</h6>
+                            </div>
+                        </div>
+                        <div class="w-100 d-none d-md-block"></div>
+                        <div class="col-4">
+                            <div class="mb-3">
+                                <label class="fs-6 fw-semibold mb-2">Revenue</label>
+                                <input type="text" class="form-control form-control-solid" value="@(string.IsNullOrEmpty(Model.PotentialRevenuePerYearFormat) ? "N/A" : Model.PotentialRevenuePerYearFormat)" readonly>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="mb-3">
+                                <label class="fs-6 fw-semibold mb-2">CAPEX</label>
+                                <input type="text" class="form-control form-control-solid" value="@(string.IsNullOrEmpty(Model.CapexFormat) ? "N/A" : Model.CapexFormat)" readonly>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="mb-3">
+                                <label class="fs-6 fw-semibold mb-2">Valuation</label>
+                                <input type="text" class="form-control form-control-solid" value="@(string.IsNullOrEmpty(Model.ValuationFormat) ? "N/A" : Model.ValuationFormat)" readonly>
+                            </div>
+                        </div>
+                        <div class="w-100 d-none d-md-block py-4"></div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <h6>Progress</h6>
+                                <label class="fs-6 fw-semibold mb-2">Valid Status</label>
+                                <input type="text" class="form-control form-control-solid" value="@(string.IsNullOrEmpty(Model.StatusBerlakuName) ? "N/A" : Model.StatusBerlakuName)" readonly>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <h6>Progress</h6>
+                                <label class="fs-6 fw-semibold mb-2">Disscussion Status</label>
+                                <input type="text" class="form-control form-control-solid" value="@(string.IsNullOrEmpty(Model.DiscussionStatus) ? "N/A" : Model.DiscussionStatus)" readonly>
+                            </div>
+                        </div>
+                        <div class="w-100 d-none d-md-block py-4"></div>
+                        <div class="col-3">
+                            <div class="mb-3">
+                                <label class="fs-6 fw-semibold mb-2">Issues</label>
+                                <input type="text" class="form-control form-control-solid" value="@(string.IsNullOrEmpty(Model.KlasifikasiKendala) ? "N/A" : Model.KlasifikasiKendala)" readonly>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label class="fs-6 fw-semibold mb-2">Support Needed</label>
+                                <input type="text" class="form-control form-control-solid" value="@(string.IsNullOrEmpty(Model.DeskripsiKendala) ? "N/A" : Model.DeskripsiKendala)" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

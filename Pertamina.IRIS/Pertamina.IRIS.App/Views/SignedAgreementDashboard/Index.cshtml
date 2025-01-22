@@ -1,0 +1,289 @@
+﻿@using Pertamina.IRIS.Models.Base
+@inject GlobalVariableBaseModel globalParam
+@model Pertamina.IRIS.Models.ViewModels.SignedAgreementDashboardViewModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Signed Agreement Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+
+    string IsAdd = Pertamina.IRIS.App.Helpers.HtmlHelper.IsAdd(HttpContextAccessor.HttpContext.Session);
+    string IsDelete = Pertamina.IRIS.App.Helpers.HtmlHelper.IsDelete(HttpContextAccessor.HttpContext.Session);
+    string IsEdit = Pertamina.IRIS.App.Helpers.HtmlHelper.IsEdit(HttpContextAccessor.HttpContext.Session);
+}
+
+@section Styles {
+    <link href="~/css/loaderHighPriority.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/tooltip.css" rel="stylesheet" type="text/css" />
+}
+
+<div class="app-main flex-column flex-row-fluid">
+    <div class="header-secondary d-flex flex-column-fluid justify-content-center align-items-center">
+        <div class="app-toolbar py-3 py-lg-6">
+            <div class="app-container container-xxl d-flex flex-stack">
+                <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+                    <div class="menu menu-gray-600 menu-active-primary menu-hover-light-primary menu-here-light-primary menu-show-light-primary fs-4" data-kt-menu="true">
+                        <div class="menu-item here badge badge-light-danger badge-lg">
+                            <a href="@Url.Action("Index", "ExistingFootprintsDashboard")" class="menu-link">
+                                <span class="menu-title fw-bolder fs-4">Home</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="@Url.Action("Index", "ComingSoon", new { isEp=false, isPo=false, isPi=false, isPd=false, isSa=false, isUd = true, isMd=false, isSt=false })" class="menu-link">
+                                <span class="menu-title">User Dashboard</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="@Url.Action("Index", "ComingSoon", new { isEp=false, isPo=false, isPi=false, isPd=false, isSa=false, isUd = false, isMd=true, isSt=false })" class="menu-link">
+                                <span class="menu-title">Meeting Dashboard</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="@Url.Action("Index", "ComingSoon", new { isEp=false, isPo=false, isPi=false, isPd=false, isSa=false, isUd = false, isMd=false, isSt=true })" class="menu-link">
+                                <span class="menu-title">Support Tracker</span>
+                            </a>
+                        </div>
+                        <div class="menu-item">
+                            <a href="@Url.Action("Index", "InternationalBusinessIntelligence")" class="menu-link">
+                                <span class="menu-title">International Business Intelligence</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="app-main flex-column flex-row-fluid wrapper-40">
+    <div class="app-content flex-column-fluid">
+        <div class="app-container container-xxl">
+            <div class="d-flex flex-column flex-xl-row">
+                <div class="flex-lg-row-fluid">
+                    <ul class="nav nav-stretch nav-line-tabs nav-line-tabs-2x border-transparent fw-bold fs-5 mb-5">
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-red text-active-gray-900"
+                               href="@Url.Action("Index", "ExistingFootprintsDashboard")"
+                               aria-selected="false"
+                               role="tab">
+                                Existing Footprints
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-red text-active-gray-900"
+                               href="@Url.Action("Index", "ComingSoon", new { isEp=false, isPo=true, isPi=false, isPd=false, isSa=false, isUd = false, isMd=false, isSt=false })"
+                               aria-selected="false"
+                               role="tab">
+                                Projects To Offer
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-red text-active-gray-900"
+                               href="@Url.Action("Index", "ComingSoon", new { isEp=false, isPo=false, isPi=true, isPd=false, isSa=false, isUd = false, isMd=false, isSt=false })"
+                               aria-selected="false"
+                               role="tab">
+                                Potential Initiatives
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-red text-active-gray-900"
+                               href="@Url.Action("Index", "ComingSoon", new { isEp=false, isPo=false, isPi=false, isPd=true, isSa=false, isUd = false, isMd=false, isSt=false })"
+                               aria-selected="false"
+                               role="tab">
+                                Program Development
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link nav-link-red text-active-gray-900 active"
+                               data-bs-toggle="tab"
+                               href="@Url.Action("Index", "SignedAgreementDashboard")"
+                               aria-selected="true"
+                               role="tab">
+                                Signed Agreement
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-pane fade show active" role="tabpanel">
+                        <div class="card card-flush mb-5">
+                            <div class="card-body py-2 px-2 py-lg-2 px-lg-2 text-gray-700">
+                                <div class="row py-2 justify-content-end">
+                                    <div class="col-3">
+                                        @Html.DropDownListFor(x => x.NegaraMitraId,
+                                                 new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                 new
+                                                 {
+                                                     @id = "ddlNegaraMitra",
+                                                     @class = "form-select form-select-solid form-select-sm fw-semibold",
+                                                     aria_label = "Country",
+                                                     data_control = "select2",
+                                                     data_placeholder = "Country",
+                                                     data_allow_clear = "true"
+                                                 })
+                                    </div>
+                                    <div class="col-3">
+                                        @Html.DropDownListFor(x => x.StreamBusinessId,
+                                                 new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                 new
+                                                 {
+                                                     @id = "ddlStreamBusiness",
+                                                     @class = "form-select form-select-solid form-select-sm fw-semibold",
+                                                     aria_label = "Stream",
+                                                     data_control = "select2",
+                                                     data_placeholder = "Stream",
+                                                     data_allow_clear = "true"
+                                                 })
+                                    </div>
+                                    <div class="col-3">
+                                        @Html.DropDownListFor(x => x.EntitasPertaminaId,
+                                                 new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                 new
+                                                 {
+                                                     @id = "ddlEntitasPertamina",
+                                                     @class = "form-select form-select-solid form-select-sm fw-semibold",
+                                                     aria_label = "Entities",
+                                                     data_control = "select2",
+                                                     data_placeholder = "Entities",
+                                                     data_allow_clear = "true"
+                                                 })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="MetricsView">
+                        </div>
+                        <div class="card card-flush mb-5">
+                            <div class="card-body py-2 px-2 py-lg-2 px-lg-2 text-gray-700">
+                                <div class="d-flex justify-content-end">
+                                    <a class="cursor-pointer" onclick="window.location.reload();">
+                                        <i class="fa-solid fa-arrows-rotate" data-bs-toggle="tooltip" title="Refresh"></i>
+                                    </a>
+                                </div>
+                                <div class="py-2 d-flex justify-content-center">
+                                    <div id="chartdiv" class="chartmap-signed-agreement"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-column flex-lg-row-auto w-100 w-xl-350px mb-5 ms-lg-5">
+                    <div class="d-flex align-items-center justify-content-between mt-auto mb-3">
+                        <span class="fw-bold fs-2 py-2 px-0 headerHighPriority">Strategic Signed Agreement</span>
+                        <div class="m-0">
+                            <a class="fw-bold align-items-right cursor-pointer" data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end" data-kt-menu-offset="0,10" data-kt-menu-width="350px">
+                                <i class="fa fa-long-arrow-alt-up"></i>
+                                <i class="fa fa-long-arrow-alt-down"></i>
+                            </a>
+                            <div class="menu menu-sub menu-sub-dropdown" data-kt-menu="true">
+                                <div class="px-7 py-5">
+                                    <div class="fs-5 text-gray-900 fw-bold">Sorting Options</div>
+                                </div>
+                                <div class="separator border-gray-200"></div>
+                                <div class="px-7 py-5">
+                                    <div class="mb-10">
+                                        <label class="form-label fw-semibold">Category:</label>
+                                        <div>
+                                            @Html.DropDownListFor(x => x.CategoryId,
+                                                     new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                                                     new
+                                                     {
+                                                         @id = "ddlSignedAgreementSortingHighPriority",
+                                                         @class = "form-select form-select-solid form-select-sm fw-semibold",
+                                                         aria_label = "Categories",
+                                                         data_control = "select2",
+                                                         data_placeholder = "Categories",
+                                                         data_allow_clear = "true"
+                                                     })
+                                        </div>
+                                    </div>
+                                    <div class="mb-10">
+                                        <label class="form-label fw-semibold">Sort Order By:</label>
+                                        <div class="d-flex">
+                                            <label class="form-check form-check-sm form-check-custom form-check-solid me-5">
+                                                <input class="form-check-input" type="radio" value="asc" id="sortTypeAsc" name="radioSorting" />
+                                                <label class="form-check-label" for="sortTypeAsc">
+                                                    Asc
+                                                </label>
+                                            </label>
+                                            <label class="form-check form-check-sm form-check-custom form-check-solid">
+                                                <input class="form-check-input" type="radio" value="desc" id="sortTypeDesc" name="radioSorting" />
+                                                <label class="form-check-label" for="sortTypeDesc">
+                                                    Desc
+                                                </label>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex justify-content-end">
+                                        <button class="btn btn-sm btn-light btn-active-light-primary me-2 resetButtonSorting" data-kt-menu-dismiss="true">Reset</button>
+                                        <button class="btn btn-sm btn-primary applyButtonSorting" data-kt-menu-dismiss="true">Apply</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="scroll h-665px scrollHighPriorirty">
+                        <div id="HighPriorityView">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="app-container container-xxl">
+            <div class="card card-flush">
+                <div class="card-body fs-6 py-10 px-10 py-lg-10 px-lg-10 text-gray-700">
+                    <div class="p-0">
+                        <div class="d-flex flex-stack mb-5">
+                            <div class="d-flex align-items-center position-relative my-1">
+                                <i class="ki-duotone ki-magnifier fs-1 position-absolute ms-6"><span class="path1"></span><span class="path2"></span></i>
+                                <input id="searchInput" type="text" data-kt-docs-table-filter="search" class="form-control form-control-solid w-250px ps-15" placeholder="Search" />
+                            </div>
+                        </div>
+                        <table id="dataTable" class="table align-middle table-row-dashed fs-6 gy-5">
+                            <thead>
+                                <tr class="text-start text-gray-400 fw-bold fs-7 text-uppercase gs-0">
+                                    <th class="align-middle ps-4">Title</th>
+                                    <th class="align-middle">PIC</th>
+                                    <th>Pertamina Entity</th>
+                                    <th>Agreement Code</th>
+                                    <th>MoU Signing Date</th>
+                                    <th>Trasaction Value ($ mn)</th>
+                                    <th>Project Cost ($ mn)</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-gray-600 fw-semibold">
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="DetailPartialModal"></div>
+
+@section Scripts {
+    <script>
+        var param = (function (param) {
+            param.prefix = '@globalParam.PrefixApiUrl';
+            param.prefixPicName = '@globalParam.PrefixPicName';
+            param.dataGrid = '@globalParam.PrefixApiUrl' + 'ApiSignedAgreementDashboard/List';
+            param.urlGetCountriesMap = '@globalParam.PrefixApiUrl' + 'ApiSignedAgreementDashboard/GetCountriesMap';
+            param.urlGetHighPriorityBasedOnMap = '@globalParam.PrefixApiUrl' + 'ApiSignedAgreementDashboard/GetHighPriorityBasedOnMap';
+            param.urlGetHighPriorityBasedOnDropDown = '@globalParam.PrefixApiUrl' + 'ApiSignedAgreementDashboard/GetHighPriorityBasedOnDropDown';
+            param.urlHighPriority = '@Url.Action("HighPriorityView", controllerName)';
+            param.urlMetrics = '@Url.Action("MetricsView", controllerName)';
+            return param;
+        })(param || {});
+    </script>
+    <script src="~/js/form/base-url-api.js"></script>
+    <script src="~/lib/amcharts/index.js"></script>
+    <script src="~/lib/amcharts/map.js"></script>
+    <script src="~/lib/amcharts/worldLow.js"></script>
+    <script src="~/lib/amcharts/Animated.js"></script>
+    <script src="~/lib/amcharts/continentsLow.js"></script>
+    <script src="~/lib/amcharts/percent.js"></script>
+    <script src="~/js/form/signedAgreementMap.js"></script>
+    <script src="~/js/form/signedAgreementDashboard.js"></script>
+}

@@ -1,0 +1,119 @@
+﻿@using Pertamina.IRIS.Models.Base
+@inject GlobalVariableBaseModel globalParam
+@model Pertamina.IRIS.Models.ViewModels.PotentialInitiativeHighPriorityViewModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+}
+
+<div class="modal fade" id="HighPriorityModal" tabindex="-1">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            @if (Model != null)
+            {
+
+                <div class="modal-header">
+                    <div class="flex-column">
+                        <h5 class="modal-title">Potential Initiatives - @Model.JudulInisiasi</h5>
+                        <div class="d-flex flex-row">
+                            <span class="fs-8 text-gray-600">Last Updated: @Model.UpdatedWording</span>
+                            <span class="badge badge-light-@Model.InitiativeStatusColorName mx-4">@Model.InitiativeStatus</span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-white" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="far fa-times-circle fa-2xl" style="font-size: 20px"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="d-flex flex-row justify-content-between mx-2">
+                        <div class="d-flex flex-column px-2 w-100">
+                            <div class="d-flex flex-column mb-2">
+                                <label class="fw-semibold text-muted">Potential Partner</label>
+                                <input disabled type="text" class="form-control form-control-solid" placeholder="@Model.PartnerName" />
+                            </div>
+                            <div class="d-flex flex-column mb-2">
+                                <label class="fw-semibold text-muted">Description</label>
+                                <textarea disabled class="form-control" data-kt-autosize="true">@Model.CatatanTambahan</textarea>
+                            </div>
+                            <div class="d-flex flex-column mb-2">
+                                <label class="fw-semibold text-muted">Potential Revenue (USD Mn / year)</label>
+                                <input disabled type="text" class="form-control form-control-solid" placeholder="@Model.RevenuePerYear" />
+                            </div>
+                            <div class="d-flex flex-column mb-2">
+                                <label class="fw-semibold text-muted">Estimated CAPEX (USD Mn)</label>
+                                <input disabled type="text" class="form-control form-control-solid" placeholder="@Model.Capex" />
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column px-2 w-100 mt-6">
+                            @if (Model.HubHeadName != null)
+                            {
+                                <div class="d-flex flex-row justify-content-between align-items-center rounded bg-light-dark p-4 mb-4">
+                                    <div class="d-flex flex-row">
+                                        <div class="symbol symbol-40px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="@Model.HubHeadName" data-kt-initialized="1">
+                                            <span class="symbol-label bg-info text-inverse-info fw-bold">R</span>
+                                        </div>
+                                        <div class="d-flex flex-column mx-2">
+                                            <label class="fw-bold">@Model.HubHeadName</label>
+                                            <label class="fw-semibold text-muted">Head</label>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex flex-row justify-content-around">
+                                        <a class="mx-2" href="#"><i class="bi bi-envelope fs-1"></i></a>
+                                        <a class="mx-2" href="#"><i class="bi bi-telephone fs-1"></i></a>
+                                    </div>
+                                </div>
+                            }
+                            <div class="d-flex flex-column mb-4">
+                                <input disabled type="text" class="form-control form-control-solid" placeholder="@Model.HubName" />
+                            </div>
+                            <div class="d-flex flex-column">
+                                <label class="fw-semibold text-muted">PIC Team</label>
+                                @if (Model.PicFungsiLeadName != null)
+                                {
+                                    <div class="d-flex flex-row justify-content-between align-items-center rounded bg-light-dark p-4 mb-4">
+                                        <div class="d-flex flex-row">
+                                            <div class="symbol symbol-40px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="Joe" data-kt-initialized="1">
+                                                <span class="symbol-label bg-info text-inverse-info fw-bold">J</span>
+                                            </div>
+                                            <div class="d-flex flex-column mx-2">
+                                                <label class="fw-bold">@Model.PicFungsiLeadName</label>
+                                                <label class="fw-semibold text-muted">Lead</label>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex flex-row justify-content-around">
+                                            <a class="mx-2" href="#"><i class="bi bi-envelope fs-1"></i></a>
+                                            <a class="mx-2" href="#"><i class="bi bi-telephone fs-1"></i></a>
+                                        </div>
+                                    </div>
+                                }
+                                @if (Model.PicFungsiMembers.Count > 0)
+                                {
+
+                                    @foreach (var item in Model.PicFungsiMembers)
+                                    {
+                                        <div class="d-flex flex-row justify-content-between align-items-center rounded bg-light-dark p-4 mb-4">
+
+                                            <div class="d-flex flex-row">
+                                                <div class="symbol symbol-40px symbol-circle" data-bs-toggle="tooltip" data-bs-original-title="@item.PicName" data-kt-initialized="1">
+                                                    <span class="symbol-label bg-info text-inverse-info fw-bold">M</span>
+                                                </div>
+                                                <div class="d-flex flex-column mx-2">
+                                                    <label class="fw-bold">@item.PicName</label>
+                                                    <label class="fw-semibold text-muted">Member</label>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex flex-row justify-content-around">
+                                                <a class="mx-2" href="#"><i class="bi bi-envelope fs-1"></i></a>
+                                                <a class="mx-2" href="#"><i class="bi bi-telephone fs-1"></i></a>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

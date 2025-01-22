@@ -1,0 +1,219 @@
+﻿@section Styles {
+    <link href="~/lib/owlcarousel/css/owl.carousel.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/owlcarousel/css/owl.theme.default.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/custom.css" rel="stylesheet" type="text/css" />
+}
+
+@using Pertamina.IRIS.Models.Base
+@inject GlobalVariableBaseModel globalParam
+@model Pertamina.IRIS.Models.ViewModels.InternationalBusinessIntelligenceCategoryViewModel
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "IBI";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var controllerName = this.ViewContext.RouteData.Values["controller"].ToString();
+}
+<div class="spinner-container">
+    <div class="loading-spinner"></div>
+</div>
+<div class="app-main flex-column flex-row-fluid">
+    <div class=" flex-column-fluid">
+        <div class="header-secondary d-flex flex-column-fluid justify-content-center align-items-center">
+            <div class="app-toolbar py-3 py-lg-6">
+                <div class="app-container container-xxl d-flex flex-stack">
+                    <div class="page-title d-flex flex-column justify-content-center flex-wrap me-3">
+                        <div class="menu menu-gray-600 menu-active-primary menu-hover-light-primary menu-here-light-primary menu-show-light-primary fs-4" data-kt-menu="true">
+                            <div class="menu-item">
+                                <a href="@Url.Action("Index", "ExistingFootprintsDashboard")"
+                                   class="menu-link">
+                                    <span class="menu-title">Home</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="@Url.Action("Index", "ComingSoon", new { isEp=false, isPo=false, isPi=false, isPd=false, isSa=false, isUd = true, isMd=false, isSt=false })"
+                                   class="menu-link">
+                                    <span class="menu-title">User Dashboard</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="@Url.Action("Index", "ComingSoon", new { isEp=false, isPo=false, isPi=false, isPd=false, isSa=false, isUd = false, isMd=true, isSt=false })"
+                                   class="menu-link">
+                                    <span class="menu-title">Meeting Dashboard</span>
+                                </a>
+                            </div>
+                            <div class="menu-item">
+                                <a href="@Url.Action("Index", "ComingSoon", new { isEp=false, isPo=false, isPi=false, isPd=false, isSa=false, isUd = false, isMd=false, isSt=true })"
+                                   class="menu-link">
+                                    <span class="menu-title">Support Tracker</span>
+                                </a>
+                            </div>
+                            <div class="menu-item here badge badge-light-danger badge-lg">
+                                <a href="@Url.Action("Index", "InternationalBusinessIntelligence")" class="menu-link">
+                                    <span class="menu-title fw-bolder fs-4">International Business Intelligence</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="app-main flex-column flex-row-fluid wrapper-40">
+    <div class="app-container  container-xxl">
+        <div class="d-flex flex-stack pt-9 pb-9 ">
+            <div class="d-flex align-items-center col-lg-10">
+                <div class="input-group">
+                    <input type="text" class="form-control form-control-solid ps-5 bg-white" id="searchBar" placeholder="Search Bar">
+                    <i class="ki-duotone ki-magnifier fs-1 align-items-center bg-white pe-5 rounded-end"><span class="path1"></span><span class="path2"></span></i>
+                </div>
+            </div>
+            <div class="d-flex align-items-center gap-2 gap-lg-3 col">
+                <div class="app-toolbar align-items-center">
+                    <div class="app-container container-xxl d-flex flex-stack">
+                        <button class="btn btn-primary btn-sm bg-dark" onclick="location.href='@Url.Action("Create", "InternationalBusinessIntelligence")'">
+                            <i class="fa fa-cloud-upload-alt"></i>Upload Document
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card mb-6 search-mode">
+            <div class="card-body pt-9 pb-9">
+                <div id="map-ibi"></div>
+                <div id="popover" class="popover"></div>
+            </div>
+        </div>
+        <div class="d-flex flex-stack">
+            <div class="d-flex align-items-center col-md-2">
+                <h3 class="fw-bold my-2">
+                </h3>
+            </div>
+            <div class="d-flex align-items-center gap-2 gap-lg-3 col-md-10">
+                <div class="d-flex align-items-center my-2 col-md-3">
+                    @Html.DropDownListFor(x => x.CountriesCoveredSelected,
+                             new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                             new
+                             {
+                                 @id = "filterByCountries",
+                                 @class = " form-control form-select form-select-solid form-select-lg bg-white",
+                                 data_control = "select2",
+                                 data_placeholder = "Country",
+                                 data_allow_clear = "true"
+                             })
+                </div>
+                <div class="d-flex align-items-center my-2 col-md-2">
+                    @Html.DropDownListFor(m => m.StreamBusinessId,
+                             new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                             new
+                             {
+                                 @id = "filterByStream",
+                                 @class = " form-control form-select form-select-solid form-select-lg bg-white",
+                                 aria_label = "",
+                                 data_control = "select2",
+                                 data_placeholder = "Stream",
+                                 data_allow_clear = "true"
+                             })
+                </div>
+                <div class="d-flex align-items-center my-2 col-md-3">
+                    @Html.DropDownListFor(m => m.EntitasPertaminaId,
+                             new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                             new
+                             {
+                                 @id = "filterByOwnerEntity",
+                                 @class = " form-control form-select form-select-solid form-select-lg bg-white",
+                                 aria_label = "",
+                                 data_control = "select2",
+                                 data_placeholder = "Entity",
+                                 data_allow_clear = "true"
+                             })
+                </div>
+                <div class="d-flex align-items-center my-2 col-md-2">
+                    @Html.DropDownListFor(m => m.TypeStudyId,
+                             new MultiSelectList(Enumerable.Empty<SelectListItem>()),
+                             new
+                             {
+                                 @id = "filterByTypeOfStudy",
+                                 @class = " form-control form-select form-select-solid form-select-lg bg-white",
+                                 data_control = "select2",
+                                 data_placeholder = "Type of Study",
+                                 data_allow_clear = "true"
+                             })
+                </div>
+                <div class="d-flex align-items-center my-2 ms-auto">
+                    <span class="fs-6 fw-bold ms-1">All Filters</span>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex flex-wrap flex-stack mb-3">
+            <h3 class="fw-bold my-2">
+                Documents
+            </h3>
+            <div class="d-flex align-items-center">
+                <span class="fs-6 fw-bold ms-1 pointer view-all"><u>View All</u></span>
+            </div>
+        </div>
+        <div id="sectionFilter" class="mt-30">
+            @Html.Partial("ListDocumentsPartial", @Model)
+        </div>
+    </div>
+    <div class="modal fade" id="disclaimer-modal" tabindex="-1" aria-modal="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content bg-light">
+                <div class="modal-header justify-content-between align-items-center">
+                    <h5 class="modal-title fs-1">DISCLAIMER</h5>
+                    <button type="button" class="btn btn-white" data-bs-dismiss="modal" aria-label="Close">
+                        <i class="far fa-times-circle fa-2xl" style="font-size: 20px"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="justify-content-center">
+                        <p class="fw-bold fs-3">
+                            Bahan-bahan ini, terkecuali yang merupakan hak cipta dan sumber referensi yang disebutkan, termasuk pembaruan apa pun yang ada padanya, serta diterbitkan oleh dan tetap tunduk pada hak cipta BD (Business Development). BD tidak memberikan jaminan atau representasi tentang akurasi atau kelengkapan informasi dan data yang terdapat dalam bahan-bahan ini, yang disediakan 'sebagaimana adanya'. Pendapat yang terdapat dalam bahan-bahan ini adalah pendapat BD, dan tidak ada yang terkandung di dalamnya yang merupakan tawaran untuk melakukan transaksi apa pun, atau saran investasi.
+                        </p>
+                        <p class="fw-bold fs-3">
+                            BD tidak menjamin atau mewakili bahwa bahan-bahan ini sesuai atau memadai untuk tujuan Anda. Jika, meskipun yang sebelumnya disebutkan, Anda atau orang lain mengandalkan bahan-bahan ini dengan cara apa pun, BD tidak menerima, dan dengan ini menolak sejauh diizinkan oleh hukum, semua tanggung jawab atas kerugian dan kerusakan yang dialami yang timbul dalam hubungannya dengan ketergantungan tersebut.
+                        </p>
+                        <p class="fw-bold fs-3">
+                            <i>
+                                These materials, except for the copyrighted and referenced sources mentioned, include any updates of it, and are published by and remain subject to BD (Business Development) copyright. BD makes no warranties or representations as to the accuracy or completeness of the information and data contained in these materials, which are provided 'as is'. The opinions provided in this material are those of BD, and nothing contained herein constitutes an offer to enter into any transaction, or investment advice.
+                            </i>
+                        </p>
+                        <p class="fw-bold fs-3">
+                            <i>
+                                BD does not warrant or represent that these materials are appropriate or adequate for your purposes. If, despite the foregoing, you or any other person relies on these materials in any way, BD does not accept, and hereby disclaims to the fullest extent permitted by law, all liability for any loss or damage incurred in connection with such reliance.
+                            </i>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script>
+        var param = (function (param) {
+            param.prefix = '@globalParam.PrefixApiUrl';
+            param.prefixPic = '@globalParam.PrefixPicName';
+            return param;
+        })(param || {});
+        var urlFilter = '@Url.Action("FilterIBI", "InternationalBusinessIntelligence")';
+        var urlSearch = '@Url.Action("SearchIBI", "InternationalBusinessIntelligence")';
+        var urlResetFilterIBI = '@Url.Action("ResetFilterIBI", "InternationalBusinessIntelligence")';
+        var urlGetAllIBI = '@Url.Action("GetAllIBI", "InternationalBusinessIntelligence")';
+        var urlGetDisclaimer = '@Url.Action("GetDisclaimer", "InternationalBusinessIntelligence")';
+        var dataMapIBI = @Html.Raw(Json.Serialize(Model.IBIMapView));
+
+    </script>
+
+    <script src="~/lib/amcharts/index.js"></script>
+    <script src="~/lib/amcharts/map.js"></script>
+    <script src="~/lib/amcharts/worldLow.js"></script>
+    <script src="~/lib/amcharts/Animated.js"></script>
+    <script src="~/lib/owlcarousel/js/owl.carousel.min.js"></script>
+    <script src="~/js/form/base-url-api.js"></script>
+    <script src="~/js/form/internationalBusinessIntelligence.js"></script>
+}
