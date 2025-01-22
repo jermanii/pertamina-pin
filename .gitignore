@@ -1,0 +1,9 @@
+*.suo
+*.user
+bin
+obj
+Pertamina.IRIS/.vs/
+/Pertamina.IRIS/Pertamina.IRIS.App/.config/dotnet-tools.json
+.vs
+applicationhost.config
+/Pertamina.IRIS/Pertamina.IRIS.Models/Entities/DB_IRIS_V2Context.cs
